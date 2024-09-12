@@ -31,7 +31,7 @@
                 <input type="button" name="delete_form" value="Удалить форму" onclick="deleteClick()">
             </form > -->
             <div id="1"> <!-- form -->
-                <form id="form1" action="/" method="post">
+                <form id="form1" action="http://127.0.0.1:8000/send" method="post">
                     <div class="top_form_ui">
                         <fieldset>
                             <legend>
@@ -39,7 +39,7 @@
                             </legend>
                             <div class="field_select">
                                 <label>Выберети тип оборудования:
-                                <select class="field_select_type" name="type_device" id="type_device_select">
+                                <select class="field_select_type" name="type_device" id="type_device_select" required>
                                     <option value=""></option>
                                     <option value="1">оченьбольшойтекст</option>
                                     <option value="2">2</option>
@@ -52,32 +52,32 @@
                             </div>
                             <div class="field_select">
                                 <label>Введите модель оборудования:
-                                <input class="field_select_text" type="text" name="model_device" id="model_device_select" placeholder="Pantum P215">
+                                <input class="field_select_text" type="text" name="model_device" id="model_device_select" placeholder="Pantum P215" required>
                                 </label>
                             </div>
                             <div class="field_select">
                                 <label>Введите серийный номер:
-                                <input class="field_select_text" type="text" name="serial_number" id="serial_number_device_select" placeholder="151810310001">
+                                <input class="field_select_text" type="text" name="serial_number" id="serial_number_device_select" placeholder="151810310001" required>
                                 </label>
                             </div>
                             <div class="field_select">
                                 <label>Введите инвентарный номер (ITAM):
-                                <input class="field_select_text" type="text" name="ITAM_device" id="ITAM_device_select" placeholder="11111">
+                                <input class="field_select_text" type="text" name="ITAM_device" id="ITAM_device_select" placeholder="11111" required>
                                 </label>
                             </div>
                             <div class="field_select">
                                 <label>Фотография устройства:
-                                <input id="img1" class="field_select_text" type="file" name="photo_device" id="photo_device_select" accept=".png,.jpeg,.jpg">
+                                <input id="img1" class="field_select_text" type="file" name="photo_device" id="photo_device_select" accept=".png,.jpeg,.jpg" required>
                                 </label>
                             </div>
                             <div class="field_select">
                                 <label>Фотография серийного номера:
-                                <input class="field_select_text" type="file" name="photo_serial_number_device" id="photo_serial_number_device_select" accept=".png,.jpeg,.jpg">
+                                <input class="field_select_text" type="file" name="photo_serial_number_device" id="photo_serial_number_device_select" accept=".png,.jpeg,.jpg" required>
                                 </label>
                             </div>
                             <div class="field_select">
                                 <label>Фотография инвентарного номера (ITAM):
-                                <input class="field_select_text" type="file" name="photo_ITAM_device" id="photo_ITAM_device_select" accept=".png,.jpeg,.jpg">
+                                <input class="field_select_text" type="file" name="photo_ITAM_device" id="photo_ITAM_device_select" accept=".png,.jpeg,.jpg" required>
                                 </label>
                             </div>
                             <!-- <div class="field_select">
