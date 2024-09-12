@@ -27,8 +27,12 @@
                     </div>
                 </div>
             </div>
-            <div> <!-- form -->
-                <form>
+            <form style="margin: 15px;"> <!-- button create form -->
+                <input type="button" name="create_form" value="Создать форму" onclick="createClick()">
+                <input type="button" name="delete_form" value="Удалить форму" onclick="deleteClick()">
+            </form>
+            <div id="1"> <!-- form -->
+                <form id="form1">
                     <div class="top_form_ui">
                         
                         <div class="top_form">Форма заполнения:</div>
@@ -63,7 +67,7 @@
                             </div>
                             <div class="field_select">
                                 <label>Фотография устройства:
-                                <input class="field_select_text" type="file" name="photo_device" id="photo_device_select" accept=".png,.jpeg,.jpg">
+                                <input id="img1" class="field_select_text" type="file" name="photo_device" id="photo_device_select" accept=".png,.jpeg,.jpg">
                                 </label>
                             </div>
                             <div class="field_select">
@@ -76,15 +80,40 @@
                                 <input class="field_select_text" type="file" name="photo_ITAM_device" id="photo_ITAM_device_select" accept=".png,.jpeg,.jpg">
                                 </label>
                             </div>
+                            <div class="field_select">
+                                <label>Сохранение:
+                                    <input id="save1" class="field_select_text" type="button" name="save_form" value="Сохранить" onclick="saveClick()">
+                                </label>
+                            </div>
                         </div>
                     </div>                    
                 </form>
             </div>
+            <div style="text-align: center; font-size: 30px;">
+                Ваше оборудование:
+            </div>
+            <div>
+                <table id="table_device">
+                    <thead>
+                      <tr>
+                        <th scope="col">№</th>
+                        <th scope="col">Вид техники</th>
+                        <th scope="col">Модель</th>
+                        <th scope="col">Серийный номер</th>
+                        <th scope="col">ITAM</th>
+                        <th scope="col">Устройство</th>
+                        <th scope="col">Серийный номер</th>
+                        <th scope="col">Инвентарный номер</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
         </div>
 
-        <form> <!-- button create form -->
-            <input type="button" name="create_form" value="Создать форму" onclick="createClick()">
-        </form>
+        
         <script src="scripts.js"></script>
     </body>
 
