@@ -45,16 +45,37 @@
     margin: 0px;
 }
 .top_form_ui{
+    background: rgb(195, 195, 195);
     display: inline-block;
-    background: wheat;
-    min-width: 225px;
+    /* background: wheat; */
+    /* min-width: 250px; */
     margin: 25px;
+    padding: 10px;
+    border: 15px grey solid;
     
 }
 .top_form{
+    min-width: 250px;
+    max-width: 250px;
+    /* background: gray; */
     display: flex;
     flex-wrap: wrap;
     font-size: 28px;
     max-height: 32px;
     border-bottom: 1px black solid;
+}
+.field_select{
+    margin:25px;
+    font-size: 20px;
+}
+.field_select_type{
+    padding: 2.5px;
+    text-align: right;
+}
+.field_select_text{
+    padding: 2.5px;
+    text-align: left;
+}
+.field_box_select{
+    /* background: gray; */
 }
