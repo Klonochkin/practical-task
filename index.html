@@ -2,32 +2,43 @@
 <html>
     <head>
         <meta charset="utf-8">
+        <script src="scripts.js"></script>
         <Link rel = 'stylesheet' href="style.css">
         <title>Форма</title>
     </head>
     <body>
         <div>
-            <div class="top">
-                <div class="box">
-                    <h1 class="textInBox">1</h1>
-                </div>
-                <div class="box">
-                    <h1 class="textInBox">2</h1>
-                </div>
-                <div class="box">
-                    <h1 class="textInBox">3</h1>
-                </div>
-                <div class="box">
-                    <h1 class="textInBox">4</h1>
+            <div> <!-- top line -->
+                <div class="top_line">
+                    <div class="ui_top_line">
+                        <h1 class="text_top_line">1</h1>
+                    </div>
+                    <div class="ui_top_line">
+                        <h1 class="text_top_line">2</h1>
+                    </div>
+                    <div class="ui_top_line">
+                        <h1 class="text_top_line">3</h1>
+                    </div>
+                    <div class="ui_top_line">
+                        <h1 class="text_top_line">4</h1>
+                    </div>
                 </div>
             </div>
-            
-
-
+            <div> <!-- form -->
+                <div class="top_form_ui">
+                    <div class="top_form">Форма заполнения</div>
+                    <div>поле1</div>
+                    <div>поле1</div>
+                    <div>поле1</div>
+                    <div>поле1</div>
+                </div>
+                
+            </div>
         </div>
 
-
-        <!-- <div class="testDiv"> div </div> -->
+        <form> <!-- button create form -->
+            <input type="button" name="create_form" value="Создать форму" onclick="createClick()">
+        </form>
     </body>
 
 </html>

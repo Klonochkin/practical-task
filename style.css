@@ -11,23 +11,26 @@
     padding: 20px 40px 20px 40px;
     margin: 0px auto;
 }
-.top{
+.top_line{
     display: flex; 
-     flex-direction: row;
-     flex:none;
-    justify-content: center;
+    flex-direction: row;
+    flex:none;
+    flex-wrap: nowrap;
+    justify-content: left;
     background: gainsboro;
     height: 5em;
     margin: 0px;
-    
+    min-width: 320px;
 }
-.box {
-    /* display: flex;
+.ui_top_line {
+    /* display: flex;   
     flex-direction:column;
     justify-content: center; */
     display: inline-block;
     background: grey;
     width: 37px;
+    max-width:37px;
+    min-width: 37px;
     /* flex: auto; */
     /* height: 3em; */
     text-align: center;
@@ -35,9 +38,23 @@
     margin: 0.6em;
     padding: 10px;
 }
-.textInBox{
+.text_top_line{
     /* display: inline-block; */
     /* width: 5em;
     height: 5em; */
     margin: 0px;
+}
+.top_form_ui{
+    display: inline-block;
+    background: wheat;
+    min-width: 225px;
+    margin: 25px;
+    
+}
+.top_form{
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 28px;
+    max-height: 32px;
+    border-bottom: 1px black solid;
 }
