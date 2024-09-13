@@ -10,6 +10,19 @@ from pymongo import MongoClient
 templates=Jinja2Templates(directory='templates')
 app = FastAPI()
 
+client = MongoClient("localhost", 27017)
+db = client.test_database
+collection = client.test_collection
+post = {
+    "author": "Mike",
+    "text": "My first blog post!",
+    "tags": ["mongodb", "python", "pymongo"],
+}
+
+posts = db.posts
+post_id = posts.insert_one(post).inserted_id
+
+print(posts.find_one())
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 @app.get('/')
