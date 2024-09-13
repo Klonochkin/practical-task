@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta charset="utf-8">
         
-        <link rel = 'stylesheet' href="style.css">
+        <link href="/static/style.css" rel="stylesheet">
         <title>Форма</title>
     </head>
     <body>
@@ -31,7 +31,7 @@
                 <input type="button" name="delete_form" value="Удалить форму" onclick="deleteClick()">
             </form > -->
             <div id="1"> <!-- form -->
-                <form id="form1" action="http://127.0.0.1:8000/send" method="post">
+                <form id="form1" action="/send/" method="post">
                     <div class="top_form_ui">
                         <fieldset>
                             <legend>
@@ -119,7 +119,7 @@
         </div>
 
         
-        <script src="scripts.js"></script>
+        <script src="/static/scripts.js"></script>
     </body>
 
 </html>
