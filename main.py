@@ -6,6 +6,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 import uvicorn
 from pymongo import MongoClient
+import pprint
 
 templates=Jinja2Templates(directory='templates')
 app = FastAPI()
@@ -13,16 +14,12 @@ app = FastAPI()
 client = MongoClient("localhost", 27017)
 db = client.test_database
 collection = client.test_collection
-post = {
-    "author": "Mike",
-    "text": "My first blog post!",
-    "tags": ["mongodb", "python", "pymongo"],
-}
-
 posts = db.posts
-post_id = posts.insert_one(post).inserted_id
 
-print(posts.find_one())
+post_documents = posts.find()
+pprint.pprint(list(post_documents))
+
+
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 @app.get('/')
@@ -46,7 +43,18 @@ async def submit_form(
     print(f"photo_device: {photo_device}")
     print(f"photo_serial_number_device: {photo_serial_number_device}")
     print(f"photo_ITAM_device: {photo_ITAM_device}")
-    return {"message": type_device}
+    post = {
+        "number": f"{posts.count_documents({})+1}",
+        "type_device": type_device,
+        "model_device": model_device,
+        "serial_number": serial_number,
+        "ITAM_device": ITAM_device,
+        "photo_device": photo_device,
+        "photo_serial_number_device": photo_serial_number_device,
+        "photo_ITAM_device": photo_ITAM_device,
+    }
+    posts.insert_one(post).inserted_id
+    return {"message": "Data Updates"}
 
 
 
