@@ -1,12 +1,9 @@
-from fastapi import FastAPI, Request, File, UploadFile,Form
-from fastapi.responses import HTMLResponse
+from fastapi import FastAPI, Request,Form,Response
 from fastapi.staticfiles import StaticFiles
-from typing import Annotated
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 import uvicorn
 from pymongo import MongoClient
-import pprint
 
 templates=Jinja2Templates(directory='templates')
 app = FastAPI()
@@ -15,10 +12,6 @@ client = MongoClient("localhost", 27017)
 db = client.test_database
 collection = client.test_collection
 posts = db.posts
-
-post_documents = posts.find()
-pprint.pprint(list(post_documents))
-
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
@@ -36,27 +29,24 @@ async def submit_form(
     photo_serial_number_device: str = Form(...),
     photo_ITAM_device: str = Form(...)
     ):
-    print(f"type_device: {type_device} ")
-    print(f"model_device: {model_device}")
-    print(f"serial_number: {serial_number}")
-    print(f"ITAM_device: {ITAM_device}")
-    print(f"photo_device: {photo_device}")
-    print(f"photo_serial_number_device: {photo_serial_number_device}")
-    print(f"photo_ITAM_device: {photo_ITAM_device}")
-    post = {
-        "number": f"{posts.count_documents({})+1}",
-        "type_device": type_device,
-        "model_device": model_device,
-        "serial_number": serial_number,
-        "ITAM_device": ITAM_device,
-        "photo_device": photo_device,
-        "photo_serial_number_device": photo_serial_number_device,
-        "photo_ITAM_device": photo_ITAM_device,
-    }
-    posts.insert_one(post).inserted_id
-    return {"message": "Data Updates"}
+    n=posts.count_documents({})
+    if( posts.count_documents({}) == n):
+        post = {
+            "number": f"{posts.count_documents({})+1}",
+            "type_device": type_device,
+            "model_device": model_device,
+            "serial_number": serial_number,
+            "ITAM_device": ITAM_device,
+            "photo_device": photo_device,
+            "photo_serial_number_device": photo_serial_number_device,
+            "photo_ITAM_device": photo_ITAM_device,
+        }
+        posts.insert_one(post).inserted_id
+    return Response(status_code=302, headers={"Location": "/"})
 
-
+@app.get("/data/")
+async def read_data():
+    return list(posts.aggregate([{'$unset': '_id'}]))
 
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8000)

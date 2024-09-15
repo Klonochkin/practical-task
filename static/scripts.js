@@ -1,9 +1,36 @@
-
 const num ={
   count_form: 1,
   isSave: false
 }
-
+fetch('/data/')
+  .then(response => response.json())
+  .then(data => {
+    const n = data.length;
+    for (let i = 0; i < n; i++) {
+      console.log(data[i]); 
+      const number = data[i].number;
+      console.log(number);
+      const type_device = data[i].type_device;
+      console.log(type_device);
+      const model_device = data[i].model_device;
+      console.log(model_device);
+      const serial_number = data[i].serial_number;
+      console.log(serial_number);
+      const ITAM_device = data[i].ITAM_device;
+      console.log(ITAM_device);
+      const photo_device = data[i].photo_device;
+      console.log(photo_device);
+      const photo_serial_number_device = data[i].photo_serial_number_device;
+      console.log(photo_serial_number_device);
+      const photo_ITAM_device = data[i].photo_ITAM_device;
+      console.log(photo_ITAM_device);
+      saveClick(number,type_device,model_device,serial_number,ITAM_device,photo_device,photo_serial_number_device,photo_ITAM_device);
+    }
+  })
+  .catch(error => console.error('Ошибка:', error));
+function hello() {
+  alert("hello");
+}
 function createClick(){
     // alert("click");
     if(num.isSave){
@@ -73,7 +100,6 @@ function createClick(){
     }
     
 }
-
 function deleteClick(){
   select_id = num.count_form;
   if(select_id==1){
@@ -84,38 +110,8 @@ function deleteClick(){
   id.remove();
   num.isSave=true;
 }
-
-function saveClick(){
+function saveClick(number,type_device,model_device,serial_number_device,ITAM_device,photo_device,photo_serial_number_device,photo_ITAM_device){
   select_id = num.count_form;
-  const form = document.getElementById(`form${select_id}`);
-  const type_device = form.elements['type_device'].value;
-  if(type_device==""){
-    return;
-  }
-  const model_device = form.elements['model_device'].value;
-  if(model_device==""){
-    return;
-  }
-  const serial_number_device = form.elements['serial_number'].value;
-  if(serial_number_device==""){
-    return;
-  }
-  const ITAM_device = form.elements['ITAM_device'].value;
-  if(ITAM_device==""){
-    return;
-  }
-  const photo_device = form.elements['photo_device'].value;
-  if(photo_device==""){
-    return;
-  }
-  const photo_serial_number_device = form.elements['photo_serial_number_device'].value;
-  if(photo_serial_number_device==""){
-    return;
-  }
-  const photo_ITAM_device = form.elements['photo_ITAM_device'].value;
-  if(photo_ITAM_device==""){
-    return;
-  }
   const table = document.getElementById('table_device').getElementsByTagName('tbody')[0];
   const newRow = table.insertRow();
   const ceil1 = newRow.insertCell(0);
@@ -126,35 +122,12 @@ function saveClick(){
   const ceil6 = newRow.insertCell(5);
   const ceil7 = newRow.insertCell(6);
   const ceil8 = newRow.insertCell(7);
-  
-  
-
-  ceil2.textContent = num.count_form;
+  ceil1.textContent = number;
   ceil2.textContent = type_device;
   ceil3.textContent = model_device;
   ceil4.textContent = serial_number_device;
   ceil5.textContent = ITAM_device;
-  // ceil6.textContent = photo_device;
-  document.getElementById('img1').addEventListener('change',function(event){
-    alert("ye");
-    const file = event.target.files[0];
-    if(file){
-    const reader = new FileReader();
-    reader.onload = function(e){
-      const imgEl = document.createElement('img');
-      imgEl.scr = e.target.result;
-      imgEl.alt = file.name;
-      imgEl.style.maxWidth = '100%';
-      ceil6.appendChild(imgEl);
-      alert(imgEl);
-    };
-    reader.readAsDataURL(file);
-  }
-  else{
-    alert("no");
-  }
-  });
-  ceil6.content = photo_device;
+  ceil6.textContent = photo_device;
   ceil7.textContent = photo_serial_number_device;
   ceil8.textContent = photo_ITAM_device;
   num.isSave=true;

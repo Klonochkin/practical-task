@@ -1,6 +1,5 @@
 <!doctype html>
 <html lang="ru-RU">
-    
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta charset="utf-8">
@@ -10,27 +9,9 @@
     </head>
     <body>
         <div>
-            <div> <!-- top line -->
-                <div class="top_line">
-                    <!-- <div class="ui_top_line">
-                        <h1 class="text_top_line">1</h1>
-                    </div>
-                    <div class="ui_top_line">
-                        <h1 class="text_top_line">2</h1>
-                    </div>
-                    <div class="ui_top_line">
-                        <h1 class="text_top_line">3</h1>
-                    </div>
-                    <div class="ui_top_line">
-                        <h1 class="text_top_line">4</h1>
-                    </div> -->
-                </div>
+            <div class="top_line">
             </div>
-            <!-- <form style="margin: 15px;">
-                <input type="button" name="create_form" value="Создать форму" onclick="createClick()">
-                <input type="button" name="delete_form" value="Удалить форму" onclick="deleteClick()">
-            </form > -->
-            <div id="1"> <!-- form -->
+            <div id="1">
                 <form id="form1" action="/send/" method="post">
                     <div class="top_form_ui">
                         <fieldset>
@@ -41,12 +22,12 @@
                                 <label>Выберети тип оборудования:
                                 <select class="field_select_type" name="type_device" id="type_device_select" required>
                                     <option value=""></option>
-                                    <option value="1">оченьбольшойтекст</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                    <option value="6">6</option>
+                                    <option value="Компьютер">Компьютер</option>
+                                    <option value="Принтер">Принтер</option>
+                                    <option value="Сканер">Сканер</option>
+                                    <option value="Ксерокс">Ксерокс</option>
+                                    <option value="Телефон">Телефон</option>
+                                    <option value="Шредер">Шредер</option>
                                   </select>
                                 </label>
                             </div>
@@ -89,7 +70,6 @@
                         <button>Submit</button>
                         <!-- <div class="top_form"></div> -->
                         <div class="field_box_select">
-                            
                         </div>
                     </div>               
                 </form>
@@ -112,14 +92,10 @@
                       </tr>
                     </thead>
                     <tbody>
-
                     </tbody>
                 </table>
             </div>
         </div>
-
-        
         <script src="/static/scripts.js"></script>
     </body>
-
 </html>
