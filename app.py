@@ -12,6 +12,12 @@ db = client.test_database
 collection = client.test_collection
 posts = db.posts
 
+dict1 = {'Name': 'Smith', "Adm": 45}
+ 
+print(dict1.keys())
+print(dict1["Name"])
+print(dict1.get("Adm"))
+
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 @app.get('/')
@@ -46,3 +52,10 @@ async def submit_form(
 @app.get("/data/")
 async def read_data():
     return list(posts.aggregate([{'$unset': '_id'}]))
+
+
+@app.post('/changeData')
+async def upload(request: Request):
+    print(request)
+
+    return {"message": "true"}

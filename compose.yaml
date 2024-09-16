@@ -10,3 +10,12 @@ services:
     restart: always
     ports:
       - 8000:8000
+    develop:
+      watch:
+        - action: sync
+          path: ./templates
+          target: /app/templates
+        - action: sync
+          path: ./static
+          target: /app/static
+

@@ -9,10 +9,8 @@
     </head>
     <body>
         <div>
-            <div class="top_line">
-            </div>
             <div id="1">
-                <form id="form1" action="/send/" method="post">
+                <form id="form1" action="/send/" method="post" style=" width: 50%;  margin: 0px auto;" >
                     <div class="top_form_ui">
                         <fieldset>
                             <legend>
@@ -61,34 +59,30 @@
                                 <input class="field_select_text" type="file" name="photo_ITAM_device" id="photo_ITAM_device_select" accept=".png,.jpeg,.jpg" required>
                                 </label>
                             </div>
-                            <!-- <div class="field_select">
-                                <label>Сохранение:
-                                    <input id="save1" class="field_select_text" type="button" name="save_form" value="Сохранить" onclick="saveClick()">
-                                </label>
-                            </div> -->
                         </fieldset>
                         <button>Submit</button>
-                        <!-- <div class="top_form"></div> -->
                         <div class="field_box_select">
                         </div>
                     </div>               
                 </form>
             </div>
-            <div style="text-align: center; font-size: 30px;">
+            <div style="text-align: center; font-size: 30px; margin-bottom: 35px;">
                 Ваше оборудование:
             </div>
-            <div>
+            <div style="width: 50%;  margin: 0px auto; text-align: center">
                 <table id="table_device">
                     <thead>
                       <tr>
-                        <th scope="col">№</th>
-                        <th scope="col">Вид техники</th>
-                        <th scope="col">Модель</th>
-                        <th scope="col">Серийный номер</th>
-                        <th scope="col">ITAM</th>
-                        <th scope="col">Устройство</th>
-                        <th scope="col">Серийный номер</th>
-                        <th scope="col">Инвентарный номер</th>
+                        <th scope="col" style="border-top: 2px solid rgb(140 140 140); background-color: rgb(228 240 245);">№</th>
+                        <th scope="col" style="border-top: 2px solid rgb(140 140 140);background-color: rgb(228 240 245);">Вид техники</th>
+                        <th scope="col" style="border-top: 2px solid rgb(140 140 140);background-color: rgb(228 240 245);">Модель</th>
+                        <th scope="col" style="border-top: 2px solid rgb(140 140 140);background-color: rgb(228 240 245);">Серийный номер</th>
+                        <th scope="col" style="border-top: 2px solid rgb(140 140 140);background-color: rgb(228 240 245);">ITAM</th>
+                        <th scope="col" style="border-top: 2px solid rgb(140 140 140);background-color: rgb(228 240 245);">Устройство</th>
+                        <th scope="col" style="border-top: 2px solid rgb(140 140 140);background-color: rgb(228 240 245);">Серийный номер</th>
+                        <th scope="col" style="border-top: 2px solid rgb(140 140 140);background-color: rgb(228 240 245);">Инвентарный номер</th>
+                        <th scope="col"><button id="button0" onclick="changeData('button0')">123</button></th>
+                        <th scope="col"><button id="button0" onclick="changeData('button0')">456</button></th>
                       </tr>
                     </thead>
                     <tbody>

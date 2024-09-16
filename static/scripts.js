@@ -113,6 +113,8 @@ function saveClick(number,type_device,model_device,serial_number_device,ITAM_dev
   const ceil6 = newRow.insertCell(5);
   const ceil7 = newRow.insertCell(6);
   const ceil8 = newRow.insertCell(7);
+  const ceil9 = newRow.insertCell(8);
+  const ceil10 = newRow.insertCell(9);
   ceil1.textContent = number;
   ceil2.textContent = type_device;
   ceil3.textContent = model_device;
@@ -121,5 +123,51 @@ function saveClick(number,type_device,model_device,serial_number_device,ITAM_dev
   ceil6.textContent = photo_device;
   ceil7.textContent = photo_serial_number_device;
   ceil8.textContent = photo_ITAM_device;
+  ceil9.innerHTML += `<button id="add${number}" onclick="changeData('${number}')">123</button>`;
+  ceil10.innerHTML += `<button id="save${number}" onclick="saveData('${number}')">456</button>`;
   num.isSave=true;
+}
+
+function changeData(numId){
+  var str= "add";
+  str+=numId;
+  const name = document.getElementById(str);
+  console.log(name);
+  name.disabled=true;
+  const table = document.getElementById('table_device');
+  const row = table.rows[numId];
+  console.log(row.cells[1].innerHTML);
+  row.cells[1].innerHTML = `<select class="field_select_type" name="type_device" id="type_device_select" required>
+                                    <option value=""></option>
+                                    <option value="Компьютер">Компьютер</option>
+                                    <option value="Принтер">Принтер</option>
+                                    <option value="Сканер">Сканер</option>
+                                    <option value="Ксерокс">Ксерокс</option>
+                                    <option value="Телефон">Телефон</option>
+                                    <option value="Шредер">Шредер</option>
+                                  </select>`;
+  
+  row.cells[2].innerHTML = `<input class="field_select_text" type="text" name="model_device" id="newValue1" placeholder="Pantum P215" required autocomplete="off" value="${row.cells[2].innerHTML}">`
+  row.cells[3].innerHTML = `<input class="field_select_text" type="text" name="model_device" id="newValue2" placeholder="Pantum P215" required autocomplete="off" value="${row.cells[3].innerHTML}">`
+  row.cells[4].innerHTML = `<input class="field_select_text" type="text" name="model_device" id="newValue3" placeholder="Pantum P215" required autocomplete="off" value="${row.cells[4].innerHTML}">`
+}
+function saveData(numId){
+  const newValue1 = document.getElementById('newValue1').value;
+  const newValue2 = document.getElementById('newValue2').value;
+  const newValue3 = document.getElementById('newValue3').value;
+  const data = {name: "13", age: 30};
+  const formData = new FormData();
+  formData.append('data', JSON.stringify({name:'qwerty',age: 13}));
+  console.log(typeof(formData));
+  fetch('/changeData',{
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({name:'qwerty',age: 13})
+  })
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch(error => console.error('Ошибка:', error));
+  
 }

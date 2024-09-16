@@ -14,6 +14,12 @@ To run app:
 uvicorn main:app --reload
 ```
 
+To run docker:
+
+```sh
+docker compose up --watch --build
+```
+
 ## Running DB
 
 ```sh
