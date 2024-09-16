@@ -132,12 +132,20 @@ function changeData(numId){
   var str= "add";
   str+=numId;
   const name = document.getElementById(str);
-  console.log(name);
   name.disabled=true;
   const table = document.getElementById('table_device');
   const row = table.rows[numId];
-  console.log(row.cells[1].innerHTML);
-  row.cells[1].innerHTML = `<select class="field_select_type" name="type_device" id="type_device_select" required>
+  
+  defaultValue1 = row.cells[0].innerHTML;
+  defaultValue2 = row.cells[1].innerHTML;
+  defaultValue3 = row.cells[2].innerHTML;
+  defaultValue4 = row.cells[3].innerHTML;
+  defaultValue5 = row.cells[4].innerHTML;
+  defaultValue6 = row.cells[5].innerHTML;
+  defaultValue7 = row.cells[6].innerHTML;
+  defaultValue8 = row.cells[7].innerHTML;
+
+  row.cells[1].innerHTML = `<select class="field_select_type" name="type_device" id="newValue0" required value="${row.cells[1].innerHTML}">
                                     <option value=""></option>
                                     <option value="Компьютер">Компьютер</option>
                                     <option value="Принтер">Принтер</option>
@@ -152,22 +160,26 @@ function changeData(numId){
   row.cells[4].innerHTML = `<input class="field_select_text" type="text" name="model_device" id="newValue3" placeholder="Pantum P215" required autocomplete="off" value="${row.cells[4].innerHTML}">`
 }
 function saveData(numId){
+  const newValue0 = document.getElementById('newValue0').value;
   const newValue1 = document.getElementById('newValue1').value;
   const newValue2 = document.getElementById('newValue2').value;
   const newValue3 = document.getElementById('newValue3').value;
   const data = {name: "13", age: 30};
   const formData = new FormData();
   formData.append('data', JSON.stringify({name:'qwerty',age: 13}));
-  console.log(typeof(formData));
   fetch('/changeData',{
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({name:'qwerty',age: 13})
+    body: JSON.stringify({numFilter: numId, value0:newValue0,value1:newValue1,value2: newValue2, value3: newValue3})
   })
   .then(response => response.json())
   .then(data => console.log(data))
   .catch(error => console.error('Ошибка:', error));
+  const table = document.getElementById('table_device');
+  table.deleteRow(numId)
+  saveClick(defaultValue1,newValue0,newValue1,newValue2,newValue3,defaultValue6,defaultValue7,defaultValue8);
   
+
 }

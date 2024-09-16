@@ -56,6 +56,19 @@ async def read_data():
 
 @app.post('/changeData')
 async def upload(request: Request):
-    print(request)
+    data = await request.json()
+    numFilter = data["numFilter"]
+    value0 = data["value0"]
+    value1 = data["value1"]
+    value2 = data["value2"]
+    value3 = data["value3"]
+    print(f"ПЕРЕХВАТ ДАННЫХ: {value1} {value2} {value3} ")
+    filter = {'number': numFilter}
+    update = {'$set': {'model_device': value1}}
+    print("!!!")
+    posts.update_many(filter, {'$set': {'type_device': value0}})
+    posts.update_many(filter, {'$set': {'model_device': value1}})
+    posts.update_many(filter, {'$set': {'serial_number': value2}})
+    posts.update_many(filter, {'$set': {'ITAM_device': value3}})
 
     return {"message": "true"}
