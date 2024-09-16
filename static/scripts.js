@@ -7,23 +7,14 @@ fetch('/data/')
   .then(data => {
     const n = data.length;
     for (let i = 0; i < n; i++) {
-      console.log(data[i]); 
       const number = data[i].number;
-      console.log(number);
       const type_device = data[i].type_device;
-      console.log(type_device);
       const model_device = data[i].model_device;
-      console.log(model_device);
       const serial_number = data[i].serial_number;
-      console.log(serial_number);
       const ITAM_device = data[i].ITAM_device;
-      console.log(ITAM_device);
       const photo_device = data[i].photo_device;
-      console.log(photo_device);
       const photo_serial_number_device = data[i].photo_serial_number_device;
-      console.log(photo_serial_number_device);
       const photo_ITAM_device = data[i].photo_ITAM_device;
-      console.log(photo_ITAM_device);
       saveClick(number,type_device,model_device,serial_number,ITAM_device,photo_device,photo_serial_number_device,photo_ITAM_device);
     }
   })
