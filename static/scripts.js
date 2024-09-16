@@ -145,8 +145,8 @@ function changeData(numId){
   defaultValue7 = row.cells[6].innerHTML;
   defaultValue8 = row.cells[7].innerHTML;
 
-  row.cells[1].innerHTML = `<select class="field_select_type" name="type_device" id="newValue0" required value="${row.cells[1].innerHTML}">
-                                    <option value=""></option>
+  row.cells[1].innerHTML = `<select class="field_select_type" name="type_device" id="newValue0" required>
+                                    <option value="${row.cells[1].innerHTML}">${row.cells[1].innerHTML}</option>
                                     <option value="Компьютер">Компьютер</option>
                                     <option value="Принтер">Принтер</option>
                                     <option value="Сканер">Сканер</option>
