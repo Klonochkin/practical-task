@@ -145,9 +145,9 @@ function saveClick(
     ceil6.textContent = photo_device;
     ceil7.textContent = photo_serial_number_device;
     ceil8.textContent = photo_ITAM_device;
-    ceil9.innerHTML += `<button id="delete${number}" onclick="deleteData('${number}')" class="table__button">delete</button>`;
-    ceil10.innerHTML += `<button id="add${number}" onclick="changeData('${number}')" class="table__button">edit</button>`;
-    ceil11.innerHTML += `<button id="save${number}" onclick="saveData('${number}')" class="table__button table__button--hidden">save</button>`;
+    ceil9.innerHTML += `<button id="delete${number}" onclick="deleteData('${number}')" class="table__button">Удалить</button>`;
+    ceil10.innerHTML += `<button id="add${number}" onclick="changeData('${number}')" class="table__button">Изменить</button>`;
+    ceil11.innerHTML += `<button id="save${number}" onclick="saveData('${number}')" class="table__button table__button--hidden">Сохранить</button>`;
     num.isSave = true;
 }
 
