@@ -145,9 +145,9 @@ function saveClick(
     ceil6.textContent = photo_device;
     ceil7.textContent = photo_serial_number_device;
     ceil8.textContent = photo_ITAM_device;
-    ceil9.innerHTML += `<button id="delete${number}" onclick="deleteData('${number}')" class="tableButton">delete</button>`;
-    ceil10.innerHTML += `<button id="add${number}" onclick="changeData('${number}')" class="tableButton">edit</button>`;
-    ceil11.innerHTML += `<button id="save${number}" onclick="saveData('${number}')" class="hiddenButton">save</button>`;
+    ceil9.innerHTML += `<button id="delete${number}" onclick="deleteData('${number}')" class="table__button">delete</button>`;
+    ceil10.innerHTML += `<button id="add${number}" onclick="changeData('${number}')" class="table__button">edit</button>`;
+    ceil11.innerHTML += `<button id="save${number}" onclick="saveData('${number}')" class="table__hidden-button">save</button>`;
     num.isSave = true;
 }
 
@@ -175,7 +175,7 @@ function changeData(numId) {
     defaultValue7 = row.cells[6].innerHTML;
     defaultValue8 = row.cells[7].innerHTML;
 
-    row.cells[1].innerHTML = `<select class="field_select_type" name="type_device" id="newValue0" required>
+    row.cells[1].innerHTML = `<select class="form__field-select-type" name="type_device" id="newValue0" required>
                                     <option value="${row.cells[1].innerHTML}">${row.cells[1].innerHTML}</option>
                                     <option value="Компьютер">Компьютер</option>
                                     <option value="Принтер">Принтер</option>
@@ -185,9 +185,9 @@ function changeData(numId) {
                                     <option value="Шредер">Шредер</option>
                                   </select>`;
 
-    row.cells[2].innerHTML = `<input size=8 class="field_select_text" type="text" name="model_device" id="newValue1" placeholder="Pantum P215" required autocomplete="off" value="${row.cells[2].innerHTML}">`;
-    row.cells[3].innerHTML = `<input size=8 class="field_select_text" type="text" name="model_device" id="newValue2" placeholder="Pantum P215" required autocomplete="off" value="${row.cells[3].innerHTML}">`;
-    row.cells[4].innerHTML = `<input size=8 class="field_select_text" type="text" name="model_device" id="newValue3" placeholder="Pantum P215" required autocomplete="off" value="${row.cells[4].innerHTML}">`;
+    row.cells[2].innerHTML = `<input size=8 class="form__field-select-text" type="text" name="model_device" id="newValue1" placeholder="Pantum P215" required autocomplete="off" value="${row.cells[2].innerHTML}">`;
+    row.cells[3].innerHTML = `<input size=8 class="form__field-select-text" type="text" name="model_device" id="newValue2" placeholder="Pantum P215" required autocomplete="off" value="${row.cells[3].innerHTML}">`;
+    row.cells[4].innerHTML = `<input size=8 class="form__field-select-text" type="text" name="model_device" id="newValue3" placeholder="Pantum P215" required autocomplete="off" value="${row.cells[4].innerHTML}">`;
 }
 function saveData(numId) {
     document.getElementById(`add${numId}`).name.disabled = false;

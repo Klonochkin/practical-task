@@ -11,16 +11,16 @@
 
 <body>
     <div>
-        <div id="1" class="formLayout">
+        <div id="1" class="form">
             <form id="form1" action="/send/" method="post">
-                <div class="top_form_ui">
+                <div class="form__background">
                     <fieldset>
                         <legend>
                             Форма заполнения:
                         </legend>
-                        <div class="field_select">
+                        <div class="form__field-select">
                             <label>Выберите тип оборудования:
-                                <select class="field_select_type" name="type_device" id="type_device_select" required>
+                                <select class="form__field-select-type" name="type_device" id="type_device_select" required>
                                     <option value=""></option>
                                     <option value="Компьютер">Компьютер</option>
                                     <option value="Принтер">Принтер</option>
@@ -31,84 +31,83 @@
                                 </select>
                             </label>
                         </div>
-                        <div class="field_select">
+                        <div class="form__field-select">
                             <label>Введите модель оборудования:
-                                <input class="field_select_text" type="text" name="model_device"
+                                <input class="form__field-select-text" type="text" name="model_device"
                                     id="model_device_select" placeholder="Pantum P215" required autocomplete="off">
                             </label>
                         </div>
-                        <div class="field_select">
+                        <div class="form__field-select">
                             <label>Введите серийный номер:
-                                <input class="field_select_text" type="text" name="serial_number"
+                                <input class="form__field-select-text" type="text" name="serial_number"
                                     id="serial_number_device_select" placeholder="151810310001" required
                                     autocomplete="off">
                             </label>
                         </div>
-                        <div class="field_select">
+                        <div class="form__field-select">
                             <label>Введите инвентарный номер (ITAM):
-                                <input class="field_select_text" type="text" name="ITAM_device" id="ITAM_device_select"
+                                <input class="form__field-select-text" type="text" name="ITAM_device" id="ITAM_device_select"
                                     placeholder="11111" required autocomplete="off">
                             </label>
                         </div>
-                        <div class="field_select">
+                        <div class="form__field-select">
                             <label>Фотография устройства:
-                                <input id="img1" class="field_select_text" type="file" name="photo_device"
+                                <input id="img1" class="form__field-select-text" type="file" name="photo_device"
                                     id="photo_device_select" accept=".png,.jpeg,.jpg" required>
                             </label>
                         </div>
-                        <div class="field_select">
+                        <div class="form__field-select">
                             <label>Фотография серийного номера:
-                                <input class="field_select_text" type="file" name="photo_serial_number_device"
+                                <input class="form__field-select-text" type="file" name="photo_serial_number_device"
                                     id="photo_serial_number_device_select" accept=".png,.jpeg,.jpg" required>
                             </label>
                         </div>
-                        <div class="field_select">
+                        <div class="form__field-select">
                             <label>Фотография инвентарного номера (ITAM):
-                                <input class="field_select_text" type="file" name="photo_ITAM_device"
+                                <input class="form__field-select-text" type="file" name="photo_ITAM_device"
                                     id="photo_ITAM_device_select" accept=".png,.jpeg,.jpg" required>
                             </label>
                         </div>
                     </fieldset>
                     <button >Submit</button>
-                    <div class="field_box_select">
                     </div>
                 </div>
             </form>
         </div>
-        <div class="tableLayout">
+        <div class="table">
             Ваше оборудование:
         </div>
         <div>
-            <table id="table_device" class="tableDesign">
+            <table id="table_device" class="table__design">
                 <thead>
                     <tr>
                         <th scope="col"
-                            class="thTopLine">
+                            class="table__th-top-line">
                             №</th>
                         <th scope="col"
-                        class="thDesign">
+                        class="table__th">
                             Вид техники</th>
                         <th scope="col"
-                        class="thDesign">
+                        class="table__th">
                             Модель</th>
                         <th scope="col"
-                        class="thDesign">
+                        class="table__th">
                             Серийный номер</th>
                         <th scope="col"
-                        class="thDesign">
+                        class="table__th">
                             ITAM</th>
                         <th scope="col"
-                        class="thDesign">
+                        class="table__th">
                             Устройство</th>
                         <th scope="col"
-                        class="thDesign">
+                        class="table__th">
                             Серийный номер</th>
                         <th scope="col"
-                        class="thDesign">
+                        class="table__th">
                             Инвентарный номер</th>
-                        <th scope="col" class="thButton"></th>
-                        <th scope="col" class="thButton"></th>
-                        <th scope="col" class="thButton"></th>
+                        <th scope="col" class="table__th-button"></th>
+                        <th scope="col" class="table__th-button"></th>
+                        <th scope="col" class="table__th-button"></th>
                     </tr>
                 </thead>
                 <tbody>
