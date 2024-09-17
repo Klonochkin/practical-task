@@ -1,109 +1,55 @@
-.formLayout{
+.form{
   max-width: 800px;
   min-width: 800px;
   margin: 0px auto;
 }
-.hiddenButton{
-  display: none;
-  line-height: 30px;
-  width: 45px;
+.form__content{
+  background: rgb(195, 195, 195) ;
+  display: inline-block;
+  margin: 25px;
+  padding: 10px;
+  border: 15px grey solid;
 }
-.tableButton{
-  line-height: 30px;
+.form__field{
+  display: block;
+  margin:25px;
+  font-size: 20px;
 }
-.tableLayout{
+.form__field-input{
+  padding: 2.5px;
+  text-align: left;
+}
+.heading-text{
   text-align: center;
   font-size: 30px;
   margin-bottom: 35px;
 }
-.tableDesign{
+.table{
   max-width: 1250px;
   min-width: 1250px;
   margin: 0px auto;
   text-align: center;
 }
-.thDesign{
+.table__head{
   border-top: 2px solid rgb(140 140 140);
   background-color: rgb(228 240 245);
   width: 100px;
 }
-.thTopLine{
-  border-top: 2px solid rgb(140 140 140);
-  background-color: rgb(228 240 245);
+.table__head--first{
   line-height: 30px;
   width: 10px;
 }
-.thButton{
+.table__button{
+  line-height: 30px;
+}
+.table__button--hidden{
+  display: none;
+}
+.table__head-button{
   width: 45px;
 }
 button{
   background-color:  dodgerblue;
-}
-.testDiv{
-    background: grey;
-    color: blanchedalmond;
-    width: 100px; 
-    height: 100px;
-    padding: 20px 40px 20px 40px;
-    margin: 0px auto;
-}
-.top_line{
-    display: flex; 
-    flex-direction: row;
-    flex:none;
-    flex-wrap: nowrap;
-    justify-content: left;
-    background: gainsboro;
-    height: 5em;
-    margin: 0px;
-    min-width: 320px;
-}
-.ui_top_line {
-    display: inline-block;
-    background: grey;
-    width: 37px;
-    max-width:37px;
-    min-width: 37px;
-    text-align: center;
-    font-size: 1em;
-    margin: 0.6em;
-    padding: 10px;
-}
-.text_top_line{
-    margin: 0px;
-}
-.top_form_ui{
-    background: rgb(195, 195, 195) ;
-    display: inline-block;
-    margin: 25px;
-    padding: 10px;
-    border: 15px grey solid;
-    
-    
-}
-.top_form{
-    min-width: 250px;
-    max-width: 250px;
-    display: flex;
-    flex-wrap: wrap;
-    font-size: 28px;
-    max-height: 32px;
-    border-bottom: 1px black solid;
-}
-.field_select{
-    margin:25px;
-    font-size: 20px;
-}
-.field_select_type{
-    padding: 2.5px;
-    text-align: right;
-}
-.field_select_text{
-    padding: 2.5px;
-    text-align: left;
-}
-.hidden{
-    display: none;
 }
 table {
   border-collapse: collapse;
