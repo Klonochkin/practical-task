@@ -2,12 +2,6 @@
 
 ## Running Locally
 
-To run database:
-
-```sh
-docker compose up
-```
-
 To run app:
 
 ```sh
