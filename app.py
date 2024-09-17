@@ -48,11 +48,6 @@ async def submit_form(
         posts.insert_one(post).inserted_id
     return Response(status_code=302, headers={"Location": "/"})
 
-@app.get("/data/")
-async def read_data():
-    return list(posts.aggregate([{'$unset': '_id'}]))
-
-
 @app.post('/changeData')
 async def upload(request: Request):
     data = await request.json()
@@ -61,9 +56,9 @@ async def upload(request: Request):
     value1 = data["value1"]
     value2 = data["value2"]
     value3 = data["value3"]
-    print(f"ПЕРЕХВАТ ДАННЫХ: {value1} {value2} {value3} ")
+    print(f"ПЕРЕХВАТ ДАННЫХ: {numFilter} {value0} {value1} {value2} {value3} ")
     filter = {'number': numFilter}
-    update = {'$set': {'model_device': value1}}
+    
     print("!!!")
     posts.update_many(filter, {'$set': {'type_device': value0}})
     posts.update_many(filter, {'$set': {'model_device': value1}})
@@ -71,6 +66,14 @@ async def upload(request: Request):
     posts.update_many(filter, {'$set': {'ITAM_device': value3}})
 
     return {"message": "true"}
+
+
+@app.get("/data/")
+async def read_data():
+    print("READ DATA")
+    return list(posts.aggregate([{'$unset': '_id'}]))
+
+
 @app.post('/deleteData')
 async def delete(request: Request):
     data = await request.json()
