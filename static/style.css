@@ -1,10 +1,49 @@
-
+.formLayout{
+  max-width: 800px;
+  min-width: 800px;
+  margin: 0px auto;
+}
+.hiddenButton{
+  display: none;
+  line-height: 30px;
+  width: 45px;
+}
+.tableButton{
+  line-height: 30px;
+}
+.tableLayout{
+  text-align: center;
+  font-size: 30px;
+  margin-bottom: 35px;
+}
+.tableDesign{
+  max-width: 1250px;
+  min-width: 1250px;
+  margin: 0px auto;
+  text-align: center;
+}
+.thDesign{
+  border-top: 2px solid rgb(140 140 140);
+  background-color: rgb(228 240 245);
+  width: 100px;
+}
+.thTopLine{
+  border-top: 2px solid rgb(140 140 140);
+  background-color: rgb(228 240 245);
+  line-height: 30px;
+  width: 10px;
+}
+.thButton{
+  width: 45px;
+}
+button{
+  background-color:  dodgerblue;
+}
 .testDiv{
     background: grey;
     color: blanchedalmond;
     width: 100px; 
     height: 100px;
-    /*border: 15px burlywood solid;*/
     padding: 20px 40px 20px 40px;
     margin: 0px auto;
 }
@@ -20,32 +59,22 @@
     min-width: 320px;
 }
 .ui_top_line {
-    /* display: flex;   
-    flex-direction:column;
-    justify-content: center; */
     display: inline-block;
     background: grey;
     width: 37px;
     max-width:37px;
     min-width: 37px;
-    /* flex: auto; */
-    /* height: 3em; */
     text-align: center;
     font-size: 1em;
     margin: 0.6em;
     padding: 10px;
 }
 .text_top_line{
-    /* display: inline-block; */
-    /* width: 5em;
-    height: 5em; */
     margin: 0px;
 }
 .top_form_ui{
     background: rgb(195, 195, 195) ;
     display: inline-block;
-    /* background: wheat; */
-    /* min-width: 250px; */
     margin: 25px;
     padding: 10px;
     border: 15px grey solid;
@@ -55,7 +84,6 @@
 .top_form{
     min-width: 250px;
     max-width: 250px;
-    /* background: gray; */
     display: flex;
     flex-wrap: wrap;
     font-size: 28px;
@@ -74,17 +102,11 @@
     padding: 2.5px;
     text-align: left;
 }
-.field_box_select{
-    /* background: gray; */
-}
 .hidden{
     display: none;
 }
 table {
   border-collapse: collapse;
-  /* border-top: 2px solid rgb(140 140 140);
-  border-bottom: 2px solid rgb(140 140 140);
-  border-left: 2px solid rgb(140 140 140); */
   font-family: sans-serif;
   font-size: 0.8rem;
   letter-spacing: 1px;
@@ -98,10 +120,6 @@ caption {
   font-weight: bold;
 }
 
-thead,
-/* tfoot {
-  background-color: rgb(228 240 245);
-} */
 
 th,
 td{
