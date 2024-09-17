@@ -5,6 +5,7 @@ const num ={
 fetch('/data/')
   .then(response => response.json())
   .then(data => {
+    console.log("ПЕРЕХОД ПО DATA");
     const n = data.length;
     for (let i = 0; i < n; i++) {
       const number = data[i].number;
@@ -115,6 +116,7 @@ function saveClick(number,type_device,model_device,serial_number_device,ITAM_dev
   const ceil8 = newRow.insertCell(7);
   const ceil9 = newRow.insertCell(8);
   const ceil10 = newRow.insertCell(9);
+  const ceil11 = newRow.insertCell(10);
   ceil1.textContent = number;
   ceil2.textContent = type_device;
   ceil3.textContent = model_device;
@@ -123,8 +125,9 @@ function saveClick(number,type_device,model_device,serial_number_device,ITAM_dev
   ceil6.textContent = photo_device;
   ceil7.textContent = photo_serial_number_device;
   ceil8.textContent = photo_ITAM_device;
-  ceil9.innerHTML += `<button id="add${number}" onclick="changeData('${number}')" style="line-height: 30px; width: 45px;">edit</button>`;
-  ceil10.innerHTML += `<button id="save${number}" onclick="saveData('${number}')" style="display: none;line-height: 30px; width: 45px;">save</button>`;
+  ceil9.innerHTML += `<button id="delete${number}" onclick="deleteData('${number}')" style="line-height: 30px; width: 45px;">delete</button>`;
+  ceil10.innerHTML += `<button id="add${number}" onclick="changeData('${number}')" style="line-height: 30px; width: 45px;">edit</button>`;
+  ceil11.innerHTML += `<button id="save${number}" onclick="saveData('${number}')" style="display: none;line-height: 30px; width: 45px;">save</button>`;
   num.isSave=true;
 }
 
@@ -135,6 +138,12 @@ function changeData(numId){
   name.disabled=true;
   document.getElementById(`save${numId}`).style.display = 'block';
   const table = document.getElementById('table_device');
+  for(let i=1;i<table.rows.length;i++){
+    document.getElementById(`delete${i}`).disabled=true;
+    if(i!=numId){
+      document.getElementById(`add${i}`).disabled=true;
+    }
+  }
   const row = table.rows[numId];
   
   defaultValue1 = row.cells[0].innerHTML;
@@ -167,9 +176,6 @@ function saveData(numId){
   const newValue1 = document.getElementById('newValue1').value;
   const newValue2 = document.getElementById('newValue2').value;
   const newValue3 = document.getElementById('newValue3').value;
-  const data = {name: "13", age: 30};
-  const formData = new FormData();
-  formData.append('data', JSON.stringify({name:'qwerty',age: 13}));
   fetch('/changeData',{
     method: 'POST',
     headers: {
@@ -181,6 +187,64 @@ function saveData(numId){
   .then(data => console.log(data))
   .catch(error => console.error('Ошибка:', error));
   const table = document.getElementById('table_device');
-  table.deleteRow(numId)
-  saveClick(defaultValue1,newValue0,newValue1,newValue2,newValue3,defaultValue6,defaultValue7,defaultValue8);
-}
+  
+  fetch('/data/')
+  .then(response => response.json())
+  .then(data => {
+    const n = data.length;
+    for(let i=1;i<=n;i++){
+      table.deleteRow(1);
+    }
+    console.log(n);
+    for (let i = 0; i < n; i++) {
+        const number = data[i].number;
+        const type_device = data[i].type_device;
+        const model_device = data[i].model_device;
+        const serial_number = data[i].serial_number;
+        const ITAM_device = data[i].ITAM_device;
+        const photo_device = data[i].photo_device;
+        const photo_serial_number_device = data[i].photo_serial_number_device;
+        const photo_ITAM_device = data[i].photo_ITAM_device;
+        saveClick(number,type_device,model_device,serial_number,ITAM_device,photo_device,photo_serial_number_device,photo_ITAM_device);
+      }
+    })
+    .catch(error => console.error('Ошибка:', error));
+  }
+  function deleteData(numId){
+    const table = document.getElementById('table_device');
+    var a = table.rows.length;
+    for(let i=1;i<a;i++){
+      console.log("DROP TABLE");
+      table.deleteRow(1);
+    }
+    fetch('/deleteData',{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({numDelete: numId})
+    })
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .catch(error => console.error('Ошибка:', error));
+
+    
+  
+  fetch('/data/')
+  .then(response => response.json())
+  .then(data => {
+    const n = data.length;
+    for (let i = 0; i < n; i++) {
+        const number = data[i].number;
+        const type_device = data[i].type_device;
+        const model_device = data[i].model_device;
+        const serial_number = data[i].serial_number;
+        const ITAM_device = data[i].ITAM_device;
+        const photo_device = data[i].photo_device;
+        const photo_serial_number_device = data[i].photo_serial_number_device;
+        const photo_ITAM_device = data[i].photo_ITAM_device;
+        saveClick(number,type_device,model_device,serial_number,ITAM_device,photo_device,photo_serial_number_device,photo_ITAM_device);
+      }
+    })
+    .catch(error => console.error('Ошибка:', error));
+  }

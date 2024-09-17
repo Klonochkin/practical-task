@@ -11,7 +11,6 @@ client = MongoClient("db", 27017)
 db = client.test_database
 collection = client.test_collection
 posts = db.posts
-
 dict1 = {'Name': 'Smith', "Adm": 45}
  
 print(dict1.keys())
@@ -70,5 +69,24 @@ async def upload(request: Request):
     posts.update_many(filter, {'$set': {'model_device': value1}})
     posts.update_many(filter, {'$set': {'serial_number': value2}})
     posts.update_many(filter, {'$set': {'ITAM_device': value3}})
+
+    return {"message": "true"}
+@app.post('/deleteData')
+async def delete(request: Request):
+    data = await request.json()
+    numDelete = data["numDelete"]
+    print(f"НОМЕР УДАЛЕНИЯ: {numDelete}")
+    count = posts.count_documents({})
+    print(f"КОЛИЧЕСТВО ПОСТОВ: {count}")
+    filterDelete = {'number': numDelete}
+    resultDelete = posts.delete_one(filterDelete)
+    print(f"1КОЛИЧЕСТВО УДАЛЕНИЙ {resultDelete.deleted_count}")
+    print(list(posts.aggregate([{'$unset': '_id'}])))
+    for i in range(int(numDelete)+1,count+1):
+        print(f"i: {i}")
+        filter = {'number': f"{i}"}
+        result = posts.update_one(filter, {'$set': {'number': f"{i-1}"}})
+        print(f"1КОЛИЧЕСТВО ИЗМЕНЕНИЙ {result.matched_count}")
+        print(f"2КОЛИЧЕСТВО ИЗМЕНЕНИЙ {result.modified_count}")
 
     return {"message": "true"}

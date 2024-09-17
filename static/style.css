@@ -108,7 +108,7 @@ td{
   border: 0px solid rgb(160 160 160);
   padding: 8px 10px;
 }
-tr:nth-last-child(-n+1) td:not(:nth-last-child(-n+2)){
+tr:nth-last-child(-n+1) td:not(:nth-last-child(-n+3)){
   border-bottom: 2px solid rgb(140 140 140);
   padding: 8px 10px;
 }
@@ -117,7 +117,7 @@ td:last-of-type {
   text-align: center;
 }
 
-tbody > tr:nth-of-type(even) td:not(:nth-last-child(-n+2)){
+tbody > tr:nth-of-type(even) td:not(:nth-last-child(-n+3)){
   background-color: rgb(237 238 242);
 }
 
