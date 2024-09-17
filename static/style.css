@@ -3,56 +3,49 @@
   min-width: 800px;
   margin: 0px auto;
 }
-.form__background{
+.form__content{
   background: rgb(195, 195, 195) ;
   display: inline-block;
   margin: 25px;
   padding: 10px;
   border: 15px grey solid;
 }
-.form__field-select{
+.form__field{
+  display: block;
   margin:25px;
   font-size: 20px;
 }
-.form__field-select-text{
+.form__field-input{
   padding: 2.5px;
   text-align: left;
 }
-.form__field-select-type{
-  padding: 2.5px;
-  text-align: right;
-}
-.table{
+.heading-text{
   text-align: center;
   font-size: 30px;
   margin-bottom: 35px;
 }
-.table__design{
+.table{
   max-width: 1250px;
   min-width: 1250px;
   margin: 0px auto;
   text-align: center;
 }
-.table__th-top-line{
-  border-top: 2px solid rgb(140 140 140);
-  background-color: rgb(228 240 245);
-  line-height: 30px;
-  width: 10px;
-}
-.table__th{
+.table__head{
   border-top: 2px solid rgb(140 140 140);
   background-color: rgb(228 240 245);
   width: 100px;
 }
-.table__hidden-button{
-  display: none;
+.table__head--first{
   line-height: 30px;
-  width: 45px;
+  width: 10px;
 }
 .table__button{
   line-height: 30px;
 }
-.table__th-button{
+.table__button--hidden{
+  display: none;
+}
+.table__head-button{
   width: 45px;
 }
 button{
