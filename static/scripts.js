@@ -125,8 +125,13 @@ function changeData(numId) {
     const template = document.querySelector('#template__select-type');
     row.cells[1].textContent = '';
     const select = template.content.cloneNode(true);
-    select.querySelector('#template__select-type-default').value = num.defaultValue2;
-    select.querySelector('#template__select-type-default').textContent = num.defaultValue2;
+    const elements = select.querySelectorAll('option');
+    elements.forEach(element => {
+        if(element.value==num.defaultValue2){
+            console.log(element.value);
+            element.selected = true;
+        }
+    });
     row.cells[1].append(select);
 
     row.cells[2].textContent = '';
