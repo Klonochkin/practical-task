@@ -26,14 +26,30 @@ body{
   border-radius: 5px;
 }
 
+fieldset{
+  border-style: none;
+  display: flex;
+  flex-direction:column;
+  gap: 20px;
+  align-items:start;
+}
 .form__submit{
-  width: 100px;
-  height: 30px;
+  padding: 6px;
 }
 .form__field-input{
   padding: 2.5px;
   text-align: left;
 }
+.form__field-input--ghost{
+  clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+}
+
 .heading-text{
   text-align: center;
   font-size: 30px;
@@ -56,6 +72,9 @@ body{
 }
 .table__button{
   line-height: 30px;
+}
+.table__head-button--ghost{
+  min-width: 100px;
 }
 .table__button--hidden{
   display: none;
@@ -82,12 +101,6 @@ button:disabled {
   color: rgba(0, 0, 0, 0.5);
   border: 1px rgba(0, 0, 0, 0.5) solid;
   background: rgb(255, 255, 255);
-}
-fieldset{
-  border-style: none;
-  display: flex;
-  flex-direction:column;
-  gap: 20px;
 }
 legend{
   margin: 15px 15px 15px -15px;
@@ -171,9 +184,14 @@ tr th:nth-child(1){
 border-left: 2px solid rgb(140 140 140);
 }
 
-
-.test{
-  background: white;
-  width: 100px;
-  border: none;
+.form__upload-button{
+  background-color: rgb(255, 255, 255);
+  color: black;
+  border: 1px black solid;
+  cursor: pointer;
+  border-radius: 5px;
+  padding: 0.1rem;
+  font-size: 0.9rem;
+  display: inline-flex;
+  align-items:center;
 }
