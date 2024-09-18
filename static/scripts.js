@@ -1,6 +1,5 @@
 const num = {
-    count_form: 1,
-    isSave: false,
+    defaultValue2: ""
 };
 fetch('/data/')
     .then((response) => response.json())
@@ -30,87 +29,8 @@ fetch('/data/')
         }
     })
     .catch((error) => console.error('Ошибка:', error));
-function hello() {
-    alert('hello');
-}
-function createClick() {
-    // alert("click");
-    if (num.isSave) {
-        num.isSave = false;
-        num.count_form += 1;
-        const form = document.createElement('form');
-        form.innerHTML = `
-      <div id=${num.count_form}> <!-- form -->
-      <form id="form${num.count_form}">
-          <div class="top_form_ui">
-              <div class="top_form">Форма заполнения:</div>
-              <div class="field_box_select">
-                  <div class="field_select">
-                      <label>Выберети тип оборудования:
-                      <select class="field_select_type" name="type_device" id="type_device_select">
-                          <option value=""></option>
-                          <option value="1">оченьбольшойтекст</option>
-                          <option value="2">2</option>
-                          <option value="3">3</option>
-                          <option value="4">4</option>
-                          <option value="5">5</option>
-                          <option value="6">6</option>
-                        </select>
-                      </label>
-                  </div>
-                  <div class="field_select">
-                      <label>Введите модель оборудования:
-                      <input class="field_select_text" type="text" name="model_device" id="model_device_select" placeholder="Pantum P215">
-                      </label>
-                  </div>
-                  <div class="field_select">
-                      <label>Введите серийный номер:
-                      <input class="field_select_text" type="text" name="serial_number" id="serial_number_device_select" placeholder="151810310001">
-                      </label>
-                  </div>
-                  <div class="field_select">
-                      <label>Введите инвентарный номер (ITAM):
-                      <input class="field_select_text" type="text" name="ITAM_device" id="ITAM_device_select" placeholder="11111">
-                      </label>
-                  </div>
-                  <div class="field_select">
-                      <label>Фотография устройства:
-                      <input class="field_select_text" type="file" name="photo_device" id="photo_device_select" accept=".png,.jpeg,.jpg">
-                      </label>
-                  </div>
-                  <div class="field_select">
-                      <label>Фотография серийного номера:
-                      <input class="field_select_text" type="file" name="photo_serial_number_device" id="photo_serial_number_device_select" accept=".png,.jpeg,.jpg">
-                      </label>
-                  </div>
-                  <div class="field_select">
-                      <label>Фотография инвентарного номера (ITAM):
-                      <input class="field_select_text" type="file" name="photo_ITAM_device" id="photo_ITAM_device_select" accept=".png,.jpeg,.jpg">
-                      </label>
-                  </div>
-                  <div class="field_select">
-                                <label>Сохранение:
-                                    <input id="save1" class="field_select_text" type="button" name="save_form" value="Сохранить" onclick="saveClick()">
-                                </label>
-                            </div>
-              </div>
-          </div>                    
-      </form>
-    </div>
-      `;
-        document.body.appendChild(form);
-    }
-}
-function deleteClick() {
-    select_id = num.count_form;
-    if (select_id == 1) {
-        return;
-    }
-    num.count_form -= 1;
-    const id = document.getElementById(select_id);
-    id.remove();
-    num.isSave = true;
-}
+
+
 function saveClick(
     number,
     type_device,
@@ -121,7 +41,6 @@ function saveClick(
     photo_serial_number_device,
     photo_ITAM_device
 ) {
-    select_id = num.count_form;
     const table = document
         .getElementById('table_device')
         .getElementsByTagName('tbody')[0];
@@ -145,10 +64,9 @@ function saveClick(
     ceil6.textContent = photo_device;
     ceil7.textContent = photo_serial_number_device;
     ceil8.textContent = photo_ITAM_device;
-    ceil9.innerHTML += `<button id="delete${number}" onclick="deleteData('${number}')" class="table__button">delete</button>`;
-    ceil10.innerHTML += `<button id="add${number}" onclick="changeData('${number}')" class="table__button">edit</button>`;
-    ceil11.innerHTML += `<button id="save${number}" onclick="saveData('${number}')" class="table__button table__button--hidden">save</button>`;
-    num.isSave = true;
+    ceil9.innerHTML += `<button id="delete${number}" onclick="deleteData('${number}')" class="table__button">Удалить</button>`;
+    ceil10.innerHTML += `<button id="add${number}" onclick="changeData('${number}')" class="table__button">Изменить</button>`;
+    ceil11.innerHTML += `<button id="save${number}" onclick="saveData('${number}')" class="table__button table__button--hidden">Сохранить</button>`;
 }
 
 function changeData(numId) {
@@ -167,7 +85,8 @@ function changeData(numId) {
     const row = table.rows[numId];
 
     defaultValue1 = row.cells[0].innerHTML;
-    defaultValue2 = row.cells[1].innerHTML;
+    num.defaultValue2 = row.cells[1].innerHTML;
+    console.log(`АГФЩЗАФАЭЦА ${num.defaultValue2}`);
     defaultValue3 = row.cells[2].innerHTML;
     defaultValue4 = row.cells[3].innerHTML;
     defaultValue5 = row.cells[4].innerHTML;
@@ -176,7 +95,8 @@ function changeData(numId) {
     defaultValue8 = row.cells[7].innerHTML;
 
     row.cells[1].innerHTML = `<select class="form__field-select-type" name="type_device" id="newValue0" required>
-                                    <option value="${row.cells[1].innerHTML}">${row.cells[1].innerHTML}</option>
+                                    <option disabled selected>${num.defaultValue2}</option>
+                                    <option value=""></option>
                                     <option value="Компьютер">Компьютер</option>
                                     <option value="Принтер">Принтер</option>
                                     <option value="Сканер">Сканер</option>
@@ -189,13 +109,18 @@ function changeData(numId) {
     row.cells[3].innerHTML = `<input size=8 class="form__field-select-text" type="text" name="model_device" id="newValue2" placeholder="Pantum P215" required autocomplete="off" value="${row.cells[3].innerHTML}">`;
     row.cells[4].innerHTML = `<input size=8 class="form__field-select-text" type="text" name="model_device" id="newValue3" placeholder="Pantum P215" required autocomplete="off" value="${row.cells[4].innerHTML}">`;
 }
+
 function saveData(numId) {
     document.getElementById(`add${numId}`).name.disabled = false;
     document.getElementById(`save${numId}`).style.display = 'none';
-    const newValue0 = document.getElementById('newValue0').value;
-    const newValue1 = document.getElementById('newValue1').value;
-    const newValue2 = document.getElementById('newValue2').value;
-    const newValue3 = document.getElementById('newValue3').value;
+    let newValue0 = document.getElementById('newValue0').value;
+    if(document.getElementById('newValue0').value == ""){
+        newValue0 = num.defaultValue2;
+        console.log(num.defaultValue2);
+    }
+    let newValue1 = document.getElementById('newValue1').value;
+    let newValue2 = document.getElementById('newValue2').value;
+    let newValue3 = document.getElementById('newValue3').value;
     fetch('/changeData', {
         method: 'POST',
         headers: {
@@ -210,28 +135,26 @@ function saveData(numId) {
         }),
     })
         .then((response) => response.json())
-        .then((data) => console.log(data))
-        .catch((error) => console.error('Ошибка:', error));
-    const table = document.getElementById('table_device');
-
-    fetch('/data/')
+        .then((data1) => {
+            fetch('/data/')
         .then((response) => response.json())
-        .then((data) => {
-            const n = data.length;
+        .then((data2) => {
+            const table = document.getElementById('table_device');
+            const n = data2.length;
             for (let i = 1; i <= n; i++) {
                 table.deleteRow(1);
             }
             console.log(n);
             for (let i = 0; i < n; i++) {
-                const number = data[i].number;
-                const type_device = data[i].type_device;
-                const model_device = data[i].model_device;
-                const serial_number = data[i].serial_number;
-                const ITAM_device = data[i].ITAM_device;
-                const photo_device = data[i].photo_device;
+                const number = data2[i].number;
+                const type_device = data2[i].type_device;
+                const model_device = data2[i].model_device;
+                const serial_number = data2[i].serial_number;
+                const ITAM_device = data2[i].ITAM_device;
+                const photo_device = data2[i].photo_device;
                 const photo_serial_number_device =
-                    data[i].photo_serial_number_device;
-                const photo_ITAM_device = data[i].photo_ITAM_device;
+                data2[i].photo_serial_number_device;
+                const photo_ITAM_device = data2[i].photo_ITAM_device;
                 saveClick(
                     number,
                     type_device,
@@ -245,7 +168,10 @@ function saveData(numId) {
             }
         })
         .catch((error) => console.error('Ошибка:', error));
+        })
+        .catch((error) => console.error('Ошибка:', error));
 }
+
 function deleteData(numId) {
     const table = document.getElementById('table_device');
     var a = table.rows.length;
@@ -261,10 +187,8 @@ function deleteData(numId) {
         body: JSON.stringify({ numDelete: numId }),
     })
         .then((response) => response.json())
-        .then((data) => console.log(data))
-        .catch((error) => console.error('Ошибка:', error));
-
-    fetch('/data/')
+        .then((data) => {
+            fetch('/data/')
         .then((response) => response.json())
         .then((data) => {
             const n = data.length;
@@ -291,4 +215,8 @@ function deleteData(numId) {
             }
         })
         .catch((error) => console.error('Ошибка:', error));
+        })
+        .catch((error) => console.error('Ошибка:', error));
+
+    
 }

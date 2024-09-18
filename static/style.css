@@ -1,24 +1,55 @@
+@font-face {
+  font-family: 'Roboto'; 
+  src: url('/static/Roboto-Bold.ttf'); 
+  font-weight: bold;
+  font-style: normal; 
+}
+@font-face {
+  font-family: 'Roboto'; 
+  src: url('/static/Roboto-Regular.ttf'); 
+  font-weight: normal;
+  font-style: normal; 
+}
+body{
+  font-family: 'Roboto', sans-serif;
+}
 .form{
   max-width: 800px;
   min-width: 800px;
   margin: 0px auto;
 }
 .form__content{
-  background: rgb(195, 195, 195) ;
   display: inline-block;
   margin: 25px;
   padding: 10px;
-  border: 15px grey solid;
+  border: 2px rgb(168, 168, 168) solid;
+  border-radius: 5px;
 }
-.form__field{
-  display: block;
-  margin:25px;
-  font-size: 20px;
+
+fieldset{
+  border-style: none;
+  display: flex;
+  flex-direction:column;
+  gap: 20px;
+  align-items:start;
+}
+.form__submit{
+  padding: 6px;
 }
 .form__field-input{
   padding: 2.5px;
   text-align: left;
 }
+.form__field-input--ghost{
+  clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+}
+
 .heading-text{
   text-align: center;
   font-size: 30px;
@@ -42,6 +73,9 @@
 .table__button{
   line-height: 30px;
 }
+.table__head-button--ghost{
+  min-width: 100px;
+}
 .table__button--hidden{
   display: none;
 }
@@ -49,7 +83,27 @@
   width: 45px;
 }
 button{
-  background-color:  dodgerblue;
+  background-color: rgb(255, 255, 255);
+  color: black;
+  border: 1px black solid;
+  border-radius: 5px;
+}
+button:not(:disabled){
+  cursor: pointer;
+}
+button:hover:not(:disabled) {
+  background: rgb(255, 255, 255);
+  color: #000000;
+  border-color: #000000;
+}
+
+button:disabled {
+  color: rgba(0, 0, 0, 0.5);
+  border: 1px rgba(0, 0, 0, 0.5) solid;
+  background: rgb(255, 255, 255);
+}
+legend{
+  margin: 15px 15px 15px -15px;
 }
 table {
   border-collapse: collapse;
@@ -65,7 +119,32 @@ caption {
   padding: 10px;
   font-weight: bold;
 }
-
+input[type=file]::file-selector-button {
+  margin-right: 20px;
+  border: none;
+  background: rgb(255, 255, 255);
+  border: 1px black solid;
+  padding: 5px;
+  border-radius: 15px;
+  color: black;
+  cursor: pointer;
+  transition: .2s ease-in-out;
+}
+input[type=text] {
+  background: rgb(255, 255, 255) ;
+  border: 1px black solid;
+  border-radius: 5px;
+}
+select {
+  background: rgb(255, 255, 255);
+  border-style: none;
+  border: 1px black solid;
+  padding: 5px;
+  color:#000000;
+  cursor:pointer;
+  font-size: 15px;
+  border-radius: 10px;
+}
 
 th,
 td{
@@ -103,4 +182,17 @@ border-left: 2px solid rgb(140 140 140);
 }
 tr th:nth-child(1){
 border-left: 2px solid rgb(140 140 140);
+}
+
+.form__upload-button{
+  background-color: rgb(255, 255, 255);
+  color: black;
+  border: 1px black solid;
+  cursor: pointer;
+  border-radius: 5px;
+  padding: 0.2rem;
+  font-size: 0.9rem;
+  display: inline-flex;
+  align-items:center;
+  gap: 0.5rem;
 }
