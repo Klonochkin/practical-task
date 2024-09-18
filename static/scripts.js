@@ -4,7 +4,6 @@ const num = {
 fetch('/data/')
     .then((response) => response.json())
     .then((data) => {
-        console.log('ПЕРЕХОД ПО DATA');
         const n = data.length;
         for (let i = 0; i < n; i++) {
             const number = data[i].number;
@@ -64,17 +63,47 @@ function saveClick(
     ceil6.textContent = photo_device;
     ceil7.textContent = photo_serial_number_device;
     ceil8.textContent = photo_ITAM_device;
-    ceil9.innerHTML += `<button id="delete${number}" onclick="deleteData('${number}')" class="table__button">Удалить</button>`;
-    ceil10.innerHTML += `<button id="add${number}" onclick="changeData('${number}')" class="table__button">Изменить</button>`;
-    ceil11.innerHTML += `<button id="save${number}" onclick="saveData('${number}')" class="table__button table__button--hidden">Сохранить</button>`;
-}
 
+    const template = document.querySelector('#template__table-button');
+
+    ceil9.textContent = '';
+    const buttonDelete = template.content.cloneNode(true);
+    buttonDelete.querySelector('button').id = `delete${number}`;
+
+    buttonDelete.querySelector('button').addEventListener("click", () => {
+        deleteData(number);
+    });
+
+    buttonDelete.querySelector('button').value = "Удалить";
+    buttonDelete.querySelector('button').textContent = "Удалить";
+    ceil9.append(buttonDelete);
+
+    ceil10.textContent = '';
+    const buttonEdit = template.content.cloneNode(true);
+    buttonEdit.querySelector('button').id = `add${number}`;
+    buttonEdit.querySelector('button').addEventListener("click", () => {
+        changeData(number);
+    });
+    buttonEdit.querySelector('button').value = "Изменить";
+    buttonEdit.querySelector('button').textContent = "Изменить";
+    ceil10.append(buttonEdit);
+
+    ceil11.textContent = '';
+    const buttonSave = template.content.cloneNode(true);
+    buttonSave.querySelector('button').id = `save${number}`;
+    buttonSave.querySelector('button').addEventListener("click", () => {
+        saveData(number);
+    });
+
+    buttonSave.querySelector('button').classList.add("table__button--hidden")
+    buttonSave.querySelector('button').value = "Сохранить";
+    buttonSave.querySelector('button').textContent = "Сохранить";
+    ceil11.append(buttonSave);
+}
 function changeData(numId) {
-    var str = 'add';
-    str += numId;
     const name = document.getElementById(`add${numId}`);
     name.disabled = true;
-    document.getElementById(`save${numId}`).style.display = 'block';
+    document.getElementById(`save${numId}`).classList.remove("table__button--hidden")
     const table = document.getElementById('table_device');
     for (let i = 1; i < table.rows.length; i++) {
         document.getElementById(`delete${i}`).disabled = true;
@@ -86,7 +115,6 @@ function changeData(numId) {
 
     defaultValue1 = row.cells[0].innerHTML;
     num.defaultValue2 = row.cells[1].innerHTML;
-    console.log(`АГФЩЗАФАЭЦА ${num.defaultValue2}`);
     defaultValue3 = row.cells[2].innerHTML;
     defaultValue4 = row.cells[3].innerHTML;
     defaultValue5 = row.cells[4].innerHTML;
@@ -94,29 +122,42 @@ function changeData(numId) {
     defaultValue7 = row.cells[6].innerHTML;
     defaultValue8 = row.cells[7].innerHTML;
 
-    row.cells[1].innerHTML = `<select class="form__field-select-type" name="type_device" id="newValue0" required>
-                                    <option disabled selected>${num.defaultValue2}</option>
-                                    <option value=""></option>
-                                    <option value="Компьютер">Компьютер</option>
-                                    <option value="Принтер">Принтер</option>
-                                    <option value="Сканер">Сканер</option>
-                                    <option value="Ксерокс">Ксерокс</option>
-                                    <option value="Телефон">Телефон</option>
-                                    <option value="Шредер">Шредер</option>
-                                  </select>`;
+    const template = document.querySelector('#template__select-type');
+    row.cells[1].textContent = '';
+    const select = template.content.cloneNode(true);
+    select.querySelector('#template__select-type-default').value = num.defaultValue2;
+    select.querySelector('#template__select-type-default').textContent = num.defaultValue2;
+    row.cells[1].append(select);
 
-    row.cells[2].innerHTML = `<input size=8 class="form__field-select-text" type="text" name="model_device" id="newValue1" placeholder="Pantum P215" required autocomplete="off" value="${row.cells[2].innerHTML}">`;
-    row.cells[3].innerHTML = `<input size=8 class="form__field-select-text" type="text" name="model_device" id="newValue2" placeholder="Pantum P215" required autocomplete="off" value="${row.cells[3].innerHTML}">`;
-    row.cells[4].innerHTML = `<input size=8 class="form__field-select-text" type="text" name="model_device" id="newValue3" placeholder="Pantum P215" required autocomplete="off" value="${row.cells[4].innerHTML}">`;
+    row.cells[2].textContent = '';
+    const templateText1 = document.querySelector('#template__input-text');
+    const input1 = templateText1.content.cloneNode(true);
+    input1.querySelector('input').id = "newValue1";
+    input1.querySelector('input').value = defaultValue3;
+    row.cells[2].append(input1);
+
+    row.cells[3].textContent = '';
+    const templateText2 = document.querySelector('#template__input-text');
+    const input2 = templateText2.content.cloneNode(true);
+    input2.querySelector('input').id = "newValue2";
+    input2.querySelector('input').value = defaultValue4;
+    row.cells[3].append(input2);
+
+    row.cells[4].textContent = '';
+    const templateText3 = document.querySelector('#template__input-text');
+    const input3 = templateText3.content.cloneNode(true);
+    input3.querySelector('input').id = "newValue3";
+    input3.querySelector('input').value = defaultValue5;
+    row.cells[4].append(input3);
+
 }
 
 function saveData(numId) {
     document.getElementById(`add${numId}`).name.disabled = false;
-    document.getElementById(`save${numId}`).style.display = 'none';
+    document.getElementById(`save${numId}`).classList.remove("table__button--hidden")
     let newValue0 = document.getElementById('newValue0').value;
     if(document.getElementById('newValue0').value == ""){
         newValue0 = num.defaultValue2;
-        console.log(num.defaultValue2);
     }
     let newValue1 = document.getElementById('newValue1').value;
     let newValue2 = document.getElementById('newValue2').value;
@@ -144,7 +185,6 @@ function saveData(numId) {
             for (let i = 1; i <= n; i++) {
                 table.deleteRow(1);
             }
-            console.log(n);
             for (let i = 0; i < n; i++) {
                 const number = data2[i].number;
                 const type_device = data2[i].type_device;
@@ -174,9 +214,8 @@ function saveData(numId) {
 
 function deleteData(numId) {
     const table = document.getElementById('table_device');
-    var a = table.rows.length;
+    let a = table.rows.length;
     for (let i = 1; i < a; i++) {
-        console.log('DROP TABLE');
         table.deleteRow(1);
     }
     fetch('/deleteData', {

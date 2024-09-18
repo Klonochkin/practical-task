@@ -104,12 +104,35 @@
                     Инвентарный номер</th>
                 <th scope="col" class="table__head-button"></th>
                 <th scope="col" class="table__head-button"></th>
-                <th scope="col" class="table__head-button table__head-button--ghost"></th>
+                <th scope="col" class="table__head-button"></th>
             </tr>
         </thead>
         <tbody>
         </tbody>
     </table>
+    
+
+    <template id="template__select-type">
+        <select class="form__field-select-type" name="type_device" id="newValue0" required>
+            <option disabled selected id="template__select-type-default"></option>
+            <option value=""></option>
+            <option value="Компьютер">Компьютер</option>
+            <option value="Принтер">Принтер</option>
+            <option value="Сканер">Сканер</option>
+            <option value="Ксерокс">Ксерокс</option>
+            <option value="Телефон">Телефон</option>
+            <option value="Шредер">Шредер</option>
+          </select>
+    </template>
+
+    <template id="template__input-text">
+        <input size=8 class="form__field-select-text" type="text"required autocomplete="off">
+    </template>
+
+    <template id="template__table-button">
+        <button class="table__button"></button>
+    </template>
+
     <script src="/static/scripts.js"></script>
 </body>
 
