@@ -154,7 +154,7 @@ function changeData(numId) {
 
 function saveData(numId) {
     document.getElementById(`add${numId}`).name.disabled = false;
-    document.getElementById(`save${numId}`).style.display = 'none';
+    document.getElementById(`save${numId}`).classList.remove("table__button--hidden")
     let newValue0 = document.getElementById('newValue0').value;
     if(document.getElementById('newValue0').value == ""){
         newValue0 = num.defaultValue2;
