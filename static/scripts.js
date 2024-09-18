@@ -69,7 +69,11 @@ function saveClick(
     ceil9.textContent = '';
     const buttonDelete = template.content.cloneNode(true);
     buttonDelete.querySelector('button').id = `delete${number}`;
-    buttonDelete.querySelector('button').setAttribute('onclick',`deleteData('${number}')`)
+
+    buttonDelete.querySelector('button').addEventListener("click", () => {
+        deleteData(number);
+    });
+
     buttonDelete.querySelector('button').value = "Удалить";
     buttonDelete.querySelector('button').textContent = "Удалить";
     ceil9.append(buttonDelete);
@@ -77,7 +81,9 @@ function saveClick(
     ceil10.textContent = '';
     const buttonEdit = template.content.cloneNode(true);
     buttonEdit.querySelector('button').id = `add${number}`;
-    buttonEdit.querySelector('button').setAttribute('onclick',`changeData('${number}')`)
+    buttonEdit.querySelector('button').addEventListener("click", () => {
+        changeData(number);
+    });
     buttonEdit.querySelector('button').value = "Изменить";
     buttonEdit.querySelector('button').textContent = "Изменить";
     ceil10.append(buttonEdit);
@@ -85,8 +91,11 @@ function saveClick(
     ceil11.textContent = '';
     const buttonSave = template.content.cloneNode(true);
     buttonSave.querySelector('button').id = `save${number}`;
-    buttonSave.querySelector('button').setAttribute('onclick',`saveData('${number}')`)
-    buttonSave.querySelector('button').setAttribute('class',`table__button table__button--hidden`)
+    buttonSave.querySelector('button').addEventListener("click", () => {
+        saveData(number);
+    });
+
+    buttonSave.querySelector('button').classList.add("table__button--hidden")
     buttonSave.querySelector('button').value = "Сохранить";
     buttonSave.querySelector('button').textContent = "Сохранить";
     ceil11.append(buttonSave);
@@ -94,7 +103,7 @@ function saveClick(
 function changeData(numId) {
     const name = document.getElementById(`add${numId}`);
     name.disabled = true;
-    document.getElementById(`save${numId}`).style.display = 'block';
+    document.getElementById(`save${numId}`).classList.remove("table__button--hidden")
     const table = document.getElementById('table_device');
     for (let i = 1; i < table.rows.length; i++) {
         document.getElementById(`delete${i}`).disabled = true;

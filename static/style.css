@@ -73,11 +73,8 @@ fieldset{
 .table__button{
   line-height: 30px;
 }
-.table__head-button--ghost{
-  min-width: 100px;
-}
 .table__button--hidden{
-  display: none;
+  visibility: hidden;
 }
 .table__head-button{
   width: 45px;
