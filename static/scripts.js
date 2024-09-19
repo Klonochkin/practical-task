@@ -1,5 +1,8 @@
 const num = {
-    defaultValue2: ""
+    defaultValue2: "",
+    fileName1: '',
+    fileName2: '',
+    fileName3: '',
 };
 fetch('/data/')
     .then((response) => response.json())
@@ -60,9 +63,29 @@ function saveClick(
     ceil3.textContent = model_device;
     ceil4.textContent = serial_number_device;
     ceil5.textContent = ITAM_device;
-    ceil6.textContent = photo_device;
-    ceil7.textContent = photo_serial_number_device;
-    ceil8.textContent = photo_ITAM_device;
+    
+    // ceil6.textContent = photo_device;
+    
+    let img1 = document.createElement('img');
+    img1.src = `static/images/${photo_device}`;
+    /** @type {HTMLImageElement} */
+    img1.width = 150;
+    ceil6.appendChild(img1);
+    
+    let img2 = document.createElement('img');
+    img2.src = `static/images/${photo_serial_number_device}`;
+    /** @type {HTMLImageElement} */
+    img2.width = 150;
+    ceil7.appendChild(img2);
+
+    //ceil7.textContent = photo_serial_number_device;
+    let img3 = document.createElement('img');
+    img3.src = `static/images/${photo_ITAM_device}`;
+    /** @type {HTMLImageElement} */
+    img3.width = 150;
+    ceil8.appendChild(img3);
+
+    //ceil8.textContent = photo_ITAM_device;
 
     const template = document.querySelector('#template__table-button');
 
@@ -182,7 +205,7 @@ function saveData(numId) {
     })
         .then((response) => response.json())
         .then((data1) => {
-            fetch('/data/')
+        fetch('/data/')
         .then((response) => response.json())
         .then((data2) => {
             const table = document.getElementById('table_device');
@@ -261,6 +284,71 @@ function deleteData(numId) {
         .catch((error) => console.error('Ошибка:', error));
         })
         .catch((error) => console.error('Ошибка:', error));
+}
 
+function savePhoto(input){
+    const file = input.files[0];
+    const fileSize = input.files[0].size;
+    const maxSize = 10485760;
+    if (fileSize > maxSize) {
+        alert(`Размер файла превышает максимально допустимый размер ${maxSize} байт`);
+        input.files[0].value = ''; // сбросить поле ввода
+        return;
+    }
+    let a = document.getElementById(`${input.id}`);
+    a.value='';
+
+    console.log(`ID: ${input.id}`);
+    const fileForm = new FormData();
+    fileForm.append('file', file);
     
+
+    fetch('/uploadFile/', {
+        method: 'POST',
+        body: fileForm
+    })
+    .then(response => response.json())
+    .then(data => {
+        if(input.id == "photo_device_select"){
+            num.fileName1 = data;
+        }
+        else if(input.id == "photo_serial_number_device_select"){
+            num.fileName2 = data;
+        }
+        else if(input.id == "photo_ITAM_device_select"){
+            num.fileName3 = data;
+        }
+    })
+    .catch(error => console.error(error));
+
+}
+
+function sendForm(){
+
+    const form = document.getElementById('form1');
+    const formData = new FormData(form);    
+    formData.set('photo_device',num.fileName1);
+    formData.set('photo_serial_number_device',num.fileName2);
+    formData.set('photo_ITAM_device',num.fileName3);
+    if(
+    formData.get('type_device')=='' || formData.get('model_device')=='' ||
+    formData.get('serial_number')=='' || formData.get('ITAM_device')=='' ||
+    formData.get('photo_device')=='' || formData.get('photo_serial_number_device')==''||
+    formData.get('photo_ITAM_device')==''
+    ){
+        alert("Не все поля заполнены");
+        return;
+    }
+
+    fetch('/sendForm/', {
+        method: 'POST',
+        
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        window.location.href = '/';
+    })
+    .catch(error => console.error(error));
+
 }

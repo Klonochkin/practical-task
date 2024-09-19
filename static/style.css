@@ -64,7 +64,6 @@ fieldset{
 .table__head{
   border-top: 2px solid rgb(140 140 140);
   background-color: rgb(228 240 245);
-  width: 100px;
 }
 .table__head--first{
   line-height: 30px;
@@ -192,4 +191,7 @@ border-left: 2px solid rgb(140 140 140);
   display: inline-flex;
   align-items:center;
   gap: 0.5rem;
+}
+img {
+  
 }
