@@ -45,7 +45,7 @@ async def upload(request: Request):
     return {"message": "true"}
 
 
-@app.get("/data/")
+@app.get("/data")
 async def read_data():
     file_path = "static/images/1.jpg"
     return list(posts.aggregate([{'$unset': '_id'}]))

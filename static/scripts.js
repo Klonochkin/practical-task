@@ -4,7 +4,7 @@ const num = {
     fileName2: '',
     fileName3: '',
 };
-fetch('/data/')
+fetch('/data')
     .then((response) => response.json())
     .then((data) => {
         const n = data.length;
@@ -64,28 +64,26 @@ function saveClick(
     ceil4.textContent = serial_number_device;
     ceil5.textContent = ITAM_device;
     
-    // ceil6.textContent = photo_device;
     
-    let img1 = document.createElement('img');
-    img1.src = `static/images/${photo_device}`;
-    /** @type {HTMLImageElement} */
-    img1.width = 150;
-    ceil6.appendChild(img1);
+
+    ceil6.textContent = '';
+    const templateText1 = document.querySelector('#template-img');
+    const input1 = templateText1.content.cloneNode(true);
+    input1.querySelector('img').src = `static/images/${photo_device}`;
+    ceil6.append(input1);
+
+    ceil7.textContent = '';
+    const templateText2 = document.querySelector('#template-img');
+    const input2 = templateText2.content.cloneNode(true);
+    input2.querySelector('img').src = `static/images/${photo_serial_number_device}`;
+    ceil7.append(input2);
     
-    let img2 = document.createElement('img');
-    img2.src = `static/images/${photo_serial_number_device}`;
-    /** @type {HTMLImageElement} */
-    img2.width = 150;
-    ceil7.appendChild(img2);
+    ceil8.textContent = '';
+    const templateText3 = document.querySelector('#template-img');
+    const input3 = templateText3.content.cloneNode(true);
+    input3.querySelector('img').src = `static/images/${photo_ITAM_device}`;
+    ceil8.append(input3);
 
-    //ceil7.textContent = photo_serial_number_device;
-    let img3 = document.createElement('img');
-    img3.src = `static/images/${photo_ITAM_device}`;
-    /** @type {HTMLImageElement} */
-    img3.width = 150;
-    ceil8.appendChild(img3);
-
-    //ceil8.textContent = photo_ITAM_device;
 
     const template = document.querySelector('#template__table-button');
 
@@ -151,7 +149,6 @@ function changeData(numId) {
     const elements = select.querySelectorAll('option');
     elements.forEach(element => {
         if(element.value==num.defaultValue2){
-            console.log(element.value);
             element.selected = true;
         }
     });
@@ -205,7 +202,7 @@ function saveData(numId) {
     })
         .then((response) => response.json())
         .then((data1) => {
-        fetch('/data/')
+        fetch('/data')
         .then((response) => response.json())
         .then((data2) => {
             const table = document.getElementById('table_device');
@@ -255,7 +252,7 @@ function deleteData(numId) {
     })
         .then((response) => response.json())
         .then((data) => {
-            fetch('/data/')
+            fetch('/data')
         .then((response) => response.json())
         .then((data) => {
             const n = data.length;
@@ -286,45 +283,8 @@ function deleteData(numId) {
         .catch((error) => console.error('Ошибка:', error));
 }
 
-function savePhoto(input){
-    const file = input.files[0];
-    const fileSize = input.files[0].size;
-    const maxSize = 10485760;
-    if (fileSize > maxSize) {
-        alert(`Размер файла превышает максимально допустимый размер ${maxSize} байт`);
-        input.files[0].value = ''; // сбросить поле ввода
-        return;
-    }
-    let a = document.getElementById(`${input.id}`);
-    a.value='';
 
-    console.log(`ID: ${input.id}`);
-    const fileForm = new FormData();
-    fileForm.append('file', file);
-    
-
-    fetch('/uploadFile/', {
-        method: 'POST',
-        body: fileForm
-    })
-    .then(response => response.json())
-    .then(data => {
-        if(input.id == "photo_device_select"){
-            num.fileName1 = data;
-        }
-        else if(input.id == "photo_serial_number_device_select"){
-            num.fileName2 = data;
-        }
-        else if(input.id == "photo_ITAM_device_select"){
-            num.fileName3 = data;
-        }
-    })
-    .catch(error => console.error(error));
-
-}
-
-function sendForm(){
-
+document.getElementById('sumbitButton').addEventListener('click', () => {
     const form = document.getElementById('form1');
     const formData = new FormData(form);    
     formData.set('photo_device',num.fileName1);
@@ -340,15 +300,127 @@ function sendForm(){
         return;
     }
 
-    fetch('/sendForm/', {
+    fetch('/sendForm', {
         method: 'POST',
         
         body: formData
     })
     .then(response => response.json())
     .then(data => {
-        window.location.href = '/';
+        fetch('/data')
+        .then((response) => response.json())
+        .then((data2) => {
+            const table = document.getElementById('table_device');
+            const n = data2.length;
+            for (let i = 1; i < n; i++) {
+                table.deleteRow(1);
+            }
+            for (let i = 0; i < n; i++) {
+                const number = data2[i].number;
+                const type_device = data2[i].type_device;
+                const model_device = data2[i].model_device;
+                const serial_number = data2[i].serial_number;
+                const ITAM_device = data2[i].ITAM_device;
+                const photo_device = data2[i].photo_device;
+                const photo_serial_number_device =
+                data2[i].photo_serial_number_device;
+                const photo_ITAM_device = data2[i].photo_ITAM_device;
+                saveClick(
+                    number,
+                    type_device,
+                    model_device,
+                    serial_number,
+                    ITAM_device,
+                    photo_device,
+                    photo_serial_number_device,
+                    photo_ITAM_device
+                );
+            }
+        })
+        .catch((error) => console.error('Ошибка:', error));
     })
     .catch(error => console.error(error));
+    form.reset();
+})
 
-}
+document.getElementById('photo_device_select').addEventListener('input', ()=>{
+    const input = document.getElementById('photo_device_select');
+    const file = input.files[0];
+    const fileSize = input.files[0].size;
+    const maxSize = 10485760;
+    if (fileSize > maxSize) {
+        alert(`Размер файла превышает максимально допустимый размер ${maxSize} байт`);
+        input.files[0].value = '';
+        return;
+    }
+    let a = document.getElementById(`${input.id}`);
+    a.value='';
+
+    const fileForm = new FormData();
+    fileForm.append('file', file);
+    
+
+    fetch('/uploadFile', {
+        method: 'POST',
+        body: fileForm
+    })
+    .then(response => response.json())
+    .then(data => {
+        num.fileName1 = data;
+    })
+    .catch(error => console.error(error));
+})
+document.getElementById('photo_serial_number_device_select').addEventListener('input', ()=>{
+    const input = document.getElementById('photo_serial_number_device_select');
+    const file = input.files[0];
+    const fileSize = input.files[0].size;
+    const maxSize = 10485760;
+    if (fileSize > maxSize) {
+        alert(`Размер файла превышает максимально допустимый размер ${maxSize} байт`);
+        input.files[0].value = '';
+        return;
+    }
+    let a = document.getElementById(`${input.id}`);
+    a.value='';
+
+    const fileForm = new FormData();
+    fileForm.append('file', file);
+    
+
+    fetch('/uploadFile', {
+        method: 'POST',
+        body: fileForm
+    })
+    .then(response => response.json())
+    .then(data => {
+        num.fileName2 = data;
+    })
+    .catch(error => console.error(error));
+})
+document.getElementById('photo_ITAM_device_select').addEventListener('input',()=>{
+    const input = document.getElementById('photo_ITAM_device_select');
+    const file = input.files[0];
+    const fileSize = input.files[0].size;
+    const maxSize = 10485760;
+    if (fileSize > maxSize) {
+        alert(`Размер файла превышает максимально допустимый размер ${maxSize} байт`);
+        input.files[0].value = '';
+        return;
+    }
+    let a = document.getElementById(`${input.id}`);
+    a.value='';
+
+    const fileForm = new FormData();
+    fileForm.append('file', file);
+    
+
+    fetch('/uploadFile', {
+        method: 'POST',
+        body: fileForm
+    })
+    .then(response => response.json())
+    .then(data => {
+        num.fileName3 = data;
+    })
+    .catch(error => console.error(error));
+})
