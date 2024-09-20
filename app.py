@@ -33,14 +33,18 @@ async def upload(request: Request):
     value1 = data["value1"]
     value2 = data["value2"]
     value3 = data["value3"]
-    print(f"ПЕРЕХВАТ ДАННЫХ: {numFilter} {value0} {value1} {value2} {value3} ")
+    value4 = data["value4"]
+    value5 = data["value5"]
+    value6 = data["value6"]
     filter = {'number': numFilter}
 
-    print("!!!")
     posts.update_many(filter, {'$set': {'type_device': value0}})
     posts.update_many(filter, {'$set': {'model_device': value1}})
     posts.update_many(filter, {'$set': {'serial_number': value2}})
     posts.update_many(filter, {'$set': {'ITAM_device': value3}})
+    posts.update_many(filter, {'$set': {'photo_device': value4}})
+    posts.update_many(filter, {'$set': {'photo_serial_number_device': value5}})
+    posts.update_many(filter, {'$set': {'photo_ITAM_device': value6}})
 
     return {"message": "true"}
 
@@ -70,7 +74,6 @@ async def uploadFile(file: UploadFile):
     exp=f".{file.filename.rsplit('.', 1)[1]}"
     newName +=exp
     file.filename = newName
-    print(file.filename)
     with open(f"static/images/{file.filename}", "wb") as f:
             f.write(await file.read())
     return newName
@@ -80,7 +83,6 @@ async def uploadFile(file: UploadFile):
 async def sendForm(request: Request):
     form_data = await request.form()
     photo_device = form_data.get("photo_device")
-    print(photo_device)
 
     n=posts.count_documents({})
     if( posts.count_documents({}) == n):
@@ -97,3 +99,14 @@ async def sendForm(request: Request):
         posts.insert_one(post).inserted_id
 
     return ""
+
+@app.post("/deletefile")
+async def delete_file(request: Request):
+    data = await request.body()
+    try:
+        with open(data, "rb") as f:
+            pass
+        open(data, "wb").close()
+    except FileNotFoundError:
+        pass
+    return {"info": f"file {data} deleted"}

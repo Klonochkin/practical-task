@@ -3,6 +3,9 @@ const num = {
     fileName1: '',
     fileName2: '',
     fileName3: '',
+	lastFile1: '',
+	lastFile2: '',
+	lastFile3: '',
 };
 fetch('/data')
     .then((response) => response.json())
@@ -141,6 +144,7 @@ function changeData(numId) {
     defaultValue7 = row.cells[6].innerHTML;
     defaultValue8 = row.cells[7].innerHTML;
 
+
     const template = document.querySelector('#template__select-type');
     row.cells[1].textContent = '';
     const select = template.content.cloneNode(true);
@@ -152,26 +156,40 @@ function changeData(numId) {
     });
     row.cells[1].append(select);
 
-    row.cells[2].textContent = '';
     const templateText1 = document.querySelector('#template__input-text');
+    row.cells[2].textContent = '';
     const input1 = templateText1.content.cloneNode(true);
     input1.querySelector('input').id = "newValue1";
     input1.querySelector('input').value = defaultValue3;
     row.cells[2].append(input1);
 
     row.cells[3].textContent = '';
-    const templateText2 = document.querySelector('#template__input-text');
-    const input2 = templateText2.content.cloneNode(true);
+    const input2 = templateText1.content.cloneNode(true);
     input2.querySelector('input').id = "newValue2";
     input2.querySelector('input').value = defaultValue4;
     row.cells[3].append(input2);
 
     row.cells[4].textContent = '';
-    const templateText3 = document.querySelector('#template__input-text');
-    const input3 = templateText3.content.cloneNode(true);
+    const input3 = templateText1.content.cloneNode(true);
     input3.querySelector('input').id = "newValue3";
     input3.querySelector('input').value = defaultValue5;
     row.cells[4].append(input3);
+
+    const templateFile = document.querySelector('#template-select-img');
+    const input4 = templateFile.content.cloneNode(true);
+	input4.querySelector('input').id="newValue4";
+    row.cells[5].append(input4);
+	document.getElementById('newValue4').addEventListener('input',(event) => saveFile(event,(data) => {num.lastFile1 = data;}));
+
+    const input5 = templateFile.content.cloneNode(true);
+	input5.querySelector('input').id="newValue5";
+    row.cells[6].append(input5);
+	document.getElementById('newValue5').addEventListener('input',(event) => saveFile(event,(data) => {num.lastFile2 = data;}));
+
+    const input6 = templateFile.content.cloneNode(true);
+	input6.querySelector('input').id="newValue6";
+    row.cells[7].append(input6);
+	document.getElementById('newValue6').addEventListener('input',(event) => saveFile(event,(data) => {num.lastFile3 = data;}));
 
 }
 
@@ -185,54 +203,100 @@ function saveData(numId) {
     let newValue1 = document.getElementById('newValue1').value;
     let newValue2 = document.getElementById('newValue2').value;
     let newValue3 = document.getElementById('newValue3').value;
-    fetch('/changeData', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            numFilter: numId,
-            value0: newValue0,
-            value1: newValue1,
-            value2: newValue2,
-            value3: newValue3,
-        }),
+	let newValue4 = num.lastFile1;
+	let newValue5 = num.lastFile2;
+	let newValue6 = num.lastFile3;
+	// fetch('/deletefile', {
+	// 	method: 'POST',
+	// 	headers: {
+	// 		'Content-Type': 'text/plain',
+	// 	},
+	// 	body: num.fileName1
+	// })
+	// .then((response) => response.json())
+	// .then((data2) => console.log(data2))
+	// .catch((error) => console.error('Ошибка:', error));
+
+	fetch('/data')
+    .then((response) => response.json())
+    .then((data) => {
+		const photo_device = data[numId-1].photo_device;
+		const photo_serial_number_device =
+			data[numId-1].photo_serial_number_device;
+		const photo_ITAM_device = data[numId-1].photo_ITAM_device;
+		if(newValue4==""){
+			newValue4=photo_device;
+		}
+		else if(newValue4!=photo_device){
+			deleteFile(photo_device);
+		}
+		if(newValue5==""){
+			newValue5=photo_serial_number_device;
+		}
+		else if(newValue5!=photo_serial_number_device){
+			deleteFile(photo_serial_number_device);
+		}
+		if(newValue6==""){
+			newValue6=photo_ITAM_device;
+		}
+		else if(newValue6!=photo_ITAM_device){
+			deleteFile(photo_ITAM_device);
+		}
+		fetch('/changeData', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				numFilter: numId,
+				value0: newValue0,
+				value1: newValue1,
+				value2: newValue2,
+				value3: newValue3,
+				value4: newValue4,
+				value5: newValue5,
+				value6: newValue6
+			}),
+		})
+			.then((response) => response.json())
+			.then((data1) => {
+			fetch('/data')
+			.then((response) => response.json())
+			.then((data2) => {
+				const table = document.getElementById('table_device');
+				const n = data2.length;
+				for (let i = 1; i <= n; i++) {
+					table.deleteRow(1);
+				}
+				for (let i = 0; i < n; i++) {
+					const number = data2[i].number;
+					const type_device = data2[i].type_device;
+					const model_device = data2[i].model_device;
+					const serial_number = data2[i].serial_number;
+					const ITAM_device = data2[i].ITAM_device;
+					const photo_device = data2[i].photo_device;
+					const photo_serial_number_device =
+					data2[i].photo_serial_number_device;
+					const photo_ITAM_device = data2[i].photo_ITAM_device;
+					saveClick(
+						number,
+						type_device,
+						model_device,
+						serial_number,
+						ITAM_device,
+						photo_device,
+						photo_serial_number_device,
+						photo_ITAM_device
+					);
+				}
+			})
+			.catch((error) => console.error('Ошибка:', error));
+			})
+			.catch((error) => console.error('Ошибка:', error));
     })
-        .then((response) => response.json())
-        .then((data1) => {
-        fetch('/data')
-        .then((response) => response.json())
-        .then((data2) => {
-            const table = document.getElementById('table_device');
-            const n = data2.length;
-            for (let i = 1; i <= n; i++) {
-                table.deleteRow(1);
-            }
-            for (let i = 0; i < n; i++) {
-                const number = data2[i].number;
-                const type_device = data2[i].type_device;
-                const model_device = data2[i].model_device;
-                const serial_number = data2[i].serial_number;
-                const ITAM_device = data2[i].ITAM_device;
-                const photo_device = data2[i].photo_device;
-                const photo_serial_number_device =
-                data2[i].photo_serial_number_device;
-                const photo_ITAM_device = data2[i].photo_ITAM_device;
-                saveClick(
-                    number,
-                    type_device,
-                    model_device,
-                    serial_number,
-                    ITAM_device,
-                    photo_device,
-                    photo_serial_number_device,
-                    photo_ITAM_device
-                );
-            }
-        })
-        .catch((error) => console.error('Ошибка:', error));
-        })
-        .catch((error) => console.error('Ошибка:', error));
+    .catch((error) => console.error('Ошибка:', error));
+
+
 }
 
 function deleteData(numId) {
@@ -368,3 +432,15 @@ document.getElementById('photo_serial_number_device_select').addEventListener('i
 
 document.getElementById('photo_ITAM_device_select').addEventListener('input',(event) => saveFile(event,(data) => {num.fileName3 = data;}));
 
+function deleteFile(name){
+	fetch('/deletefile', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'text/plain',
+		},
+		body: name
+	})
+	.then((response) => response.json())
+	.then(() => {})
+	.catch((error) => console.error('Ошибка:', error));
+}
