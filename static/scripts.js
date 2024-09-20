@@ -66,21 +66,19 @@ function saveClick(
     
     
 
+    const templateText = document.querySelector('#template-img');
     ceil6.textContent = '';
-    const templateText1 = document.querySelector('#template-img');
-    const input1 = templateText1.content.cloneNode(true);
+    const input1 = templateText.content.cloneNode(true);
     input1.querySelector('img').src = `static/images/${photo_device}`;
     ceil6.append(input1);
 
     ceil7.textContent = '';
-    const templateText2 = document.querySelector('#template-img');
-    const input2 = templateText2.content.cloneNode(true);
+    const input2 = templateText.content.cloneNode(true);
     input2.querySelector('img').src = `static/images/${photo_serial_number_device}`;
     ceil7.append(input2);
     
     ceil8.textContent = '';
-    const templateText3 = document.querySelector('#template-img');
-    const input3 = templateText3.content.cloneNode(true);
+    const input3 = templateText.content.cloneNode(true);
     input3.querySelector('img').src = `static/images/${photo_ITAM_device}`;
     ceil8.append(input3);
 
