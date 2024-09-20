@@ -129,7 +129,7 @@ function changeData(numId) {
     const table = document.getElementById('table_device');
     for (let i = 1; i < table.rows.length; i++) {
         document.getElementById(`delete${i}`).disabled = true;
-        if (i != numId) {
+        if (i !== numId) {
             document.getElementById(`add${i}`).disabled = true;
         }
     }
@@ -150,7 +150,7 @@ function changeData(numId) {
     const select = template.content.cloneNode(true);
     const elements = select.querySelectorAll('option');
     elements.forEach(element => {
-        if(element.value==num.defaultValue2){
+        if(element.value===num.defaultValue2){
             element.selected = true;
         }
     });
@@ -197,7 +197,7 @@ function saveData(numId) {
     document.getElementById(`add${numId}`).name.disabled = false;
     document.getElementById(`save${numId}`).classList.remove("visually-hidden")
     let newValue0 = document.getElementById('newValue0').value;
-    if(document.getElementById('newValue0').value == ""){
+    if(document.getElementById('newValue0').value === ""){
         newValue0 = num.defaultValue2;
     }
     let newValue1 = document.getElementById('newValue1').value;
@@ -206,16 +206,6 @@ function saveData(numId) {
 	let newValue4 = num.lastFile1;
 	let newValue5 = num.lastFile2;
 	let newValue6 = num.lastFile3;
-	// fetch('/deletefile', {
-	// 	method: 'POST',
-	// 	headers: {
-	// 		'Content-Type': 'text/plain',
-	// 	},
-	// 	body: num.fileName1
-	// })
-	// .then((response) => response.json())
-	// .then((data2) => console.log(data2))
-	// .catch((error) => console.error('Ошибка:', error));
 
 	fetch('/data')
     .then((response) => response.json())
@@ -224,22 +214,22 @@ function saveData(numId) {
 		const photo_serial_number_device =
 			data[numId-1].photo_serial_number_device;
 		const photo_ITAM_device = data[numId-1].photo_ITAM_device;
-		if(newValue4==""){
+		if(newValue4===""){
 			newValue4=photo_device;
 		}
-		else if(newValue4!=photo_device){
+		else if(newValue4!==photo_device){
 			deleteFile(photo_device);
 		}
-		if(newValue5==""){
+		if(newValue5===""){
 			newValue5=photo_serial_number_device;
 		}
-		else if(newValue5!=photo_serial_number_device){
+		else if(newValue5!==photo_serial_number_device){
 			deleteFile(photo_serial_number_device);
 		}
-		if(newValue6==""){
+		if(newValue6===""){
 			newValue6=photo_ITAM_device;
 		}
-		else if(newValue6!=photo_ITAM_device){
+		else if(newValue6!==photo_ITAM_device){
 			deleteFile(photo_ITAM_device);
 		}
 		fetch('/changeData', {
@@ -259,7 +249,7 @@ function saveData(numId) {
 			}),
 		})
 			.then((response) => response.json())
-			.then((data1) => {
+			.then(() => {
 			fetch('/data')
 			.then((response) => response.json())
 			.then((data2) => {
@@ -313,10 +303,10 @@ function deleteData(numId) {
         body: JSON.stringify({ numDelete: numId }),
     })
         .then((response) => response.json())
-        .then((data) => {
+        .then(() => {
             fetch('/data')
-        .then((response) => response.json())
-        .then((data) => {
+        	.then((response) => response.json())
+        	.then((data) => {
             const n = data.length;
             for (let i = 0; i < n; i++) {
                 const number = data[i].number;
@@ -360,7 +350,7 @@ document.getElementById('form1').addEventListener('submit', (e) => {
         body: formData
     })
     .then(response => response.json())
-    .then(data => {
+    .then(() => {
         fetch('/data')
         .then((response) => response.json())
         .then((data2) => {
@@ -441,6 +431,5 @@ function deleteFile(name){
 		body: name
 	})
 	.then((response) => response.json())
-	.then(() => {})
 	.catch((error) => console.error('Ошибка:', error));
 }
