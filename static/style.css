@@ -1,14 +1,14 @@
 @font-face {
-  font-family: 'Roboto'; 
-  src: url('/static/Roboto-Bold.ttf'); 
+  font-family: 'Roboto';
+  src: url('/static/Roboto-Bold.ttf');
   font-weight: bold;
-  font-style: normal; 
+  font-style: normal;
 }
 @font-face {
-  font-family: 'Roboto'; 
-  src: url('/static/Roboto-Regular.ttf'); 
+  font-family: 'Roboto';
+  src: url('/static/Roboto-Regular.ttf');
   font-weight: normal;
-  font-style: normal; 
+  font-style: normal;
 }
 body{
   font-family: 'Roboto', sans-serif;
@@ -64,7 +64,6 @@ fieldset{
 .table__head{
   border-top: 2px solid rgb(140 140 140);
   background-color: rgb(228 240 245);
-  width: 100px;
 }
 .table__head--first{
   line-height: 30px;
@@ -73,7 +72,7 @@ fieldset{
 .table__button{
   line-height: 30px;
 }
-.table__button--hidden{
+.visually-hidden{
   visibility: hidden;
 }
 .table__head-button{
