@@ -72,7 +72,7 @@ fieldset{
 .table__button{
   line-height: 30px;
 }
-.table__button--hidden{
+.visually-hidden{
   visibility: hidden;
 }
 .table__head-button{

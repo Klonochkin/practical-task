@@ -114,7 +114,7 @@ function saveClick(
         saveData(number);
     });
 
-    buttonSave.querySelector('button').classList.add("table__button--hidden")
+    buttonSave.querySelector('button').classList.add("visually-hidden")
     buttonSave.querySelector('button').value = "Сохранить";
     buttonSave.querySelector('button').textContent = "Сохранить";
     ceil11.append(buttonSave);
@@ -122,7 +122,7 @@ function saveClick(
 function changeData(numId) {
     const name = document.getElementById(`add${numId}`);
     name.disabled = true;
-    document.getElementById(`save${numId}`).classList.remove("table__button--hidden")
+    document.getElementById(`save${numId}`).classList.remove("visually-hidden")
     const table = document.getElementById('table_device');
     for (let i = 1; i < table.rows.length; i++) {
         document.getElementById(`delete${i}`).disabled = true;
@@ -177,7 +177,7 @@ function changeData(numId) {
 
 function saveData(numId) {
     document.getElementById(`add${numId}`).name.disabled = false;
-    document.getElementById(`save${numId}`).classList.remove("table__button--hidden")
+    document.getElementById(`save${numId}`).classList.remove("visually-hidden")
     let newValue0 = document.getElementById('newValue0').value;
     if(document.getElementById('newValue0').value == ""){
         newValue0 = num.defaultValue2;
@@ -282,21 +282,13 @@ function deleteData(numId) {
 }
 
 
-document.getElementById('sumbitButton').addEventListener('click', () => {
+document.getElementById('form1').addEventListener('submit', (e) => {
+    e.preventDefault();
     const form = document.getElementById('form1');
     const formData = new FormData(form);    
     formData.set('photo_device',num.fileName1);
     formData.set('photo_serial_number_device',num.fileName2);
     formData.set('photo_ITAM_device',num.fileName3);
-    if(
-    formData.get('type_device')=='' || formData.get('model_device')=='' ||
-    formData.get('serial_number')=='' || formData.get('ITAM_device')=='' ||
-    formData.get('photo_device')=='' || formData.get('photo_serial_number_device')==''||
-    formData.get('photo_ITAM_device')==''
-    ){
-        alert("Не все поля заполнены");
-        return;
-    }
 
     fetch('/sendForm', {
         method: 'POST',
@@ -339,6 +331,9 @@ document.getElementById('sumbitButton').addEventListener('click', () => {
     })
     .catch(error => console.error(error));
     form.reset();
+    document.getElementById('check1').classList.add("visually-hidden");
+    document.getElementById('check2').classList.add("visually-hidden");
+    document.getElementById('check3').classList.add("visually-hidden");
 })
 
 document.getElementById('photo_device_select').addEventListener('input', ()=>{
@@ -351,9 +346,7 @@ document.getElementById('photo_device_select').addEventListener('input', ()=>{
         input.files[0].value = '';
         return;
     }
-    let a = document.getElementById(`${input.id}`);
-    a.value='';
-
+    document.getElementById('check1').classList.remove("visually-hidden")
     const fileForm = new FormData();
     fileForm.append('file', file);
     
@@ -378,9 +371,7 @@ document.getElementById('photo_serial_number_device_select').addEventListener('i
         input.files[0].value = '';
         return;
     }
-    let a = document.getElementById(`${input.id}`);
-    a.value='';
-
+    document.getElementById('check2').classList.remove("visually-hidden")
     const fileForm = new FormData();
     fileForm.append('file', file);
     
@@ -405,9 +396,7 @@ document.getElementById('photo_ITAM_device_select').addEventListener('input',()=
         input.files[0].value = '';
         return;
     }
-    let a = document.getElementById(`${input.id}`);
-    a.value='';
-
+    document.getElementById('check3').classList.remove("visually-hidden")
     const fileForm = new FormData();
     fileForm.append('file', file);
     
