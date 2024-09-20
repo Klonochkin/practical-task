@@ -5,7 +5,7 @@ from fastapi.staticfiles import StaticFiles
 from pymongo import MongoClient
 import string
 import random
- 
+
 
 # Алфавит для создания случайных названий картинок
 alphabet = string.digits + string.ascii_lowercase
@@ -35,7 +35,7 @@ async def upload(request: Request):
     value3 = data["value3"]
     print(f"ПЕРЕХВАТ ДАННЫХ: {numFilter} {value0} {value1} {value2} {value3} ")
     filter = {'number': numFilter}
-    
+
     print("!!!")
     posts.update_many(filter, {'$set': {'type_device': value0}})
     posts.update_many(filter, {'$set': {'model_device': value1}})
@@ -81,7 +81,7 @@ async def sendForm(request: Request):
     form_data = await request.form()
     photo_device = form_data.get("photo_device")
     print(photo_device)
-    
+
     n=posts.count_documents({})
     if( posts.count_documents({}) == n):
         post = {

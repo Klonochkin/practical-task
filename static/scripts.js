@@ -63,8 +63,8 @@ function saveClick(
     ceil3.textContent = model_device;
     ceil4.textContent = serial_number_device;
     ceil5.textContent = ITAM_device;
-    
-    
+
+
 
     const templateText = document.querySelector('#template-img');
     ceil6.textContent = '';
@@ -76,7 +76,7 @@ function saveClick(
     const input2 = templateText.content.cloneNode(true);
     input2.querySelector('img').src = `static/images/${photo_serial_number_device}`;
     ceil7.append(input2);
-    
+
     ceil8.textContent = '';
     const input3 = templateText.content.cloneNode(true);
     input3.querySelector('img').src = `static/images/${photo_ITAM_device}`;
@@ -285,14 +285,14 @@ function deleteData(numId) {
 document.getElementById('form1').addEventListener('submit', (e) => {
     e.preventDefault();
     const form = document.getElementById('form1');
-    const formData = new FormData(form);    
+    const formData = new FormData(form);
     formData.set('photo_device',num.fileName1);
     formData.set('photo_serial_number_device',num.fileName2);
     formData.set('photo_ITAM_device',num.fileName3);
 
     fetch('/sendForm', {
         method: 'POST',
-        
+
         body: formData
     })
     .then(response => response.json())
@@ -336,20 +336,21 @@ document.getElementById('form1').addEventListener('submit', (e) => {
     document.getElementById('check3').classList.add("visually-hidden");
 })
 
-document.getElementById('photo_device_select').addEventListener('input', ()=>{
-    const input = document.getElementById('photo_device_select');
-    const file = input.files[0];
+
+function saveFile(event,callback){
+	const input = event.target;
+	const file = input.files[0];
     const fileSize = input.files[0].size;
-    const maxSize = 10485760;
+    const maxSize = 10*1024*1024;
     if (fileSize > maxSize) {
         alert(`Размер файла превышает максимально допустимый размер ${maxSize} байт`);
         input.files[0].value = '';
         return;
     }
-    document.getElementById('check1').classList.remove("visually-hidden")
+	input.nextElementSibling.classList.remove("visually-hidden")
     const fileForm = new FormData();
     fileForm.append('file', file);
-    
+
 
     fetch('/uploadFile', {
         method: 'POST',
@@ -357,57 +358,13 @@ document.getElementById('photo_device_select').addEventListener('input', ()=>{
     })
     .then(response => response.json())
     .then(data => {
-        num.fileName1 = data;
+		callback(data)
     })
     .catch(error => console.error(error));
-})
-document.getElementById('photo_serial_number_device_select').addEventListener('input', ()=>{
-    const input = document.getElementById('photo_serial_number_device_select');
-    const file = input.files[0];
-    const fileSize = input.files[0].size;
-    const maxSize = 10485760;
-    if (fileSize > maxSize) {
-        alert(`Размер файла превышает максимально допустимый размер ${maxSize} байт`);
-        input.files[0].value = '';
-        return;
-    }
-    document.getElementById('check2').classList.remove("visually-hidden")
-    const fileForm = new FormData();
-    fileForm.append('file', file);
-    
+}
+document.getElementById('photo_device_select').addEventListener('input',(event) => saveFile(event,(data) => {num.fileName1 = data;}));
 
-    fetch('/uploadFile', {
-        method: 'POST',
-        body: fileForm
-    })
-    .then(response => response.json())
-    .then(data => {
-        num.fileName2 = data;
-    })
-    .catch(error => console.error(error));
-})
-document.getElementById('photo_ITAM_device_select').addEventListener('input',()=>{
-    const input = document.getElementById('photo_ITAM_device_select');
-    const file = input.files[0];
-    const fileSize = input.files[0].size;
-    const maxSize = 10485760;
-    if (fileSize > maxSize) {
-        alert(`Размер файла превышает максимально допустимый размер ${maxSize} байт`);
-        input.files[0].value = '';
-        return;
-    }
-    document.getElementById('check3').classList.remove("visually-hidden")
-    const fileForm = new FormData();
-    fileForm.append('file', file);
-    
+document.getElementById('photo_serial_number_device_select').addEventListener('input',(event) => saveFile(event,(data) => {num.fileName2 = data;}));
 
-    fetch('/uploadFile', {
-        method: 'POST',
-        body: fileForm
-    })
-    .then(response => response.json())
-    .then(data => {
-        num.fileName3 = data;
-    })
-    .catch(error => console.error(error));
-})
+document.getElementById('photo_ITAM_device_select').addEventListener('input',(event) => saveFile(event,(data) => {num.fileName3 = data;}));
+
