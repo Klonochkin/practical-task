@@ -25,6 +25,10 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 async def welcome(request:Request) :
     return templates.TemplateResponse(name='index.html',context={'request':request})
 
+@app.get('/auth')
+async def welcome(request:Request) :
+    return templates.TemplateResponse(name='auth.html',context={'request':request})
+
 @app.post('/changeData')
 async def upload(request: Request):
     data = await request.json()
