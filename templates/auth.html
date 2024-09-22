@@ -5,21 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
 	<link href="/static/style-auth.css" rel="stylesheet">
-    <title>Регистрация</title>
+    <title>Добро пожаловать</title>
 </head>
 
 <body>
 	<form class="form" id="form-auth">
 		<legend>
-			Регистрация
+			Вход
 		</legend>
 		<label> Введите email:
-			<input id="email" type="text" placeholder="example@yandex.ru">
+			<input id="email-auth" type="text" required placeholder="example@yandex.ru">
 		</label>
 		<label> Введите пароль:
-			<input type="text">
+			<input id="password-auth" type="text" required>
 		</label>
-		<button>Отправить</button>
+		<div class="form__error visually-hidden" id="error-auth"></div>
+		<button>Войти</button>
+		<span>
+			Ещё нету аккаунта?
+			<button type="button" id="toRegister">Регистрация</button>
+		</span>
 	</form>
 	<script src="/static/scripts-auth.js"></script>
 </body>

@@ -1,10 +1,12 @@
-from fastapi import FastAPI, Request,Form,Response,File,UploadFile
+from fastapi import FastAPI, Request,Form,Response,File,UploadFile,HTTPException
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from pymongo import MongoClient
 import string
 import random
+import hashlib
+import os
 
 
 # Алфавит для создания случайных названий картинок
@@ -16,8 +18,19 @@ app = FastAPI()
 
 client = MongoClient("db", 27017)
 db = client.test_database
+dbPassword = client.password_database
 collection = client.test_collection
+collectionPassword = client.password_collection
 posts = db.posts
+postsPassword = dbPassword.posts
+
+
+# print(f"ПОИСК ПОЧТЫ: {list(postsPassword.aggregate([{'$unset': '_id'}]))}")
+print(f"ПОИСК ПОЧТЫ: {postsPassword.find_one({'email': 'example@yandex.ru', 'password': '1'})}")
+
+# print("123")
+
+
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
@@ -28,6 +41,11 @@ async def welcome(request:Request) :
 @app.get('/auth')
 async def welcome(request:Request) :
     return templates.TemplateResponse(name='auth.html',context={'request':request})
+
+@app.get('/register')
+async def welcome(request:Request) :
+    return templates.TemplateResponse(name='register.html',context={'request':request})
+
 
 @app.post('/changeData')
 async def upload(request: Request):
@@ -86,7 +104,6 @@ async def uploadFile(file: UploadFile):
 @app.post('/sendForm')
 async def sendForm(request: Request):
     form_data = await request.form()
-    photo_device = form_data.get("photo_device")
 
     n=posts.count_documents({})
     if( posts.count_documents({}) == n):
@@ -114,3 +131,40 @@ async def delete_file(request: Request):
     except FileNotFoundError:
         pass
     return {"info": f"file {data} deleted"}
+
+@app.post("/signIn")
+async def signIn(request: Request):
+    data = await request.json()
+    email = data["email"]
+    password = data["password"]
+    res = postsPassword.find_one({'email': email, 'password': password})
+    print(f"ПРОВЕРКА ПОЧТЫ: {res}")
+    if(res==None):
+        return {"status" : 403}
+    return {"message": "Вход успешен"}
+
+@app.post("/signUp")
+async def signUp(request: Request):
+    data = await request.json()
+    email = data["email"]
+    password = data["password"]
+    salt = os.urandom(16)
+    print(f"СОЛЬ РАЗКОДИРОВАННАЯ: {salt.hex()}")
+    print(f"СОЛЬ ЗАКОДИРОВАННАЯ: {salt.hex().encode('utf-8')}")
+    print(f"СОЛЬ ОБЫЧНАЯ: {salt.hex().encode('utf-8')}")
+    dk = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt.hex().encode('utf-8'), 100000)
+    print(f"ХЕШИРОВАННЫЙ ПАРОЛЬ {dk.hex()}")
+    res = postsPassword.find_one({'email': email})
+    if(res!=None):
+        return {"status" : 403}
+    if(len(password)<8):
+        return {"status" : 422}
+    n=postsPassword.count_documents({})
+
+    if( postsPassword.count_documents({}) == n):
+        post = {
+            "email": email,
+            "password":password
+        }
+        postsPassword.insert_one(post).inserted_id
+    return {"message": "Регистрация успешна"}

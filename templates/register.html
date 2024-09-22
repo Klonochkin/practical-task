@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ru-RU">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+	<link href="/static/style-auth.css" rel="stylesheet">
+    <title>Добро пожаловать</title>
+</head>
+
+<body>
+	<form class="form" id="form-register">
+		<legend>
+			Регистрация
+		</legend>
+		<label> Введите email:
+			<input id="email-register" type="text" required placeholder="example@yandex.ru">
+		</label>
+		<label> Введите пароль:
+			<input id="password-register" type="text" required>
+		</label>
+		<div class="form__error visually-hidden" id="error-register"></div>
+		<button>Зарегистрироваться</button>
+		<span>
+			Уже есть аккаунт?
+			<button type="button" id="toAuth">Вход</button>
+		</span>
+	</form>
+	<script src="/static/scripts-register.js"></script>
+</body>
+
+</html>

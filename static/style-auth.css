@@ -7,4 +7,32 @@
 	gap: 1rem;
 	align-items: start;
 	border: 0.1rem grey solid;
+	min-width: 20rem;
+	border-radius: 0.5rem;
+}
+.visually-hidden{
+	visibility: hidden;
+}
+.form__error{
+	color: red;
+	font-size: 1rem;
+}
+button{
+	background-color: rgb(255, 255, 255);
+	color: black;
+	border: 1px black solid;
+	border-radius: 5px;
+  }
+button:not(:disabled){
+cursor: pointer;
+}
+button:hover:not(:disabled) {
+background: rgb(255, 255, 255);
+color: #000000;
+border-color: #000000;
+}
+input[type=text] {
+background: rgb(255, 255, 255) ;
+border: 1px black solid;
+border-radius: 5px;
 }
