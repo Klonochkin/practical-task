@@ -26,16 +26,8 @@ document.getElementById('form-register').addEventListener('submit', (event)=>{
 			document.getElementById('error-register').innerHTML="Пароль должен быть не менее 8 символов";
 		}
 		else{
-			document.getElementById('error-register').classList.add("visually-hidden");
-			document.getElementById('error-register').innerHTML="";
-			document.cookie = `email=${valueEmail}; max-age=3600`;
-			window.location.href = '/';
+			window.location.href = '/auth';
 		}
 	})
 	.catch((error) => console.log(error));
-})
-
-
-document.getElementById('toAuth').addEventListener('click', ()=>{
-	window.location.href = '/auth';
 })

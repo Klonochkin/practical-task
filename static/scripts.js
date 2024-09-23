@@ -14,14 +14,22 @@ function getCookie(name) {
     ));
     return matches ? decodeURIComponent(matches[1]) : undefined;
   }
-if(getCookie("email")!=undefined){
-    fetch('/data')
+if(getCookie("session")!=undefined){
+    fetch('/data',{
+		method: 'GET',
+		headers: {
+		  'Cookie': `session=${getCookie("session")}`
+		}
+	  })
         .then((response) => response.json())
         .then((data) => {
+			if(data["status"] === 403){
+				alert("Вы не вошли");
+			}
             const n = data.length;
             for (let i = 0; i < n; i++) {
 				const emailTable = data[i].email;
-				const email = getCookie("email");
+				const email = getCookie("session");
 				if(emailTable!==email){
 					continue;
 				}
@@ -60,7 +68,7 @@ if(getCookie("email")!=undefined){
         photo_serial_number_device,
         photo_ITAM_device
     ) {
-		const email = getCookie("email");
+		const email = getCookie("session");
 		const table = document
 		.getElementById('table_device')
 		.getElementsByTagName('tbody')[0];
@@ -223,9 +231,17 @@ if(getCookie("email")!=undefined){
         let newValue5 = num.lastFile2;
         let newValue6 = num.lastFile3;
 
-        fetch('/data')
+        fetch('/data',{
+			method: 'GET',
+			headers: {
+			  'Cookie': `session=${getCookie("session")}`
+			}
+		  })
         .then((response) => response.json())
         .then((data) => {
+			if(data["status"] === 403){
+				alert("Вы не вошли");
+			}
             const photo_device = data[numId-1].photo_device;
             const photo_serial_number_device =
                 data[numId-1].photo_serial_number_device;
@@ -248,10 +264,11 @@ if(getCookie("email")!=undefined){
             else if(newValue6!==photo_ITAM_device){
                 deleteFile(photo_ITAM_device);
             }
-			let email = getCookie("email");
+			let email = getCookie("session");
             fetch('/changeData', {
                 method: 'POST',
                 headers: {
+					'Cookie': `session=${getCookie("session")}`,
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
@@ -268,9 +285,17 @@ if(getCookie("email")!=undefined){
             })
                 .then((response) => response.json())
                 .then(() => {
-                fetch('/data')
+                fetch('/data',{
+					method: 'GET',
+					headers: {
+					  'Cookie': `session=${getCookie("session")}`
+					}
+				  })
                 .then((response) => response.json())
                 .then((data2) => {
+					if(data2["status"] === 403){
+						alert("Вы не вошли");
+					}
                     const table = document.getElementById('table_device');
                     const n = table.rows.length;
                     for (let i = 1; i < n; i++) {
@@ -279,7 +304,7 @@ if(getCookie("email")!=undefined){
 					let n2 = data2.length;
                     for (let i = 0; i < n2; i++) {
 						const emailTable = data2[i].email;
-						const email = getCookie("email");
+						const email = getCookie("session");
 						if(emailTable!==email){
 							continue;
 						}
@@ -320,23 +345,32 @@ if(getCookie("email")!=undefined){
         for (let i = 1; i < a; i++) {
             table.deleteRow(1);
         }
-		let email = getCookie("email");
+		let email = getCookie("session");
         fetch('/deleteData', {
             method: 'POST',
             headers: {
+				'Cookie': `session=${getCookie("session")}`,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ email: email, numDelete: numId }),
         })
             .then((response) => response.json())
             .then(() => {
-                fetch('/data')
+                fetch('/data',{
+					method: 'GET',
+					headers: {
+					  'Cookie': `session=${getCookie("session")}`
+					}
+				  })
                 .then((response) => response.json())
                 .then((data) => {
+					if(data["status"] === 403){
+						alert("Вы не вошли");
+					}
                 const n = data.length;
                 for (let i = 0; i < n; i++) {
 					const emailTable = data[i].email;
-					const email = getCookie("email");
+					const email = getCookie("session");
 					if(emailTable!==email){
 						continue;
 					}
@@ -371,7 +405,7 @@ if(getCookie("email")!=undefined){
         e.preventDefault();
         const form = document.getElementById('form1');
         const formData = new FormData(form);
-		var email = getCookie("email");
+		var email = getCookie("session");
 		formData.append('email', email);
         formData.set('photo_device',num.fileName1);
         formData.set('photo_serial_number_device',num.fileName2);
@@ -379,14 +413,24 @@ if(getCookie("email")!=undefined){
 
         fetch('/sendForm', {
             method: 'POST',
-
+			headers: {
+				'Cookie': `session=${getCookie("session")}`
+			  },
             body: formData
         })
         .then(response => response.json())
         .then(() => {
-            fetch('/data')
+            fetch('/data',{
+				method: 'GET',
+				headers: {
+				  'Cookie': `session=${getCookie("session")}`
+				}
+			  })
             .then((response) => response.json())
             .then((data2) => {
+				if(data2["status"] === 403){
+					alert("Вы не вошли");
+				}
                 const table = document.getElementById('table_device');
                 const n = table.rows.length;
                 for (let i = 1; i < n; i++) {
@@ -395,7 +439,7 @@ if(getCookie("email")!=undefined){
 				let n2 = data2.length;
                 for (let i = 0; i < n2; i++) {
 					const emailTable = data2[i].email;
-					const email = getCookie("email");
+					const email = getCookie("session");
 					if(emailTable!==email){
 						continue;
 					}
@@ -447,6 +491,9 @@ if(getCookie("email")!=undefined){
 
         fetch('/uploadFile', {
             method: 'POST',
+			headers: {
+				'Cookie': `session=${getCookie("session")}`
+			},
             body: fileForm
         })
         .then(response => response.json())
@@ -465,6 +512,7 @@ if(getCookie("email")!=undefined){
         fetch('/deletefile', {
             method: 'POST',
             headers: {
+				'Cookie': `session=${getCookie("session")}`,
                 'Content-Type': 'text/plain',
             },
             body: name

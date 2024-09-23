@@ -2,6 +2,7 @@ from fastapi import FastAPI, Request,Form,Response,File,UploadFile,HTTPException
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
+from fastapi.responses import JSONResponse
 from pymongo import MongoClient
 import string
 import random
@@ -17,13 +18,15 @@ templates=Jinja2Templates(directory='templates')
 app = FastAPI()
 
 client = MongoClient("db", 27017)
-# client.drop_database('test_database')
+# client.drop_database('password_database')
 db = client.test_database
 dbPassword = client.password_database
+dbSession = client.session_database
 collection = client.test_collection
 collectionPassword = client.password_collection
 posts = db.posts
 postsPassword = dbPassword.posts
+postsSession = dbSession.posts
 
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -43,6 +46,11 @@ async def welcome(request:Request) :
 
 @app.post('/changeData')
 async def upload(request: Request):
+    cookies = request.cookies
+    session_value = cookies.get("session")
+    res = postsSession.find_one({"Session": session_value})
+    if(res==None):
+        return {"status": 403}
     data = await request.json()
     email = data["email"]
     numFilter = data["numFilter"]
@@ -67,13 +75,23 @@ async def upload(request: Request):
 
 
 @app.get("/data")
-async def read_data():
-    file_path = "static/images/1.jpg"
+async def read_data(request: Request):
+
+    cookies = request.cookies
+    session_value = cookies.get("session")
+    res = postsSession.find_one({"Session": session_value})
+    if(res==None):
+        return {"status": 403}
     return list(posts.aggregate([{'$unset': '_id'}]))
 
 
 @app.post('/deleteData')
 async def delete(request: Request):
+    cookies = request.cookies
+    session_value = cookies.get("session")
+    res = postsSession.find_one({"Session": session_value})
+    if(res==None):
+        return {"status": 403}
     data = await request.json()
     numDelete = data["numDelete"]
     email = data["email"]
@@ -87,7 +105,12 @@ async def delete(request: Request):
     return {"message": "true"}
 
 @app.post('/uploadFile')
-async def uploadFile(file: UploadFile):
+async def uploadFile(file: UploadFile, request: Request):
+    cookies = request.cookies
+    session_value = cookies.get("session")
+    res = postsSession.find_one({"Session": session_value})
+    if(res==None):
+        return {"status": 403}
     newName = "".join([alphabet[random.randint(0, len(alphabet) -1)] for _ in range(0, 60)])
     exp=f".{file.filename.rsplit('.', 1)[1]}"
     newName +=exp
@@ -99,13 +122,18 @@ async def uploadFile(file: UploadFile):
 
 @app.post('/sendForm')
 async def sendForm(request: Request):
+    cookies = request.cookies
+    session_value = cookies.get("session")
+    res = postsSession.find_one({"Session": session_value})
+    if(res==None):
+        return {"status": 403}
     form_data = await request.form()
     n=posts.count_documents({})
-    newN = posts.find({'email':form_data.get('email') })
+    newN = posts.find({'email': session_value })
     count = int(len(list(newN)))+1
     if( posts.count_documents({}) == n):
         post = {
-            "email": form_data.get('email'),
+            "email": session_value,
             "number": count,
             "type_device": form_data.get("type_device"),
             "model_device": form_data.get("model_device"),
@@ -120,6 +148,11 @@ async def sendForm(request: Request):
 
 @app.post("/deletefile")
 async def delete_file(request: Request):
+    cookies = request.cookies
+    session_value = cookies.get("session")
+    res = postsSession.find_one({"Session": session_value})
+    if(res==None):
+        return {"status": 403}
     data = await request.body()
     try:
         with open(data, "rb") as f:
@@ -135,14 +168,26 @@ async def signIn(request: Request):
     email = data["email"]
     password = data["password"]
     res = postsPassword.find_one({'email': email})
+    if(res==None):
+        return {"status" : 403}
     salt = res['salt']
     hash = res['password']
     newHash = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000).hex()
     if(hash != newHash):
         return {"status" : 403}
-    if(res==None):
-        return {"status" : 403}
-    return {"message": "Вход успешен"}
+    hashSession = hashlib.pbkdf2_hmac('sha256', email.encode('utf-8'),os.urandom(16).hex().encode('utf-8'), 100000).hex()
+    content = {"message": "true"}
+    response = JSONResponse(content=content)
+    response.set_cookie(key="session", value=hashSession)
+    n=postsSession.count_documents({})
+    if( postsSession.count_documents({}) == n):
+        post = {
+            "id": res["id"],
+            "Session": hashSession
+        }
+        res = postsSession.insert_one(post).inserted_id
+
+    return response
 
 @app.post("/signUp")
 async def signUp(request: Request):
@@ -157,8 +202,10 @@ async def signUp(request: Request):
     n=postsPassword.count_documents({})
     salt = os.urandom(16)
     hashPassword = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt.hex().encode('utf-8'), 100000)
+    newId = postsPassword.count_documents({})+1
     if( postsPassword.count_documents({}) == n):
         post = {
+            "id": newId,
             "email": email,
             "password":hashPassword.hex(),
             "salt":salt.hex().encode('utf-8')
