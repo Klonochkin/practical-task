@@ -17,19 +17,13 @@ templates=Jinja2Templates(directory='templates')
 app = FastAPI()
 
 client = MongoClient("db", 27017)
+# client.drop_database('test_database')
 db = client.test_database
 dbPassword = client.password_database
 collection = client.test_collection
 collectionPassword = client.password_collection
 posts = db.posts
 postsPassword = dbPassword.posts
-
-
-# print(f"ПОИСК ПОЧТЫ: {list(postsPassword.aggregate([{'$unset': '_id'}]))}")
-print(f"ПОИСК ПОЧТЫ: {postsPassword.find_one({'email': 'example@yandex.ru', 'password': '1'})}")
-
-# print("123")
-
 
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -50,6 +44,7 @@ async def welcome(request:Request) :
 @app.post('/changeData')
 async def upload(request: Request):
     data = await request.json()
+    email = data["email"]
     numFilter = data["numFilter"]
     value0 = data["value0"]
     value1 = data["value1"]
@@ -58,7 +53,7 @@ async def upload(request: Request):
     value4 = data["value4"]
     value5 = data["value5"]
     value6 = data["value6"]
-    filter = {'number': numFilter}
+    filter = {'email':email,'number': numFilter}
 
     posts.update_many(filter, {'$set': {'type_device': value0}})
     posts.update_many(filter, {'$set': {'model_device': value1}})
@@ -81,12 +76,13 @@ async def read_data():
 async def delete(request: Request):
     data = await request.json()
     numDelete = data["numDelete"]
+    email = data["email"]
     count = posts.count_documents({})
-    filterDelete = {'number': numDelete}
+    filterDelete = {'email':email,'number': numDelete}
     resultDelete = posts.delete_one(filterDelete)
     for i in range(int(numDelete)+1,count+1):
-        filter = {'number': f"{i}"}
-        result = posts.update_one(filter, {'$set': {'number': f"{i-1}"}})
+        filter = {'email':email,'number': i}
+        result = posts.update_one(filter, {'$set': {'number': i-1}})
 
     return {"message": "true"}
 
@@ -104,11 +100,13 @@ async def uploadFile(file: UploadFile):
 @app.post('/sendForm')
 async def sendForm(request: Request):
     form_data = await request.form()
-
     n=posts.count_documents({})
+    newN = posts.find({'email':form_data.get('email') })
+    count = int(len(list(newN)))+1
     if( posts.count_documents({}) == n):
         post = {
-            "number": f"{posts.count_documents({})+1}",
+            "email": form_data.get('email'),
+            "number": count,
             "type_device": form_data.get("type_device"),
             "model_device": form_data.get("model_device"),
             "serial_number": form_data.get("serial_number"),
@@ -117,8 +115,7 @@ async def sendForm(request: Request):
             "photo_serial_number_device": form_data.get("photo_serial_number_device"),
             "photo_ITAM_device": form_data.get("photo_ITAM_device"),
         }
-        posts.insert_one(post).inserted_id
-
+        res = posts.insert_one(post).inserted_id
     return ""
 
 @app.post("/deletefile")
@@ -137,8 +134,12 @@ async def signIn(request: Request):
     data = await request.json()
     email = data["email"]
     password = data["password"]
-    res = postsPassword.find_one({'email': email, 'password': password})
-    print(f"ПРОВЕРКА ПОЧТЫ: {res}")
+    res = postsPassword.find_one({'email': email})
+    salt = res['salt']
+    hash = res['password']
+    newHash = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000).hex()
+    if(hash != newHash):
+        return {"status" : 403}
     if(res==None):
         return {"status" : 403}
     return {"message": "Вход успешен"}
@@ -148,23 +149,19 @@ async def signUp(request: Request):
     data = await request.json()
     email = data["email"]
     password = data["password"]
-    salt = os.urandom(16)
-    print(f"СОЛЬ РАЗКОДИРОВАННАЯ: {salt.hex()}")
-    print(f"СОЛЬ ЗАКОДИРОВАННАЯ: {salt.hex().encode('utf-8')}")
-    print(f"СОЛЬ ОБЫЧНАЯ: {salt.hex().encode('utf-8')}")
-    dk = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt.hex().encode('utf-8'), 100000)
-    print(f"ХЕШИРОВАННЫЙ ПАРОЛЬ {dk.hex()}")
     res = postsPassword.find_one({'email': email})
     if(res!=None):
         return {"status" : 403}
     if(len(password)<8):
         return {"status" : 422}
     n=postsPassword.count_documents({})
-
+    salt = os.urandom(16)
+    hashPassword = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt.hex().encode('utf-8'), 100000)
     if( postsPassword.count_documents({}) == n):
         post = {
             "email": email,
-            "password":password
+            "password":hashPassword.hex(),
+            "salt":salt.hex().encode('utf-8')
         }
         postsPassword.insert_one(post).inserted_id
     return {"message": "Регистрация успешна"}

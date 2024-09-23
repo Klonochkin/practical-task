@@ -14,13 +14,17 @@ function getCookie(name) {
     ));
     return matches ? decodeURIComponent(matches[1]) : undefined;
   }
-
 if(getCookie("email")!=undefined){
     fetch('/data')
         .then((response) => response.json())
         .then((data) => {
             const n = data.length;
             for (let i = 0; i < n; i++) {
+				const emailTable = data[i].email;
+				const email = getCookie("email");
+				if(emailTable!==email){
+					continue;
+				}
                 const number = data[i].number;
                 const type_device = data[i].type_device;
                 const model_device = data[i].model_device;
@@ -31,6 +35,7 @@ if(getCookie("email")!=undefined){
                     data[i].photo_serial_number_device;
                 const photo_ITAM_device = data[i].photo_ITAM_device;
                 saveClick(
+					emailTable,
                     number,
                     type_device,
                     model_device,
@@ -45,6 +50,7 @@ if(getCookie("email")!=undefined){
         .catch((error) => console.error('Ошибка:', error));
 
     function saveClick(
+		emailTable,
         number,
         type_device,
         model_device,
@@ -54,9 +60,10 @@ if(getCookie("email")!=undefined){
         photo_serial_number_device,
         photo_ITAM_device
     ) {
-        const table = document
-            .getElementById('table_device')
-            .getElementsByTagName('tbody')[0];
+		const email = getCookie("email");
+		const table = document
+		.getElementById('table_device')
+		.getElementsByTagName('tbody')[0];
         const newRow = table.insertRow();
         const ceil1 = newRow.insertCell(0);
         const ceil2 = newRow.insertCell(1);
@@ -241,12 +248,14 @@ if(getCookie("email")!=undefined){
             else if(newValue6!==photo_ITAM_device){
                 deleteFile(photo_ITAM_device);
             }
+			let email = getCookie("email");
             fetch('/changeData', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
+					email: email,
                     numFilter: numId,
                     value0: newValue0,
                     value1: newValue1,
@@ -263,11 +272,17 @@ if(getCookie("email")!=undefined){
                 .then((response) => response.json())
                 .then((data2) => {
                     const table = document.getElementById('table_device');
-                    const n = data2.length;
-                    for (let i = 1; i <= n; i++) {
+                    const n = table.rows.length;
+                    for (let i = 1; i < n; i++) {
                         table.deleteRow(1);
                     }
-                    for (let i = 0; i < n; i++) {
+					let n2 = data2.length;
+                    for (let i = 0; i < n2; i++) {
+						const emailTable = data2[i].email;
+						const email = getCookie("email");
+						if(emailTable!==email){
+							continue;
+						}
                         const number = data2[i].number;
                         const type_device = data2[i].type_device;
                         const model_device = data2[i].model_device;
@@ -278,6 +293,7 @@ if(getCookie("email")!=undefined){
                         data2[i].photo_serial_number_device;
                         const photo_ITAM_device = data2[i].photo_ITAM_device;
                         saveClick(
+							emailTable,
                             number,
                             type_device,
                             model_device,
@@ -304,12 +320,13 @@ if(getCookie("email")!=undefined){
         for (let i = 1; i < a; i++) {
             table.deleteRow(1);
         }
+		let email = getCookie("email");
         fetch('/deleteData', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ numDelete: numId }),
+            body: JSON.stringify({ email: email, numDelete: numId }),
         })
             .then((response) => response.json())
             .then(() => {
@@ -318,6 +335,11 @@ if(getCookie("email")!=undefined){
                 .then((data) => {
                 const n = data.length;
                 for (let i = 0; i < n; i++) {
+					const emailTable = data[i].email;
+					const email = getCookie("email");
+					if(emailTable!==email){
+						continue;
+					}
                     const number = data[i].number;
                     const type_device = data[i].type_device;
                     const model_device = data[i].model_device;
@@ -328,6 +350,7 @@ if(getCookie("email")!=undefined){
                         data[i].photo_serial_number_device;
                     const photo_ITAM_device = data[i].photo_ITAM_device;
                     saveClick(
+						emailTable,
                         number,
                         type_device,
                         model_device,
@@ -348,6 +371,8 @@ if(getCookie("email")!=undefined){
         e.preventDefault();
         const form = document.getElementById('form1');
         const formData = new FormData(form);
+		var email = getCookie("email");
+		formData.append('email', email);
         formData.set('photo_device',num.fileName1);
         formData.set('photo_serial_number_device',num.fileName2);
         formData.set('photo_ITAM_device',num.fileName3);
@@ -363,11 +388,17 @@ if(getCookie("email")!=undefined){
             .then((response) => response.json())
             .then((data2) => {
                 const table = document.getElementById('table_device');
-                const n = data2.length;
+                const n = table.rows.length;
                 for (let i = 1; i < n; i++) {
                     table.deleteRow(1);
                 }
-                for (let i = 0; i < n; i++) {
+				let n2 = data2.length;
+                for (let i = 0; i < n2; i++) {
+					const emailTable = data2[i].email;
+					const email = getCookie("email");
+					if(emailTable!==email){
+						continue;
+					}
                     const number = data2[i].number;
                     const type_device = data2[i].type_device;
                     const model_device = data2[i].model_device;
@@ -378,6 +409,7 @@ if(getCookie("email")!=undefined){
                     data2[i].photo_serial_number_device;
                     const photo_ITAM_device = data2[i].photo_ITAM_device;
                     saveClick(
+						emailTable,
                         number,
                         type_device,
                         model_device,
