@@ -486,7 +486,6 @@ function saveFile(event,callback){
 }
 document.getElementById('photo_device_select').addEventListener('input',(event) => saveFile(event,(data) => {
 	num.fileName1 = data;
-	console.log("AAAAAAAAAAAAA")
 }));
 
 document.getElementById('photo_serial_number_device_select').addEventListener('input',(event) => saveFile(event,(data) => {num.fileName2 = data;}));
@@ -508,7 +507,6 @@ document.getElementById('exit').addEventListener('click',() => {
 });
 
 function deleteFile(name){
-	console.log(`УДАЛЯЕМ ${name}`)
 	fetch(`/file/${name}`, {
 		method: 'DELETE',
 		headers: {
