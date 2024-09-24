@@ -223,6 +223,12 @@ async def auth(request:Request):
     cookies = request.cookies
     session_value = cookies.get("session")
     res = postsSession.find_one({"Session": session_value})
+    if(res==None):
+        content = {"message": "true"}
+        response = JSONResponse(content=content)
+        response.delete_cookie(key="session")
+        return response
+
     try:
         filterDelete = {'id':res["id"]}
         postsSession.delete_one(filterDelete)
