@@ -8,6 +8,8 @@ services:
     app:
         build: .
         restart: always
+        volumes:
+        - /image:/app/static/images
         ports:
             - 8000:8000
         develop:
