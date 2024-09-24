@@ -28,11 +28,6 @@ if(getCookie("session")!=undefined){
 			}
             const n = data.length;
             for (let i = 0; i < n; i++) {
-				const emailTable = data[i].email;
-				const email = getCookie("session");
-				if(emailTable!==email){
-					continue;
-				}
                 const number = data[i].number;
                 const type_device = data[i].type_device;
                 const model_device = data[i].model_device;
@@ -43,7 +38,6 @@ if(getCookie("session")!=undefined){
                     data[i].photo_serial_number_device;
                 const photo_ITAM_device = data[i].photo_ITAM_device;
                 saveClick(
-					emailTable,
                     number,
                     type_device,
                     model_device,
@@ -58,7 +52,6 @@ if(getCookie("session")!=undefined){
         .catch((error) => console.error('Ошибка:', error));
 
     function saveClick(
-		emailTable,
         number,
         type_device,
         model_device,
@@ -68,7 +61,6 @@ if(getCookie("session")!=undefined){
         photo_serial_number_device,
         photo_ITAM_device
     ) {
-		const email = getCookie("session");
 		const table = document
 		.getElementById('table_device')
 		.getElementsByTagName('tbody')[0];
@@ -303,11 +295,6 @@ if(getCookie("session")!=undefined){
                     }
 					let n2 = data2.length;
                     for (let i = 0; i < n2; i++) {
-						const emailTable = data2[i].email;
-						const email = getCookie("session");
-						if(emailTable!==email){
-							continue;
-						}
                         const number = data2[i].number;
                         const type_device = data2[i].type_device;
                         const model_device = data2[i].model_device;
@@ -318,7 +305,6 @@ if(getCookie("session")!=undefined){
                         data2[i].photo_serial_number_device;
                         const photo_ITAM_device = data2[i].photo_ITAM_device;
                         saveClick(
-							emailTable,
                             number,
                             type_device,
                             model_device,
@@ -369,11 +355,6 @@ if(getCookie("session")!=undefined){
 					}
                 const n = data.length;
                 for (let i = 0; i < n; i++) {
-					const emailTable = data[i].email;
-					const email = getCookie("session");
-					if(emailTable!==email){
-						continue;
-					}
                     const number = data[i].number;
                     const type_device = data[i].type_device;
                     const model_device = data[i].model_device;
@@ -384,7 +365,6 @@ if(getCookie("session")!=undefined){
                         data[i].photo_serial_number_device;
                     const photo_ITAM_device = data[i].photo_ITAM_device;
                     saveClick(
-						emailTable,
                         number,
                         type_device,
                         model_device,
@@ -438,11 +418,6 @@ if(getCookie("session")!=undefined){
                 }
 				let n2 = data2.length;
                 for (let i = 0; i < n2; i++) {
-					const emailTable = data2[i].email;
-					const email = getCookie("session");
-					if(emailTable!==email){
-						continue;
-					}
                     const number = data2[i].number;
                     const type_device = data2[i].type_device;
                     const model_device = data2[i].model_device;
@@ -453,7 +428,6 @@ if(getCookie("session")!=undefined){
                     data2[i].photo_serial_number_device;
                     const photo_ITAM_device = data2[i].photo_ITAM_device;
                     saveClick(
-						emailTable,
                         number,
                         type_device,
                         model_device,

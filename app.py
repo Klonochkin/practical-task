@@ -18,7 +18,9 @@ templates=Jinja2Templates(directory='templates')
 app = FastAPI()
 
 client = MongoClient("db", 27017)
+# client.drop_database('test_database')
 # client.drop_database('password_database')
+# client.drop_database('session_database')
 db = client.test_database
 dbPassword = client.password_database
 dbSession = client.session_database
@@ -27,7 +29,6 @@ collectionPassword = client.password_collection
 posts = db.posts
 postsPassword = dbPassword.posts
 postsSession = dbSession.posts
-
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
@@ -76,13 +77,18 @@ async def upload(request: Request):
 
 @app.get("/data")
 async def read_data(request: Request):
-
     cookies = request.cookies
     session_value = cookies.get("session")
     res = postsSession.find_one({"Session": session_value})
     if(res==None):
         return {"status": 403}
-    return list(posts.aggregate([{'$unset': '_id'}]))
+    dataSend = posts.find({'email': res["id"]})
+    posts_list = []
+    for post in dataSend:
+        post_dict = dict(post)
+        del post_dict['_id']
+        posts_list.append(post_dict)
+    return posts_list
 
 
 @app.post('/deleteData')
@@ -129,11 +135,11 @@ async def sendForm(request: Request):
         return {"status": 403}
     form_data = await request.form()
     n=posts.count_documents({})
-    newN = posts.find({'email': session_value })
+    newN = posts.find({'email': res["id"] })
     count = int(len(list(newN)))+1
     if( posts.count_documents({}) == n):
         post = {
-            "email": session_value,
+            "email": res["id"],
             "number": count,
             "type_device": form_data.get("type_device"),
             "model_device": form_data.get("model_device"),
@@ -179,6 +185,13 @@ async def signIn(request: Request):
     content = {"message": "true"}
     response = JSONResponse(content=content)
     response.set_cookie(key="session", value=hashSession)
+
+    try:
+        filterDelete = {'id':res["id"]}
+        postsSession.delete_one(filterDelete)
+    except ValueError:
+        pass
+
     n=postsSession.count_documents({})
     if( postsSession.count_documents({}) == n):
         post = {
