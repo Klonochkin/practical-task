@@ -44,8 +44,7 @@ async def welcome(request:Request) :
 async def welcome(request:Request) :
     return templates.TemplateResponse(name='register.html',context={'request':request})
 
-
-@app.post('/changeData')
+@app.put('/changeData')
 async def upload(request: Request):
     cookies = request.cookies
     session_value = cookies.get("session")
@@ -62,7 +61,7 @@ async def upload(request: Request):
     value4 = data["value4"]
     value5 = data["value5"]
     value6 = data["value6"]
-    filter = {'email':email,'number': numFilter}
+    filter = {'email':res["id"],'number': numFilter}
 
     posts.update_many(filter, {'$set': {'type_device': value0}})
     posts.update_many(filter, {'$set': {'model_device': value1}})
@@ -73,7 +72,6 @@ async def upload(request: Request):
     posts.update_many(filter, {'$set': {'photo_ITAM_device': value6}})
 
     return {"message": "true"}
-
 
 @app.get("/data")
 async def read_data(request: Request):
@@ -90,22 +88,18 @@ async def read_data(request: Request):
         posts_list.append(post_dict)
     return posts_list
 
-
-@app.post('/deleteData')
-async def delete(request: Request):
+@app.delete('/data/{numDelete}')
+async def delete(request: Request,numDelete: str):
     cookies = request.cookies
     session_value = cookies.get("session")
     res = postsSession.find_one({"Session": session_value})
     if(res==None):
         return {"status": 403}
-    data = await request.json()
-    numDelete = data["numDelete"]
-    email = data["email"]
     count = posts.count_documents({})
-    filterDelete = {'email':email,'number': numDelete}
-    resultDelete = posts.delete_one(filterDelete)
+    filterDelete = {'email':res["id"],'number': int(numDelete)}
+    posts.delete_one(filterDelete)
     for i in range(int(numDelete)+1,count+1):
-        filter = {'email':email,'number': i}
+        filter = {'email':res["id"],'number': i}
         result = posts.update_one(filter, {'$set': {'number': i-1}})
 
     return {"message": "true"}
@@ -125,8 +119,7 @@ async def uploadFile(file: UploadFile, request: Request):
             f.write(await file.read())
     return newName
 
-
-@app.post('/sendForm')
+@app.post('/form')
 async def sendForm(request: Request):
     cookies = request.cookies
     session_value = cookies.get("session")
@@ -152,21 +145,20 @@ async def sendForm(request: Request):
         res = posts.insert_one(post).inserted_id
     return ""
 
-@app.post("/deletefile")
-async def delete_file(request: Request):
+@app.delete("/file/{name}")
+async def delete_file(request: Request,name: str):
     cookies = request.cookies
     session_value = cookies.get("session")
     res = postsSession.find_one({"Session": session_value})
     if(res==None):
         return {"status": 403}
-    data = await request.body()
     try:
-        with open(data, "rb") as f:
+        with open(name, "rb") as f:
             pass
-        open(data, "wb").close()
+        open(name, "wb").close()
     except FileNotFoundError:
         pass
-    return {"info": f"file {data} deleted"}
+    return {"info": f"file {name} deleted"}
 
 @app.post("/signIn")
 async def signIn(request: Request):

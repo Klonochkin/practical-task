@@ -258,7 +258,7 @@ if(getCookie("session")!=undefined){
             }
 			let email = getCookie("session");
             fetch('/changeData', {
-                method: 'POST',
+                method: 'PUT',
                 headers: {
 					'Cookie': `session=${getCookie("session")}`,
                     'Content-Type': 'application/json',
@@ -332,13 +332,12 @@ if(getCookie("session")!=undefined){
             table.deleteRow(1);
         }
 		let email = getCookie("session");
-        fetch('/deleteData', {
-            method: 'POST',
+        fetch(`/data/${numId}`, {
+            method: 'DELETE',
             headers: {
 				'Cookie': `session=${getCookie("session")}`,
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ email: email, numDelete: numId }),
         })
             .then((response) => response.json())
             .then(() => {
@@ -391,7 +390,7 @@ if(getCookie("session")!=undefined){
         formData.set('photo_serial_number_device',num.fileName2);
         formData.set('photo_ITAM_device',num.fileName3);
 
-        fetch('/sendForm', {
+        fetch('/form', {
             method: 'POST',
 			headers: {
 				'Cookie': `session=${getCookie("session")}`
@@ -483,8 +482,8 @@ if(getCookie("session")!=undefined){
     document.getElementById('photo_ITAM_device_select').addEventListener('input',(event) => saveFile(event,(data) => {num.fileName3 = data;}));
 
     function deleteFile(name){
-        fetch('/deletefile', {
-            method: 'POST',
+        fetch(`/file/${name}`, {
+            method: 'DELETE',
             headers: {
 				'Cookie': `session=${getCookie("session")}`,
                 'Content-Type': 'text/plain',
