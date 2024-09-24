@@ -152,13 +152,15 @@ async def delete_file(request: Request,name: str):
     res = postsSession.find_one({"Session": session_value})
     if(res==None):
         return {"status": 403}
+    path = "static/images/"
+    path+=name
     try:
-        with open(name, "rb") as f:
+        with open(path, "rb") as f:
             pass
-        open(name, "wb").close()
+        open(path, "wb").close()
     except FileNotFoundError:
         pass
-    return {"info": f"file {name} deleted"}
+    return {"info": f"file {path} deleted"}
 
 @app.post("/signIn")
 async def signIn(request: Request):

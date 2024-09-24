@@ -197,6 +197,9 @@ function changeData(numId) {
 	row.cells[5].append(input4);
 	document.getElementById('newValue4').addEventListener('input',(event) => saveFile(event,(data) => {
 		num.lastFile1 = data;
+		let deleteName = row.cells[5].querySelector('img').src;
+		deleteName = deleteName.split('/', 6);
+		deleteFile(deleteName[5]);
 		row.cells[5].querySelector('img').src = `static/images/${data}`;
 	}));
 
@@ -205,6 +208,9 @@ function changeData(numId) {
 	row.cells[6].append(input5);
 	document.getElementById('newValue5').addEventListener('input',(event) => saveFile(event,(data) => {
 		num.lastFile2 = data;
+		let deleteName = row.cells[6].querySelector('img').src;
+		deleteName = deleteName.split('/', 6);
+		deleteFile(deleteName[5]);
 		row.cells[6].querySelector('img').src = `static/images/${data}`;
 	}));
 
@@ -213,6 +219,9 @@ function changeData(numId) {
 	row.cells[7].append(input6);
 	document.getElementById('newValue6').addEventListener('input',(event) => saveFile(event,(data) => {
 		num.lastFile3 = data;
+		let deleteName = row.cells[7].querySelector('img').src;
+		deleteName = deleteName.split('/', 6);
+		deleteFile(deleteName[5]);
 		row.cells[7].querySelector('img').src = `static/images/${data}`;
 	}));
 
@@ -250,20 +259,11 @@ function saveData(numId) {
 		if(newValue4===""){
 			newValue4=photo_device;
 		}
-		else if(newValue4!==photo_device){
-			deleteFile(photo_device);
-		}
 		if(newValue5===""){
 			newValue5=photo_serial_number_device;
 		}
-		else if(newValue5!==photo_serial_number_device){
-			deleteFile(photo_serial_number_device);
-		}
 		if(newValue6===""){
 			newValue6=photo_ITAM_device;
-		}
-		else if(newValue6!==photo_ITAM_device){
-			deleteFile(photo_ITAM_device);
 		}
 		let email = getCookie("session");
 		fetch('/data', {
@@ -508,6 +508,7 @@ document.getElementById('exit').addEventListener('click',() => {
 });
 
 function deleteFile(name){
+	console.log(`УДАЛЯЕМ ${name}`)
 	fetch(`/file/${name}`, {
 		method: 'DELETE',
 		headers: {
