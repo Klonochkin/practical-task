@@ -44,7 +44,7 @@ async def welcome(request:Request) :
 async def welcome(request:Request) :
     return templates.TemplateResponse(name='register.html',context={'request':request})
 
-@app.put('/changeData')
+@app.put('/data')
 async def upload(request: Request):
     cookies = request.cookies
     session_value = cookies.get("session")
@@ -217,3 +217,18 @@ async def signUp(request: Request):
         }
         postsPassword.insert_one(post).inserted_id
     return {"message": "Регистрация успешна"}
+
+@app.post("/exit")
+async def auth(request:Request):
+    cookies = request.cookies
+    session_value = cookies.get("session")
+    res = postsSession.find_one({"Session": session_value})
+    try:
+        filterDelete = {'id':res["id"]}
+        postsSession.delete_one(filterDelete)
+    except ValueError:
+        pass
+    content = {"message": "true"}
+    response = JSONResponse(content=content)
+    response.delete_cookie(key="session")
+    return response

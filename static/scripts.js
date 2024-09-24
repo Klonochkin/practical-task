@@ -257,7 +257,7 @@ if(getCookie("session")!=undefined){
                 deleteFile(photo_ITAM_device);
             }
 			let email = getCookie("session");
-            fetch('/changeData', {
+            fetch('/data', {
                 method: 'PUT',
                 headers: {
 					'Cookie': `session=${getCookie("session")}`,
@@ -480,6 +480,18 @@ if(getCookie("session")!=undefined){
     document.getElementById('photo_serial_number_device_select').addEventListener('input',(event) => saveFile(event,(data) => {num.fileName2 = data;}));
 
     document.getElementById('photo_ITAM_device_select').addEventListener('input',(event) => saveFile(event,(data) => {num.fileName3 = data;}));
+
+	document.getElementById('exit').addEventListener('click',() => {
+		console.log("CLICK")
+		fetch('/exit', {
+            method: 'POST',
+			headers: {
+				'Cookie': `session=${getCookie("session")}`
+			},
+        })
+        .then(response => response.json())
+        .catch(error => console.error(error));
+	});
 
     function deleteFile(name){
         fetch(`/file/${name}`, {
