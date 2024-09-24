@@ -195,17 +195,26 @@ function changeData(numId) {
 	const input4 = templateFile.content.cloneNode(true);
 	input4.querySelector('input').id="newValue4";
 	row.cells[5].append(input4);
-	document.getElementById('newValue4').addEventListener('input',(event) => saveFile(event,(data) => {num.lastFile1 = data;}));
+	document.getElementById('newValue4').addEventListener('input',(event) => saveFile(event,(data) => {
+		num.lastFile1 = data;
+		row.cells[5].querySelector('img').src = `static/images/${data}`;
+	}));
 
 	const input5 = templateFile.content.cloneNode(true);
 	input5.querySelector('input').id="newValue5";
 	row.cells[6].append(input5);
-	document.getElementById('newValue5').addEventListener('input',(event) => saveFile(event,(data) => {num.lastFile2 = data;}));
+	document.getElementById('newValue5').addEventListener('input',(event) => saveFile(event,(data) => {
+		num.lastFile2 = data;
+		row.cells[6].querySelector('img').src = `static/images/${data}`;
+	}));
 
 	const input6 = templateFile.content.cloneNode(true);
 	input6.querySelector('input').id="newValue6";
 	row.cells[7].append(input6);
-	document.getElementById('newValue6').addEventListener('input',(event) => saveFile(event,(data) => {num.lastFile3 = data;}));
+	document.getElementById('newValue6').addEventListener('input',(event) => saveFile(event,(data) => {
+		num.lastFile3 = data;
+		row.cells[7].querySelector('img').src = `static/images/${data}`;
+	}));
 
 }
 
@@ -475,7 +484,10 @@ function saveFile(event,callback){
 	})
 	.catch(error => console.error(error));
 }
-document.getElementById('photo_device_select').addEventListener('input',(event) => saveFile(event,(data) => {num.fileName1 = data;}));
+document.getElementById('photo_device_select').addEventListener('input',(event) => saveFile(event,(data) => {
+	num.fileName1 = data;
+	console.log("AAAAAAAAAAAAA")
+}));
 
 document.getElementById('photo_serial_number_device_select').addEventListener('input',(event) => saveFile(event,(data) => {num.fileName2 = data;}));
 
