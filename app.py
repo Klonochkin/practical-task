@@ -96,6 +96,17 @@ async def delete(request: Request,numDelete: str):
     if(res==None):
         return {"status": 403}
     count = posts.count_documents({})
+    file = posts.find_one({"email":res["id"],"number": int(numDelete)})
+    path = "static/images/"
+    fil1 = path+file["photo_device"]
+    fil2 = path+file["photo_serial_number_device"]
+    fil3 = path+file["photo_ITAM_device"]
+    try:
+        os.remove(fil1)
+        os.remove(fil2)
+        os.remove(fil3)
+    except FileNotFoundError:
+        pass
     filterDelete = {'email':res["id"],'number': int(numDelete)}
     posts.delete_one(filterDelete)
     for i in range(int(numDelete)+1,count+1):
@@ -152,13 +163,13 @@ async def delete_file(request: Request,name: str):
     res = postsSession.find_one({"Session": session_value})
     if(res==None):
         return {"status": 403}
+    path = "static/images/"
+    path+=name
     try:
-        with open(name, "rb") as f:
-            pass
-        open(name, "wb").close()
+        os.remove(path)
     except FileNotFoundError:
         pass
-    return {"info": f"file {name} deleted"}
+    return {"info": f"file {path} deleted"}
 
 @app.post("/signIn")
 async def signIn(request: Request):
