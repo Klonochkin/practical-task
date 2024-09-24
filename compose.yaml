@@ -9,7 +9,7 @@ services:
         build: .
         restart: always
         volumes:
-        - /image:/app/static/images
+        - myimage:/app/static/images
         ports:
             - 8000:8000
         develop:
@@ -23,3 +23,5 @@ services:
                 - action: sync
                   path: ./app.py
                   target: /app/app.py
+volumes:
+  myimage:
