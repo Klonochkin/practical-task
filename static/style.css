@@ -180,5 +180,6 @@ tbody > tr td{
 .form__field-input-tip{
 	color: rgb(151, 151, 151);
 	margin: 0;
-	font-size: 1rem;
+	margin-top: 0.5rem;
+	font-size: 0.8rem;
 }
