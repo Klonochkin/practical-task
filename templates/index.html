@@ -10,115 +10,130 @@
 </head>
 
 <body>
-	<button id="exit" class="exit">Выйти</button>
-    <h1 class="heading-text">Инвентаризация</h1>
-    <div id="1" class="form">
-        <form id="form1">
-            <div class="form__content">
-                <fieldset>
-                    <legend>
-                        Форма заполнения:
-                    </legend>
-                    <label class="form__field">Выберите тип оборудования:
-                        <select class="form__field-input" name="type_device" id="type_device_select" required>
-                            <option value=""></option>
-                            <option value="Компьютер">Компьютер</option>
-                            <option value="Принтер">Принтер</option>
-                            <option value="Сканер">Сканер</option>
-                            <option value="Ксерокс">Ксерокс</option>
-                            <option value="Телефон">Телефон</option>
-                            <option value="Шредер">Шредер</option>
-                        </select>
-                    </label>
-                    <label>Введите модель оборудования:
-                        <input class="form__field-input" type="text" name="model_device"
-                            id="model_device_select" placeholder="Pantum P215" required autocomplete="off">
-                    </label>
-                    <label>Введите серийный номер:
-                        <input class="form__field-input" type="text" name="serial_number"
-                            id="serial_number_device_select" placeholder="151810310001" required
-                            autocomplete="off">
-                    </label>
-                    <label>Введите инвентарный номер (ITAM):
-                        <input class="form__field-input" type="text" name="ITAM_device" id="ITAM_device_select"
-                            placeholder="11111" required autocomplete="off">
-                    </label>
-                    <label>Фотография устройства:
-						<span class="form__upload-button">
-							<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-upload"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
-							Загрузить
-                        </span>
-						<input class="form__field-input form__field-input--ghost" type="file" name="photo_device"
-						id="photo_device_select" accept=".png,.jpeg,.jpg" required>
-                        <svg class="visually-hidden" id="check1" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><path d="M20 6 9 17l-5-5"/></svg>
-                    </label>
-                    <label>Фотография серийного номера:
-						<span class="form__upload-button">
-							<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-upload"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
-							Загрузить
-						</span>
-						<input class="form__field-input form__field-input--ghost" type="file" name="photo_serial_number_device"
-							id="photo_serial_number_device_select" accept=".png,.jpeg,.jpg" required>
-                            <svg class="visually-hidden" id="check2" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><path d="M20 6 9 17l-5-5"/></svg>
-                    </label>
-                    <label>Фотография инвентарного номера (ITAM):
-						<span class="form__upload-button">
-							<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-upload"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
-							Загрузить
-						</span>
-						<input class="form__field-input form__field-input--ghost" type="file" name="photo_ITAM_device"
-							id="photo_ITAM_device_select" accept=".png,.jpeg,.jpg" required>
-                            <svg class="visually-hidden" id="check3" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><path d="M20 6 9 17l-5-5"/></svg>
-                    </label>
-                    <button class="form__submit" id="sumbitButton">Сохранить</button>
-                </fieldset>
+	<header class="container header">
+		<h1>Форма заполнения</h1>
+		<button id="exit" class="exit">Выйти</button>
+	</header>
+	<main class="container">
+		<form id="form1" class="form">
+			<div class="form__content">
+				<label  class="form__label-text">Выберите тип оборудования:
+					<select class="form__field-input" name="type_device" id="type_device_select" required>
+						<option value="" disabled selected>Выберите тип оборудования</option>
+						<option value="Компьютер">Компьютер</option>
+						<option value="Принтер">Принтер</option>
+						<option value="Сканер">Сканер</option>
+						<option value="Ксерокс">Ксерокс</option>
+						<option value="Телефон">Телефон</option>
+						<option value="Шредер">Шредер</option>
+					</select>
+				</label>
+				<label class="form__label-text">Введите модель оборудования:
+					<input class="form__field-input" type="text" name="model_device"
+						id="model_device_select" placeholder="Pantum P215" required autocomplete="off">
+				</label>
+				<label class="form__label-text">Введите серийный номер:
+					<input class="form__field-input" type="text" name="serial_number"
+						id="serial_number_device_select" placeholder="151810310001" required
+						autocomplete="off">
+				</label>
+				<label class="form__label-text">Введите инвентарный номер (ITAM):
+					<input class="form__field-input" type="text" name="ITAM_device" id="ITAM_device_select"
+						placeholder="11111" required autocomplete="off">
+				</label>
+				<div class="form__fields-upload-file">
+					<div>
+						<label class="form__label-file">Фотография устройства:
+							<span class="form__field-file">
+								<span class="form__upload-button">
+									<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-upload"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+									Загрузить
+								</span>
+								<input class="form__field-input form__field-input--ghost" type="file" name="photo_device"
+								id="photo_device_select" accept=".png,.jpeg,.jpg" required>
+								<svg class="visually-hidden" id="check1" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><path d="M20 6 9 17l-5-5"/></svg>
+							</span>
+						</label>
+						<p class="form__field-input-tip">Файл не может быть больше 10МБ</p>
+					</div>
+					<div>
+						<label class="form__label-text">Фотография серийного номера:
+							<span class="form__field-file">
+								<span class="form__upload-button">
+									<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-upload"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+									Загрузить
 
-                </div>
-            </div>
-        </form>
-    </div>
-    <h2 class="heading-text">
-        Ваше оборудование:
-    </h2>
-    <table id="table_device" class="table">
-        <thead>
-            <tr>
-                <th scope="col"
-                    class="table__head table__head--first">
-                    №</th>
-                <th scope="col"
-                class="table__head">
-                    Вид техники</th>
-                <th scope="col"
-                class="table__head">
-                    Модель</th>
-                <th scope="col"
-                class="table__head">
-                    Серийный номер</th>
-                <th scope="col"
-                class="table__head">
-                    ITAM</th>
-                <th scope="col"
-                class="table__head">
-                    Устройство</th>
-                <th scope="col"
-                class="table__head">
-                    Серийный номер</th>
-                <th scope="col"
-                class="table__head">
-                    Инвентарный номер</th>
-                <th scope="col" class="table__head-button"></th>
-                <th scope="col" class="table__head-button"></th>
-                <th scope="col" class="table__head-button"></th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
-
+								</span>
+								<input class="form__field-input form__field-input--ghost" type="file" name="photo_serial_number_device"
+									id="photo_serial_number_device_select" accept=".png,.jpeg,.jpg" required>
+									<svg class="visually-hidden" id="check2" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><path d="M20 6 9 17l-5-5"/></svg>
+								</span>
+							</label>
+						<p class="form__field-input-tip">Файл не может быть больше 10МБ</p>
+					</div>
+					<div>
+						<label class="form__label-text">Фотография инвентарного номера (ITAM):
+							<span class="form__field-file">
+								<span class="form__upload-button">
+									<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-upload"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+									Загрузить
+								</span>
+								<input class="form__field-input form__field-input--ghost" type="file" name="photo_ITAM_device"
+									id="photo_ITAM_device_select" accept=".png,.jpeg,.jpg" required>
+									<svg class="visually-hidden" id="check3" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><path d="M20 6 9 17l-5-5"/></svg>
+								</span>
+							</label>
+						<p class="form__field-input-tip">Файл не может быть больше 10МБ</p>
+					</div>
+				</div>
+			</div>
+			<button class="form__submit" id="sumbitButton">
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+				Добавить устройство
+			</button>
+		</form>
+		<h2 class="heading-text">
+			Ваше оборудование:
+		</h2>
+		<table id="table_device" class="table">
+			<thead>
+				<tr>
+					<th scope="col"
+						class="table__head table__head--first">
+						№</th>
+					<th scope="col"
+					class="table__head">
+						Вид техники</th>
+					<th scope="col"
+					class="table__head">
+						Модель</th>
+					<th scope="col"
+					class="table__head">
+						Серийный номер</th>
+					<th scope="col"
+					class="table__head">
+						ITAM</th>
+					<th scope="col"
+					class="table__head">
+						Устройство</th>
+					<th scope="col"
+					class="table__head">
+						Серийный номер</th>
+					<th scope="col"
+					class="table__head">
+						Инвентарный номер</th>
+					<th scope="col" class="table__head-button"></th>
+					<th scope="col" class="table__head-button"></th>
+					<th scope="col" class="table__head-button"></th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	</main>
 
     <template id="template__select-type">
-        <select class="form__field-select-type" name="type_device" id="newValue0" required>
+        <select class="table__field-input" name="type_device" id="newValue0" required>
             <option value="Компьютер">Компьютер</option>
             <option value="Принтер">Принтер</option>
             <option value="Сканер">Сканер</option>
@@ -129,7 +144,7 @@
     </template>
 
     <template id="template__input-text">
-        <input size=8 class="form__field-select-text" type="text"required autocomplete="off">
+        <input size=8 class="table__field-input" type="text"required autocomplete="off">
     </template>
 
     <template id="template__table-button">
