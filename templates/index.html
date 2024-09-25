@@ -11,11 +11,10 @@
 
 <body>
 	<button id="exit" class="exit">Выйти</button>
-    <!-- <h1 class="heading-text">Инвентаризация</h1> -->
     <div id="1" class="form">
         <form id="form1">
-			<fieldset>
-				<legend>
+			<fieldset class="form__fieldset">
+				<legend class="form__legend">
 					Форма заполнения:
 				</legend>
 				<div class="form__content">
@@ -123,7 +122,7 @@
 
 
     <template id="template__select-type">
-        <select class="form__field-select-type" name="type_device" id="newValue0" required>
+        <select class="table__field-input" name="type_device" id="newValue0" required>
             <option value="Компьютер">Компьютер</option>
             <option value="Принтер">Принтер</option>
             <option value="Сканер">Сканер</option>
@@ -134,7 +133,7 @@
     </template>
 
     <template id="template__input-text">
-        <input size=8 class="form__field-select-text" type="text"required autocomplete="off">
+        <input size=8 class="table__field-input" type="text"required autocomplete="off">
     </template>
 
     <template id="template__table-button">
