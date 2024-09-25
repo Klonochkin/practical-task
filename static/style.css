@@ -9,19 +9,19 @@ body{
 }
 .form{
   /* max-width: 800px;
-  min-width: 800px;
-  margin: 0px auto; */
+  min-width: 800px; */
+  margin-top: 2rem;
 }
 .form__content{
   /* display: inline-block; */
   display: flex;
-  width:95%;
-  flex-direction:column;
+  /* width:95%; */
+  flex-wrap: wrap;
   margin: 25px;
   gap:1rem;
   padding: 1rem;
-  border: 2px rgb(168, 168, 168) solid;
-  border-radius: 1rem;
+  border: 2px rgb(210, 210, 210) solid;
+  border-radius: 0.35rem;
   align-items:start;
 }
 
@@ -34,10 +34,14 @@ fieldset{
 }
 .form__submit{
   padding: 6px;
+  display: inline-flex;
+  align-items:center;
+  gap: 5px;
 }
 .form__field-input{
   padding: 2.5px;
   text-align: left;
+
 }
 .form__field-input--ghost{
   clip: rect(0 0 0 0);
@@ -61,8 +65,8 @@ fieldset{
   text-align: center;
 }
 .table__head{
-  border-top: 2px solid rgb(140 140 140);
-  background-color: rgb(228 240 245);
+  border-bottom: 2px solid rgb(210 210 210);
+  /* background-color: rgb(228 240 245); */
 }
 .table__head--first{
   line-height: 30px;
@@ -80,8 +84,8 @@ fieldset{
 button{
   background-color: rgb(255, 255, 255);
   color: black;
-  border: 1px black solid;
-  border-radius: 5px;
+  border: 1px rgb(198, 198, 198) solid;
+  border-radius: 0.35rem;
 }
 button:not(:disabled){
   cursor: pointer;
@@ -89,16 +93,20 @@ button:not(:disabled){
 button:hover:not(:disabled) {
   background: rgb(255, 255, 255);
   color: #000000;
-  border-color: #000000;
+  border-color: rgb(210, 210, 210);
 }
 
 button:disabled {
   color: rgba(0, 0, 0, 0.5);
-  border: 1px rgba(0, 0, 0, 0.5) solid;
+  border: 1px rgba(210, 210, 210, 0.5) solid;
   background: rgb(255, 255, 255);
 }
 legend{
   /* margin: 15px 15px 15px -15px; */
+  margin-left: 2rem;
+  margin-top: 2rem;
+  font-size: 1.5rem;
+  font-weight: bold;
 }
 table {
   border-collapse: collapse;
@@ -120,34 +128,34 @@ input[type=file]::file-selector-button {
   background: rgb(255, 255, 255);
   border: 1px black solid;
   padding: 5px;
-  border-radius: 15px;
+  border-radius: 0.35rem;
   color: black;
   cursor: pointer;
   transition: .2s ease-in-out;
 }
 input[type=text] {
   background: rgb(255, 255, 255) ;
-  border: 1px black solid;
-  border-radius: 5px;
+  border: 1px rgb(210, 210, 210) solid;
+  border-radius: 0.35rem;
 }
 select {
   background: rgb(255, 255, 255);
   border-style: none;
-  border: 1px black solid;
+  border: 1px rgb(210, 210, 210) solid;
   padding: 5px;
   color:#000000;
   cursor:pointer;
   font-size: 15px;
-  border-radius: 10px;
+  border-radius: 0.35rem;
 }
 
 th,
 td{
-  border: 0px solid rgb(160 160 160);
+  /* border: 0px solid rgb(160 160 160); */
   padding: 8px 10px;
 }
 tr:nth-last-child(-n+1) td:not(:nth-last-child(-n+3)){
-  border-bottom: 2px solid rgb(140 140 140);
+  /* border-bottom: 2px solid rgb(140 140 140); */
   padding: 8px 10px;
 }
 
@@ -155,8 +163,9 @@ td:last-of-type {
   text-align: center;
 }
 
-tbody > tr:nth-of-type(even) td:not(:nth-last-child(-n+3)){
-  background-color: rgb(237 238 242);
+tbody > tr td{
+  /* background-color: rgb(237 238 242); */
+  border-top: 2px rgb(210, 210, 210) solid;
 }
 
 tfoot th {
@@ -167,24 +176,27 @@ tfoot td {
   font-weight: bold;
 }
 tr td:nth-child(8){
-border-right: 2px solid rgb(140 140 140);
+/* border-right: 2px solid rgb(140 140 140); */
 }
 tr th:nth-child(8){
-border-right: 2px solid rgb(140 140 140);
+/* border-right: 2px solid rgb(140 140 140); */
 }
 tr td:nth-child(1){
-border-left: 2px solid rgb(140 140 140);
+/* border-left: 2px solid rgb(140 140 140); */
 }
 tr th:nth-child(1){
-border-left: 2px solid rgb(140 140 140);
+/* border-left: 2px solid rgb(140 140 140); */
 }
 
 .form__upload-button{
   background-color: rgb(255, 255, 255);
+  /* display: flex;
+  flex-direction: row; */
+
   color: black;
-  border: 1px black solid;
+  border: 1px rgb(210, 210, 210) solid;
   cursor: pointer;
-  border-radius: 5px;
+  border-radius: 0.35rem;
   padding: 0.2rem;
   font-size: 0.9rem;
   display: inline-flex;
@@ -194,10 +206,21 @@ border-left: 2px solid rgb(140 140 140);
 
 .exit{
 	padding: 0.5rem;
+	margin-top: 1rem;
+	margin-right: 3.5rem;
+	position: absolute;
+    right: 0;
+
 }
-label{
+.form__label-text{
 	width: 100%;
 	display: flex;
 	flex-direction:column;
 	gap:5px
+
+}
+.form__field-input-tip{
+	color: rgb(151, 151, 151);
+	margin: 0;
+	font-weight:normal;
 }
