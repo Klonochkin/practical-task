@@ -21,11 +21,18 @@ fetch('/data',{
 		'Cookie': `session=${getCookie("session")}`
 	}
 	})
-	.then((response) => response.json())
-	.then((data) => {
-		if(data["status"] === 403){
+	.then((response) => {
+		if (response.ok) {
+			return response.json();
+		  } else if (response.status === 403) {
+			console.error('Аккаунт не найден');
 			window.location.href = '/auth';
-		}
+		  } else {
+			console.error('Error:', response.status);
+		  }
+	})
+	.then((data) => {
+		console.log(`ДАННЫЕ ${data}`)
 		const n = data.length;
 		for (let i = 0; i < n; i++) {
 			const number = data[i].number;
@@ -49,7 +56,6 @@ fetch('/data',{
 			);
 		}
 	})
-	.catch((error) => console.error('Ошибка:', error));
 
 function saveClick(
 	number,
@@ -247,11 +253,17 @@ function saveData(numId) {
 			'Cookie': `session=${getCookie("session")}`
 		}
 		})
-	.then((response) => response.json())
+	.then((response) => {
+		if (response.ok) {
+			return response.json();
+		  } else if (response.status === 403) {
+			console.error('Аккаунт не найден');
+			window.location.href = '/auth';
+		  } else {
+			console.error('Error:', response.status);
+		  }
+	})
 	.then((data) => {
-		if(data["status"] === 403){
-			alert("Вы не вошли");
-		}
 		const photo_device = data[numId-1].photo_device;
 		const photo_serial_number_device =
 			data[numId-1].photo_serial_number_device;
@@ -292,11 +304,17 @@ function saveData(numId) {
 					'Cookie': `session=${getCookie("session")}`
 				}
 				})
-			.then((response) => response.json())
+			.then((response) => {
+				if (response.ok) {
+					return response.json();
+				  } else if (response.status === 403) {
+					console.error('Аккаунт не найден');
+					window.location.href = '/auth';
+				  } else {
+					console.error('Error:', response.status);
+				  }
+			})
 			.then((data2) => {
-				if(data2["status"] === 403){
-					alert("Вы не вошли");
-				}
 				const table = document.getElementById('table_device');
 				const n = table.rows.length;
 				for (let i = 1; i < n; i++) {
@@ -356,11 +374,17 @@ function deleteData(numId) {
 					'Cookie': `session=${getCookie("session")}`
 				}
 				})
-			.then((response) => response.json())
+			.then((response) => {
+				if (response.ok) {
+					return response.json();
+				  } else if (response.status === 403) {
+					console.error('Аккаунт не найден');
+					window.location.href = '/auth';
+				  } else {
+					console.error('Error:', response.status);
+				  }
+			})
 			.then((data) => {
-				if(data["status"] === 403){
-					alert("Вы не вошли");
-				}
 			const n = data.length;
 			for (let i = 0; i < n; i++) {
 				const number = data[i].number;
@@ -414,11 +438,17 @@ document.getElementById('form1').addEventListener('submit', (e) => {
 				'Cookie': `session=${getCookie("session")}`
 			}
 			})
-		.then((response) => response.json())
+		.then((response) => {
+			if (response.ok) {
+				return response.json();
+			  } else if (response.status === 403) {
+				console.error('Аккаунт не найден');
+				window.location.href = '/auth';
+			  } else {
+				console.error('Error:', response.status);
+			  }
+		})
 		.then((data2) => {
-			if(data2["status"] === 403){
-				alert("Вы не вошли");
-			}
 			const table = document.getElementById('table_device');
 			const n = table.rows.length;
 			for (let i = 1; i < n; i++) {

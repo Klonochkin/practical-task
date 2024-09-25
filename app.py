@@ -50,7 +50,7 @@ async def upload(request: Request):
     session_value = cookies.get("session")
     res = postsSession.find_one({"Session": session_value})
     if(res==None):
-        return {"status": 403}
+        raise HTTPException(status_code=403, detail="Аккаунт не найден")
     data = await request.json()
     email = data["email"]
     numFilter = data["numFilter"]
@@ -79,7 +79,8 @@ async def read_data(request: Request):
     session_value = cookies.get("session")
     res = postsSession.find_one({"Session": session_value})
     if(res==None):
-        return {"status": 403}
+        raise HTTPException(status_code=403, detail="Аккаунт не найден")
+        return ""
     dataSend = posts.find({'email': res["id"]})
     posts_list = []
     for post in dataSend:
@@ -94,7 +95,8 @@ async def delete(request: Request,numDelete: str):
     session_value = cookies.get("session")
     res = postsSession.find_one({"Session": session_value})
     if(res==None):
-        return {"status": 403}
+        raise HTTPException(status_code=403, detail="Аккаунт не найден")
+        return ""
     count = posts.count_documents({})
     file = posts.find_one({"email":res["id"],"number": int(numDelete)})
     path = "static/images/"
@@ -121,7 +123,8 @@ async def uploadFile(file: UploadFile, request: Request):
     session_value = cookies.get("session")
     res = postsSession.find_one({"Session": session_value})
     if(res==None):
-        return {"status": 403}
+        raise HTTPException(status_code=403, detail="Аккаунт не найден")
+        return ""
     newName = "".join([alphabet[random.randint(0, len(alphabet) -1)] for _ in range(0, 60)])
     exp=f".{file.filename.rsplit('.', 1)[1]}"
     newName +=exp
@@ -136,7 +139,8 @@ async def sendForm(request: Request):
     session_value = cookies.get("session")
     res = postsSession.find_one({"Session": session_value})
     if(res==None):
-        return {"status": 403}
+        raise HTTPException(status_code=403, detail="Аккаунт не найден")
+        return ""
     form_data = await request.form()
     n=posts.count_documents({})
     newN = posts.find({'email': res["id"] })
@@ -162,7 +166,8 @@ async def delete_file(request: Request,name: str):
     session_value = cookies.get("session")
     res = postsSession.find_one({"Session": session_value})
     if(res==None):
-        return {"status": 403}
+        raise HTTPException(status_code=403, detail="Аккаунт не найден")
+        return ""
     path = "static/images/"
     path+=name
     try:
@@ -178,12 +183,14 @@ async def signIn(request: Request):
     password = data["password"]
     res = postsPassword.find_one({'email': email})
     if(res==None):
-        return {"status" : 403}
+        raise HTTPException(status_code=403, detail="Аккаунт не найден")
+        return ""
     salt = res['salt']
     hash = res['password']
     newHash = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000).hex()
     if(hash != newHash):
-        return {"status" : 403}
+        raise HTTPException(status_code=422, detail="Не правильный пароль")
+        return ""
     hashSession = hashlib.pbkdf2_hmac('sha256', email.encode('utf-8'),os.urandom(16).hex().encode('utf-8'), 100000).hex()
     content = {"message": "true"}
     response = JSONResponse(content=content)
@@ -212,9 +219,11 @@ async def signUp(request: Request):
     password = data["password"]
     res = postsPassword.find_one({'email': email})
     if(res!=None):
-        return {"status" : 403}
+        raise HTTPException(status_code=403, detail="Аккаунт не найден")
+        return ""
     if(len(password)<8):
-        return {"status" : 422}
+        raise HTTPException(status_code=422, detail="Пароль слишком короткий")
+        return ""
     n=postsPassword.count_documents({})
     salt = os.urandom(16)
     hashPassword = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt.hex().encode('utf-8'), 100000)

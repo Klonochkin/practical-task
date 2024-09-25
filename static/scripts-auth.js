@@ -15,16 +15,19 @@ document.getElementById('form-auth').addEventListener('submit', (event)=>{
 			password: valuePassword
 		}),
 	})
-	.then((response) => response.json())
-	.then((data) => {
-		console.log(data);
-		if(data["status"] === 403){
+	.then((response) => {
+		if (response.ok) {
+			return response.json();
+		  } else if (response.status === 403) {
 			document.getElementById('error-auth').classList.remove("visually-hidden");
-			document.getElementById('error-auth').innerHTML="Аккаунт не найден. Повторите попытку или зарегистрируйтесь";
-		}
-		else{
-			window.location.href = '/';
-		}
+			document.getElementById('error-auth').innerHTML="Аккаунта не существует";
+		  }else if(response.status === 422){
+				document.getElementById('error-auth').classList.remove("visually-hidden");
+				document.getElementById('error-auth').innerHTML="Введён не правильный пароль";
+			}
+			else{
+				window.location.href = '/auth';
+			}
 	})
 	.catch((error) => console.log(error));
 })

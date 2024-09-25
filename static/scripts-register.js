@@ -15,19 +15,19 @@ document.getElementById('form-register').addEventListener('submit', (event)=>{
 			password: valuePassword
 		}),
 	})
-	.then((response) => response.json())
-	.then((data) => {
-		if(data["status"] === 403){
+	.then((response) => {
+		if (response.ok) {
+			return response.json();
+		  } else if (response.status === 403) {
 			document.getElementById('error-register').classList.remove("visually-hidden");
 			document.getElementById('error-register').innerHTML="Аккаунт с таким адресом уже существует";
-		}
-		else if(data["status"] === 422){
-			document.getElementById('error-register').classList.remove("visually-hidden");
-			document.getElementById('error-register').innerHTML="Пароль должен быть не менее 8 символов";
-		}
-		else{
-			window.location.href = '/auth';
-		}
+		  }else if(response.status === 422){
+				document.getElementById('error-register').classList.remove("visually-hidden");
+				document.getElementById('error-register').innerHTML="Пароль должен быть не менее 8 символов";
+			}
+			else{
+				window.location.href = '/auth';
+			}
 	})
 	.catch((error) => console.log(error));
 })
