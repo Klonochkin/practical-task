@@ -10,23 +10,23 @@
 </head>
 
 <body>
-	<form class="form" id="form-register">
-		<legend>
-			Регистрация
-		</legend>
-		<label> Введите email:
-			<input id="email-register" type="text" required placeholder="example@yandex.ru" class="input">
-		</label>
-		<label> Введите пароль:
-			<input id="password-register" type="password" required class="input">
-		</label>
-		<div class="form__error visually-hidden" id="error-register"></div>
-		<button class="button">Зарегистрироваться</button>
-		<span>
-			Уже есть аккаунт?
-			<a href="/auth">Войти</a>
-		</span>
-	</form>
+	<main class="container">
+		<form class="form" id="form-register">
+			<legend class="form__title">Регистрация</legend>
+			<label class="form__label-text">Email:
+				<input id="email-register" type="text" required placeholder="example@yandex.ru" class="input">
+			</label>
+			<label class="form__label-text">Пароль:
+				<input id="password-register" type="password" required class="input">
+			</label>
+			<div class="form__error visually-hidden" id="error-register"></div>
+			<button class="button">Зарегистрироваться</button>
+			<span>
+				Уже есть аккаунт?
+				<a href="/auth">Войти</a>
+			</span>
+		</form>
+	</main>
 	<script src="/static/scripts-register.js"></script>
 </body>
 

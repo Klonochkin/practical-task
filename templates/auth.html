@@ -10,23 +10,23 @@
 </head>
 
 <body>
-	<form class="form" id="form-auth">
-		<legend>
-			Вход
-		</legend>
-		<label> Введите email:
-			<input id="email-auth" type="text" required placeholder="example@yandex.ru" class="input">
-		</label>
-		<label> Введите пароль:
-			<input id="password-auth" type="password" required class="input">
-		</label>
-		<div class="form__error visually-hidden" id="error-auth"></div>
-		<button class="button">Войти</button>
-		<span>
-			Ещё нету аккаунта?
-			<a href="/register">Регистрация</a>
-		</span>
-	</form>
+	<main class="container">
+		<form class="form" id="form-auth">
+			<legend class="form__title">Вход</legend>
+			<label class="form__label-text">Email:
+				<input id="email-auth" type="text" required placeholder="example@yandex.ru" class="input">
+			</label>
+			<label class="form__label-text">Пароль:
+				<input id="password-auth" type="password" required class="input">
+			</label>
+			<div class="form__error visually-hidden" id="error-auth"></div>
+			<button class="button">Войти</button>
+			<span>
+				Ещё нету аккаунта?
+				<a href="/register">Регистрация</a>
+			</span>
+		</form>
+	</main>
 	<script src="/static/scripts-auth.js"></script>
 </body>
 
