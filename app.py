@@ -52,8 +52,7 @@ async def upload(request: Request):
     if(res==None):
         raise HTTPException(status_code=403, detail="Аккаунт не найден")
     data = await request.json()
-    email = data["email"]
-    numFilter = data["numFilter"]
+    id = data["id"]
     value0 = data["value0"]
     value1 = data["value1"]
     value2 = data["value2"]
@@ -61,7 +60,10 @@ async def upload(request: Request):
     value4 = data["value4"]
     value5 = data["value5"]
     value6 = data["value6"]
-    filter = {'email':res["id"],'number': numFilter}
+    check = posts.find_one({"user_id":res["id"],"id": int(id)})
+    if(check==None):
+        raise HTTPException(status_code=404, detail="Запись не найдена")
+    filter = {'user_id':res["id"],'id': id}
 
     posts.update_many(filter, {'$set': {'type_device': value0}})
     posts.update_many(filter, {'$set': {'model_device': value1}})
@@ -71,7 +73,7 @@ async def upload(request: Request):
     posts.update_many(filter, {'$set': {'photo_serial_number_device': value5}})
     posts.update_many(filter, {'$set': {'photo_ITAM_device': value6}})
 
-    return {"message": "true"}
+    return {"message": "Запись успешно изменена"}
 
 @app.get("/data")
 async def read_data(request: Request):
@@ -80,8 +82,7 @@ async def read_data(request: Request):
     res = postsSession.find_one({"Session": session_value})
     if(res==None):
         raise HTTPException(status_code=403, detail="Аккаунт не найден")
-        return ""
-    dataSend = posts.find({'email': res["id"]})
+    dataSend = posts.find({'user_id': res["id"]})
     posts_list = []
     for post in dataSend:
         post_dict = dict(post)
@@ -96,26 +97,30 @@ async def delete(request: Request,numDelete: str):
     res = postsSession.find_one({"Session": session_value})
     if(res==None):
         raise HTTPException(status_code=403, detail="Аккаунт не найден")
-        return ""
     count = posts.count_documents({})
-    file = posts.find_one({"email":res["id"],"number": int(numDelete)})
+    file = posts.find_one({"user_id":res["id"],"id": int(numDelete)})
+    if(file==None):
+        raise HTTPException(status_code=404, detail="Запись не найдена")
     path = "static/images/"
     fil1 = path+file["photo_device"]
     fil2 = path+file["photo_serial_number_device"]
     fil3 = path+file["photo_ITAM_device"]
     try:
-        os.remove(fil1)
-        os.remove(fil2)
-        os.remove(fil3)
+        if(fil1!="static/images/"):
+            os.remove(fil1)
+        if(fil2!="static/images/"):
+            os.remove(fil2)
+        if(fil3!="static/images/"):
+            os.remove(fil3)
     except FileNotFoundError:
         pass
-    filterDelete = {'email':res["id"],'number': int(numDelete)}
+    filterDelete = {'user_id':res["id"],'id': int(numDelete)}
     posts.delete_one(filterDelete)
     for i in range(int(numDelete)+1,count+1):
-        filter = {'email':res["id"],'number': i}
+        filter = {'user_id':res["id"],'id': i}
         result = posts.update_one(filter, {'$set': {'number': i-1}})
 
-    return {"message": "true"}
+    return {"message": "Запись успешно удалена"}
 
 @app.post('/uploadFile')
 async def uploadFile(file: UploadFile, request: Request):
@@ -124,7 +129,6 @@ async def uploadFile(file: UploadFile, request: Request):
     res = postsSession.find_one({"Session": session_value})
     if(res==None):
         raise HTTPException(status_code=403, detail="Аккаунт не найден")
-        return ""
     newName = "".join([alphabet[random.randint(0, len(alphabet) -1)] for _ in range(0, 60)])
     exp=f".{file.filename.rsplit('.', 1)[1]}"
     newName +=exp
@@ -140,15 +144,14 @@ async def sendForm(request: Request):
     res = postsSession.find_one({"Session": session_value})
     if(res==None):
         raise HTTPException(status_code=403, detail="Аккаунт не найден")
-        return ""
     form_data = await request.form()
     n=posts.count_documents({})
-    newN = posts.find({'email': res["id"] })
+    newN = posts.find({'user_id': res["id"] })
     count = int(len(list(newN)))+1
     if( posts.count_documents({}) == n):
         post = {
-            "email": res["id"],
-            "number": count,
+            "user_id": res["id"],
+            "id": count,
             "type_device": form_data.get("type_device"),
             "model_device": form_data.get("model_device"),
             "serial_number": form_data.get("serial_number"),
@@ -158,7 +161,7 @@ async def sendForm(request: Request):
             "photo_ITAM_device": form_data.get("photo_ITAM_device"),
         }
         res = posts.insert_one(post).inserted_id
-    return ""
+    return {"message": "Запись успешно добавлена"}
 
 @app.delete("/file/{name}")
 async def delete_file(request: Request,name: str):
@@ -167,14 +170,14 @@ async def delete_file(request: Request,name: str):
     res = postsSession.find_one({"Session": session_value})
     if(res==None):
         raise HTTPException(status_code=403, detail="Аккаунт не найден")
-        return ""
     path = "static/images/"
     path+=name
     try:
-        os.remove(path)
+        if(path!="static/images/"):
+            os.remove(path)
     except FileNotFoundError:
         pass
-    return {"info": f"file {path} deleted"}
+    return {"message": "Файл успешно удалён"}
 
 @app.post("/signIn")
 async def signIn(request: Request):
@@ -184,13 +187,11 @@ async def signIn(request: Request):
     res = postsPassword.find_one({'email': email})
     if(res==None):
         raise HTTPException(status_code=403, detail="Аккаунт не найден")
-        return ""
     salt = res['salt']
     hash = res['password']
     newHash = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000).hex()
     if(hash != newHash):
         raise HTTPException(status_code=422, detail="Не правильный пароль")
-        return ""
     hashSession = hashlib.pbkdf2_hmac('sha256', email.encode('utf-8'),os.urandom(16).hex().encode('utf-8'), 100000).hex()
     content = {"message": "true"}
     response = JSONResponse(content=content)
@@ -220,10 +221,8 @@ async def signUp(request: Request):
     res = postsPassword.find_one({'email': email})
     if(res!=None):
         raise HTTPException(status_code=403, detail="Аккаунт не найден")
-        return ""
     if(len(password)<8):
         raise HTTPException(status_code=422, detail="Пароль слишком короткий")
-        return ""
     n=postsPassword.count_documents({})
     salt = os.urandom(16)
     hashPassword = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt.hex().encode('utf-8'), 100000)

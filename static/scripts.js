@@ -7,19 +7,10 @@ const num = {
 	lastFile2: '',
 	lastFile3: '',
 };
-
-function getCookie(name) {
-    let matches = document.cookie.match(new RegExp(
-      "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
-    ));
-    return matches ? decodeURIComponent(matches[1]) : undefined;
-  }
-
+let fetchData;
 fetch('/data',{
 	method: 'GET',
-	headers: {
-		'Cookie': `session=${getCookie("session")}`
-	}
+	credentials: 'include'
 	})
 	.then((response) => {
 		if (response.ok) {
@@ -32,9 +23,10 @@ fetch('/data',{
 		  }
 	})
 	.then((data) => {
+		fetchData=data;
 		const n = data.length;
 		for (let i = 0; i < n; i++) {
-			const number = data[i].number;
+			const number = data[i].id;
 			const type_device = data[i].type_device;
 			const model_device = data[i].model_device;
 			const serial_number = data[i].serial_number;
@@ -246,107 +238,102 @@ function saveData(numId) {
 	let newValue5 = num.lastFile2;
 	let newValue6 = num.lastFile3;
 
-	fetch('/data',{
-		method: 'GET',
+	data = fetchData;
+	const photo_device = data[numId-1].photo_device;
+	const photo_serial_number_device =
+		data[numId-1].photo_serial_number_device;
+	const photo_ITAM_device = data[numId-1].photo_ITAM_device;
+	if(newValue4===""){
+		newValue4=photo_device;
+	}
+	if(newValue5===""){
+		newValue5=photo_serial_number_device;
+	}
+	if(newValue6===""){
+		newValue6=photo_ITAM_device;
+	}
+	fetch('/data', {
+		method: 'PUT',
+		credentials: 'include',
 		headers: {
-			'Cookie': `session=${getCookie("session")}`
-		}
-		})
-	.then((response) => {
-		if (response.ok) {
-			return response.json();
-		  } else if (response.status === 403) {
-			console.error('Аккаунт не найден');
-			window.location.href = '/auth';
-		  } else {
-			console.error('Error:', response.status);
-		  }
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify({
+			id: numId,
+			value0: newValue0,
+			value1: newValue1,
+			value2: newValue2,
+			value3: newValue3,
+			value4: newValue4,
+			value5: newValue5,
+			value6: newValue6
+		}),
 	})
-	.then((data) => {
-		const photo_device = data[numId-1].photo_device;
-		const photo_serial_number_device =
-			data[numId-1].photo_serial_number_device;
-		const photo_ITAM_device = data[numId-1].photo_ITAM_device;
-		if(newValue4===""){
-			newValue4=photo_device;
-		}
-		if(newValue5===""){
-			newValue5=photo_serial_number_device;
-		}
-		if(newValue6===""){
-			newValue6=photo_ITAM_device;
-		}
-		let email = getCookie("session");
-		fetch('/data', {
-			method: 'PUT',
-			headers: {
-				'Cookie': `session=${getCookie("session")}`,
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({
-				email: email,
-				numFilter: numId,
-				value0: newValue0,
-				value1: newValue1,
-				value2: newValue2,
-				value3: newValue3,
-				value4: newValue4,
-				value5: newValue5,
-				value6: newValue6
-			}),
+		.then((response) => {
+			if (response.ok) {
+				return response.json();
+			}
+			if (response.status === 403) {
+				console.error('Аккаунт не найден');
+				window.location.href = '/auth';
+			}
+			else if(response.status === 404){
+				console.error('Запись не найдена');
+			}
+			else {
+				console.error('Error:', response.status);
+			}
 		})
-			.then((response) => response.json())
-			.then(() => {
-			fetch('/data',{
-				method: 'GET',
-				headers: {
-					'Cookie': `session=${getCookie("session")}`
-				}
-				})
-			.then((response) => {
-				if (response.ok) {
-					return response.json();
-				  } else if (response.status === 403) {
-					console.error('Аккаунт не найден');
-					window.location.href = '/auth';
-				  } else {
-					console.error('Error:', response.status);
-				  }
+		.then(() => {
+		fetch('/data',{
+			method: 'GET',
+			credentials: 'include'
 			})
-			.then((data2) => {
-				const table = document.getElementById('table_device');
-				const n = table.rows.length;
-				for (let i = 1; i < n; i++) {
-					table.deleteRow(1);
+		.then((response) => {
+			if (response.ok) {
+				return response.json();
+			}
+			if (response.status === 403) {
+				console.error('Аккаунт не найден');
+				window.location.href = '/auth';
+			}
+				else {
+				console.error('Error:', response.status);
 				}
-				let n2 = data2.length;
-				for (let i = 0; i < n2; i++) {
-					const number = data2[i].number;
-					const type_device = data2[i].type_device;
-					const model_device = data2[i].model_device;
-					const serial_number = data2[i].serial_number;
-					const ITAM_device = data2[i].ITAM_device;
-					const photo_device = data2[i].photo_device;
-					const photo_serial_number_device =
-					data2[i].photo_serial_number_device;
-					const photo_ITAM_device = data2[i].photo_ITAM_device;
-					saveClick(
-						number,
-						type_device,
-						model_device,
-						serial_number,
-						ITAM_device,
-						photo_device,
-						photo_serial_number_device,
-						photo_ITAM_device
-					);
-				}
-			})
-			.catch((error) => console.error('Ошибка:', error));
-			})
-			.catch((error) => console.error('Ошибка:', error));
-	})
-	.catch((error) => console.error('Ошибка:', error));
+		})
+		.then((data2) => {
+			fetchData = data2;
+			const table = document.getElementById('table_device');
+			const n = table.rows.length;
+			for (let i = 1; i < n; i++) {
+				table.deleteRow(1);
+			}
+			let n2 = data2.length;
+			for (let i = 0; i < n2; i++) {
+				const number = data2[i].id;
+				const type_device = data2[i].type_device;
+				const model_device = data2[i].model_device;
+				const serial_number = data2[i].serial_number;
+				const ITAM_device = data2[i].ITAM_device;
+				const photo_device = data2[i].photo_device;
+				const photo_serial_number_device =
+				data2[i].photo_serial_number_device;
+				const photo_ITAM_device = data2[i].photo_ITAM_device;
+				saveClick(
+					number,
+					type_device,
+					model_device,
+					serial_number,
+					ITAM_device,
+					photo_device,
+					photo_serial_number_device,
+					photo_ITAM_device
+				);
+			}
+		})
+		.catch((error) => console.error('Ошибка:', error));
+		})
+		.catch((error) => console.error('Ошибка:', error));
 
 
 }
@@ -357,11 +344,10 @@ function deleteData(numId) {
 	for (let i = 1; i < a; i++) {
 		table.deleteRow(1);
 	}
-	let email = getCookie("session");
 	fetch(`/data/${numId}`, {
 		method: 'DELETE',
+		credentials: 'include',
 		headers: {
-			'Cookie': `session=${getCookie("session")}`,
 			'Content-Type': 'application/json',
 		},
 	})
@@ -369,24 +355,28 @@ function deleteData(numId) {
 		.then(() => {
 			fetch('/data',{
 				method: 'GET',
-				headers: {
-					'Cookie': `session=${getCookie("session")}`
-				}
+				credentials: 'include',
 				})
 			.then((response) => {
 				if (response.ok) {
 					return response.json();
-				  } else if (response.status === 403) {
+				}
+				if (response.status === 403) {
 					console.error('Аккаунт не найден');
 					window.location.href = '/auth';
-				  } else {
+				}
+				else if(response.status === 404){
+					console.error('Запись не найдена');
+				}
+				else {
 					console.error('Error:', response.status);
 				  }
 			})
 			.then((data) => {
+			fetchData = data;
 			const n = data.length;
 			for (let i = 0; i < n; i++) {
-				const number = data[i].number;
+				const number = data[i].id;
 				const type_device = data[i].type_device;
 				const model_device = data[i].model_device;
 				const serial_number = data[i].serial_number;
@@ -416,26 +406,20 @@ document.getElementById('form1').addEventListener('submit', (e) => {
 	e.preventDefault();
 	const form = document.getElementById('form1');
 	const formData = new FormData(form);
-	var email = getCookie("session");
-	formData.append('email', email);
 	formData.set('photo_device',num.fileName1);
 	formData.set('photo_serial_number_device',num.fileName2);
 	formData.set('photo_ITAM_device',num.fileName3);
 
 	fetch('/form', {
 		method: 'POST',
-		headers: {
-			'Cookie': `session=${getCookie("session")}`
-			},
+		credentials: 'include',
 		body: formData
 	})
 	.then(response => response.json())
 	.then(() => {
 		fetch('/data',{
 			method: 'GET',
-			headers: {
-				'Cookie': `session=${getCookie("session")}`
-			}
+			credentials: 'include',
 			})
 		.then((response) => {
 			if (response.ok) {
@@ -448,6 +432,7 @@ document.getElementById('form1').addEventListener('submit', (e) => {
 			  }
 		})
 		.then((data2) => {
+			fetchData = data2;
 			const table = document.getElementById('table_device');
 			const n = table.rows.length;
 			for (let i = 1; i < n; i++) {
@@ -455,7 +440,7 @@ document.getElementById('form1').addEventListener('submit', (e) => {
 			}
 			let n2 = data2.length;
 			for (let i = 0; i < n2; i++) {
-				const number = data2[i].number;
+				const number = data2[i].id;
 				const type_device = data2[i].type_device;
 				const model_device = data2[i].model_device;
 				const serial_number = data2[i].serial_number;
@@ -502,9 +487,7 @@ function saveFile(event,callback){
 
 	fetch('/uploadFile', {
 		method: 'POST',
-		headers: {
-			'Cookie': `session=${getCookie("session")}`
-		},
+		credentials: 'include',
 		body: fileForm
 	})
 	.then(response => response.json())
@@ -524,9 +507,7 @@ document.getElementById('photo_ITAM_device_select').addEventListener('input',(ev
 document.getElementById('exit').addEventListener('click',() => {
 	fetch('/exit', {
 		method: 'POST',
-		headers: {
-			'Cookie': `session=${getCookie("session")}`
-		},
+		credentials: 'include'
 	})
 	.then(response => response.json())
 	.then(()=>{
@@ -538,8 +519,8 @@ document.getElementById('exit').addEventListener('click',() => {
 function deleteFile(name){
 	fetch(`/file/${name}`, {
 		method: 'DELETE',
+		credentials: 'include',
 		headers: {
-			'Cookie': `session=${getCookie("session")}`,
 			'Content-Type': 'text/plain',
 		},
 		body: name
