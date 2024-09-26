@@ -8,16 +8,16 @@
 	font-family: 'Roboto', sans-serif;
   }
 .form{
-	padding: 0.5rem;
-	width: 20%;
-	margin: 2rem auto;
 	display: flex;
 	flex-direction: column;
+	padding: 0.5rem;
+	width: 21rem;
+	min-width: 21rem;
+	margin: 2rem auto;
 	gap: 1rem;
 	align-items: start;
-	border: 0.1rem grey solid;
-	min-width: 20rem;	
-	border-radius: 0.5rem;
+	border: 2px rgb(210, 210, 210) solid;
+	border-radius: 0.35rem;
 }
 .visually-hidden{
 	visibility: hidden;
@@ -29,19 +29,30 @@
 .button{
 	background-color: rgb(255, 255, 255);
 	color: black;
-	border: 1px black solid;
-	border-radius: 5px;
+	border: 1px rgb(198, 198, 198) solid;
+	border-radius: 0.35rem;
+	padding: 0.5rem;
+	cursor: pointer;
   }
-.button:not(:disabled){
-cursor:pointer;
-}
-.button:hover:not(:disabled) {
-background: rgb(255, 255, 255);
-color: #000000;
-border-color: #000000;
-}
+
 .input{
 background: rgb(255, 255, 255) ;
-border: 1px black solid;
-border-radius: 5px;
+border: 1px rgb(210, 210, 210) solid;
+border-radius: 0.35rem;
+padding: 3px;
+}
+input:-webkit-autofill{
+	transition: background-color 5000s ease-in-out 0s;
+}
+a {
+	outline: none;
+	text-decoration: none;
+	padding: 2px 1px 0;
+	color: rgb(52, 144, 255);
+}
+a:hover {
+	outline: none;
+	text-decoration: none;
+	padding: 2px 1px 0;
+	color: rgb(119, 180, 255);
 }
