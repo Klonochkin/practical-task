@@ -17,7 +17,6 @@ fetch('/data',{
 			return response.json();
 		  } else if (response.status === 403) {
 			console.error('Аккаунт не найден');
-			window.location.href = '/auth';
 		  } else {
 			console.error('Error:', response.status);
 		  }
@@ -275,7 +274,6 @@ function saveData(numId) {
 			}
 			if (response.status === 403) {
 				console.error('Аккаунт не найден');
-				window.location.href = '/auth';
 			}
 			else if(response.status === 404){
 				console.error('Запись не найдена');
@@ -295,7 +293,6 @@ function saveData(numId) {
 			}
 			if (response.status === 403) {
 				console.error('Аккаунт не найден');
-				window.location.href = '/auth';
 			}
 				else {
 				console.error('Error:', response.status);
@@ -363,7 +360,6 @@ function deleteData(numId) {
 				}
 				if (response.status === 403) {
 					console.error('Аккаунт не найден');
-					window.location.href = '/auth';
 				}
 				else if(response.status === 404){
 					console.error('Запись не найдена');
@@ -426,7 +422,6 @@ document.getElementById('form1').addEventListener('submit', (e) => {
 				return response.json();
 			  } else if (response.status === 403) {
 				console.error('Аккаунт не найден');
-				window.location.href = '/auth';
 			  } else {
 				console.error('Error:', response.status);
 			  }
@@ -520,10 +515,6 @@ function deleteFile(name){
 	fetch(`/file/${name}`, {
 		method: 'DELETE',
 		credentials: 'include',
-		headers: {
-			'Content-Type': 'text/plain',
-		},
-		body: name
 	})
 	.then((response) => response.json())
 	.catch((error) => console.error('Ошибка:', error));

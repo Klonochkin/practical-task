@@ -2,7 +2,7 @@ from fastapi import FastAPI, Request,Form,Response,File,UploadFile,HTTPException
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse,RedirectResponse
 from pymongo import MongoClient
 import string
 import random
@@ -34,14 +34,29 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 @app.get('/')
 async def welcome(request:Request) :
+    cookies = request.cookies
+    session_value = cookies.get("session")
+    res = postsSession.find_one({"Session": session_value})
+    if(res==None):
+        return RedirectResponse(url="/auth")
     return templates.TemplateResponse(name='index.html',context={'request':request})
 
 @app.get('/auth')
 async def welcome(request:Request) :
+    cookies = request.cookies
+    session_value = cookies.get("session")
+    res = postsSession.find_one({"Session": session_value})
+    if(res!=None):
+        return RedirectResponse(url="/")
     return templates.TemplateResponse(name='auth.html',context={'request':request})
 
 @app.get('/register')
 async def welcome(request:Request) :
+    cookies = request.cookies
+    session_value = cookies.get("session")
+    res = postsSession.find_one({"Session": session_value})
+    if(res!=None):
+        return RedirectResponse(url="/")
     return templates.TemplateResponse(name='register.html',context={'request':request})
 
 @app.put('/data')
