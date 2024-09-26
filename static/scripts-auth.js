@@ -17,6 +17,7 @@ document.getElementById('form-auth').addEventListener('submit', (event)=>{
 	})
 	.then((response) => {
 		if (response.ok) {
+			window.location.href = '/'
 			return response.json();
 		  } else if (response.status === 403) {
 			document.getElementById('error-auth').classList.remove("visually-hidden");

@@ -32,7 +32,6 @@ fetch('/data',{
 		  }
 	})
 	.then((data) => {
-		console.log(`ДАННЫЕ ${data}`)
 		const n = data.length;
 		for (let i = 0; i < n; i++) {
 			const number = data[i].number;

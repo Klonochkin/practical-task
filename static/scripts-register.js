@@ -17,6 +17,7 @@ document.getElementById('form-register').addEventListener('submit', (event)=>{
 	})
 	.then((response) => {
 		if (response.ok) {
+			window.location.href = '/auth';
 			return response.json();
 		  } else if (response.status === 403) {
 			document.getElementById('error-register').classList.remove("visually-hidden");
