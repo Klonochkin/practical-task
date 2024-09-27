@@ -21,8 +21,7 @@
 	margin-inline: auto;
   	margin-block-start: 50vh;
   	transform: translateY(-50%);
-	gap: 1.5rem;
-
+	gap: 1rem;
 	border: 2px rgb(210, 210, 210) solid;
 	border-radius: 0.35rem;
 }
@@ -39,9 +38,18 @@
 	font-weight: bold;
 	font-size: 1.5rem;
 }
-.visually-hidden{
-	visibility: hidden;
-}
+.visually-hidden {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	border: 0;
+	padding: 0;
+	white-space: nowrap;
+	clip-path: inset(100%);
+	clip: rect(0 0 0 0);
+	overflow: hidden;
+  }
 .form__error{
 	color: red;
 	font-size: 1rem;
@@ -59,7 +67,7 @@
 background: rgb(255, 255, 255) ;
 border: 1px rgb(210, 210, 210) solid;
 border-radius: 0.35rem;
-padding: 3px;
+padding: 8px;
 }
 a {
 
