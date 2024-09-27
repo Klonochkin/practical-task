@@ -2,45 +2,7 @@ import { updateTableData } from '/static/updateTableData.js';
 import { globalData as num } from '/static/globalData.js';
 import {saveFile} from '/static/saveFile.js';
 
-data();
-
-document.getElementById('form1').addEventListener('submit', (e) => {
-	e.preventDefault();
-	const form = document.getElementById('form1');
-	const formData = new FormData(form);
-	formData.set('photo_device',num.fileName1);
-	formData.set('photo_serial_number_device',num.fileName2);
-	formData.set('photo_ITAM_device',num.fileName3);
-	fetch('/form', {
-		method: 'POST',
-		credentials: 'include',
-		body: formData
-	})
-	.then(response => response.json())
-	.then(() => data())
-	.catch(error => console.error(error));
-	form.reset();
-	document.getElementById('check1').classList.add("visually-hidden");
-	document.getElementById('check2').classList.add("visually-hidden");
-	document.getElementById('check3').classList.add("visually-hidden");
-})
-
-document.getElementById('photo_device_select').addEventListener('input',(event) => saveFile(event,(data) => {num.fileName1 = data;}));
-document.getElementById('photo_serial_number_device_select').addEventListener('input',(event) => saveFile(event,(data) => {num.fileName2 = data;}));
-document.getElementById('photo_ITAM_device_select').addEventListener('input',(event) => saveFile(event,(data) => {num.fileName3 = data;}));
-document.getElementById('exit').addEventListener('click',() => {
-	fetch('/exit', {
-		method: 'POST',
-		credentials: 'include'
-	})
-	.then(response => response.json())
-	.then(()=>{
-		window.location.href = '/';
-	})
-	.catch(error => console.error(error));
-});
-
-function data(){
+function getData(){
 	fetch('/data',{
 		method: 'GET',
 		credentials: 'include',
@@ -87,3 +49,43 @@ function data(){
 	})
 	.catch((error) => console.error('Ошибка:', error));
 }
+
+getData();
+
+document.getElementById('form1').addEventListener('submit', (e) => {
+	e.preventDefault();
+	const form = document.getElementById('form1');
+	const formData = new FormData(form);
+	formData.set('photo_device',num.fileName1);
+	formData.set('photo_serial_number_device',num.fileName2);
+	formData.set('photo_ITAM_device',num.fileName3);
+	fetch('/form', {
+		method: 'POST',
+		credentials: 'include',
+		body: formData
+	})
+	.then(response => response.json())
+	.then(getData)
+	.catch(error => console.error(error));
+	form.reset();
+	document.getElementById('check1').classList.add("visually-hidden");
+	document.getElementById('check2').classList.add("visually-hidden");
+	document.getElementById('check3').classList.add("visually-hidden");
+})
+
+document.getElementById('photo_device_select').addEventListener('input',(event) => saveFile(event,(data) => {num.fileName1 = data;}));
+document.getElementById('photo_serial_number_device_select').addEventListener('input',(event) => saveFile(event,(data) => {num.fileName2 = data;}));
+document.getElementById('photo_ITAM_device_select').addEventListener('input',(event) => saveFile(event,(data) => {num.fileName3 = data;}));
+document.getElementById('exit').addEventListener('click',() => {
+	fetch('/exit', {
+		method: 'POST',
+		credentials: 'include'
+	})
+	.then(response => response.json())
+	.then(()=>{
+		window.location.href = '/';
+	})
+	.catch(error => console.error(error));
+});
+
+
