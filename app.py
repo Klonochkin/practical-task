@@ -133,8 +133,7 @@ async def delete(request: Request,numDelete: str):
     posts.delete_one(filterDelete)
     for i in range(int(numDelete)+1,count+1):
         filter = {'user_id':res["id"],'id': i}
-        result = posts.update_one(filter, {'$set': {'number': i-1}})
-
+        result = posts.update_one(filter, {'$set': {'id': i-1}})
     return {"message": "Запись успешно удалена"}
 
 @app.post('/uploadFile')
