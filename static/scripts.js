@@ -78,6 +78,17 @@ function createFirstForm(){
 		}
 		num.fileName3[1]=data;
 	}));
+	document.querySelector("select").addEventListener('blur', ()=>{
+		validitySelect(document.querySelector("select"))
+	})
+	let fieldInput = Array.from(document.querySelectorAll("input"));
+	for(let i=0;i<fieldInput.length;i++){
+		if(fieldInput[i].type==="text"){
+			fieldInput[i].addEventListener('blur', ()=>{
+				validitySelect(fieldInput[i])
+			})
+		}
+	}
 }
 
 createFirstForm();
@@ -145,6 +156,18 @@ document.getElementById("form-add").addEventListener('click',()=>{
 
 	})
 
+	input1.querySelector("select").addEventListener('blur', ()=>{
+		validitySelect(input1.querySelector("select"))
+	})
+	let fieldInput = Array.from(input1.querySelectorAll("input"));
+	for(let i=0;i<fieldInput.length;i++){
+		if(fieldInput[i].type==="text"){
+			fieldInput[i].addEventListener('blur', ()=>{
+				validitySelect(fieldInput[i])
+			})
+		}
+	}
+
 	templateForms.append(input1);
 	num.countForm +=1;
 	num.numberForm+=1;
@@ -156,8 +179,9 @@ document.getElementById("submit").addEventListener('click',()=>{
 	for(let i=0;i<num.fileName1.length-1;i++){
 		if(num.fileName1[i+1]!="none"){
 			let form = document.getElementById(`form${i+1}`);
-			if (!(form.checkValidity())) {
-				alert("Не все поля формы заполнены")
+			validityForm(form)
+
+			if(!(form.checkValidity())){
 				return;
 			}
 		}
@@ -166,6 +190,7 @@ document.getElementById("submit").addEventListener('click',()=>{
 	for(let i=0;i<num.fileName1.length-1;i++){
 		if(num.fileName1[i+1]!="none"){
 			let form = document.getElementById(`form${i+1}`);
+
 			if (form.checkValidity()) {
 
 				const formData = new FormData(form);
@@ -200,3 +225,45 @@ document.getElementById("submit").addEventListener('click',()=>{
 
 	createFirstForm();
 })
+
+
+function validityForm(form){
+
+	let fieldSelect = form.querySelector("select");
+	console.log(form)
+	if(!fieldSelect.value){
+		validitySelect(fieldSelect)
+		console.log("1")
+	}
+	let fieldInput = Array.from(form.querySelectorAll("input"));
+	for(let i=0;i<fieldInput.length;i++){
+		if(fieldInput[i].type==="text"){
+			validityText(fieldInput[i])
+		}
+	}
+
+
+
+}
+
+function validitySelect(select){
+	if(!select.value){
+		select.classList.add("form__field-input-error")
+		select.addEventListener('change', ()=>{
+			validitySelect(select)
+		})
+	}else{
+		select.classList.remove("form__field-input-error")
+	}
+}
+function validityText(input){
+	if(!input.value){
+		input.classList.add("form__field-input-error")
+		input.addEventListener('change', ()=>{
+			validitySelect(input)
+		})
+	}else{
+		input.classList.remove("form__field-input-error")
+	}
+}
+

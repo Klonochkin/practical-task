@@ -215,3 +215,12 @@ tbody > tr td{
 .forms{
 	margin-top: 10px; margin-bottom: 10px;
 }
+
+.form__field-input-error{
+	/* background: #FF8630; */
+	border: 1px rgb(255, 0, 0) solid;
+}
+.form__field-input:focus{
+	outline: none;
+	/* background: red; */
+}
