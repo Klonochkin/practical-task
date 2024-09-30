@@ -1,7 +1,7 @@
 import { updateTableData } from '/static/updateTableData.js';
 import { globalData as num } from '/static/globalData.js';
 import {saveFile} from '/static/saveFile.js';
-
+import {deleteFile} from '/static/deleteFile.js';
 
 
 function getData(){
@@ -54,11 +54,40 @@ function getData(){
 	.catch((error) => console.error('Ошибка:', error));
 }
 
+function createFirstForm(){
+	let templateForms = document.getElementById("forms");
+	const templateText = document.querySelector('#template-form');
+	const input1 = templateText.content.cloneNode(true);
+	input1.querySelector('form').id= `form1` ;
+	input1.getElementById('form-delete').classList.add("visually-hidden");
+	templateForms.append(input1);
+	document.getElementById('photo_device_select').addEventListener('input',(event) => saveFile(event,(data) => {
+		if(num.fileName1[1]!=""){
+			deleteFile(num.fileName1[1]);
+		}
+		num.fileName1[1]=data;
+	}));
+	document.getElementById('photo_serial_number_device_select').addEventListener('input',(event) => saveFile(event,(data) => {
+		if(num.fileName2[1]!=""){
+			deleteFile(num.fileName2[1]);
+		}
+		num.fileName2[1]=data;
+	}));
+	document.getElementById('photo_ITAM_device_select').addEventListener('input',(event) => saveFile(event,(data) => {
+		if(num.fileName3[1]!=""){
+			deleteFile(num.fileName3[1]);
+		}
+		num.fileName3[1]=data;
+	}));
+}
+
+createFirstForm();
+
 getData();
 
-document.getElementById('photo_device_select').addEventListener('input',(event) => saveFile(event,(data) => {num.fileName1[1]=data;}));
-document.getElementById('photo_serial_number_device_select').addEventListener('input',(event) => saveFile(event,(data) => {num.fileName2[1]=data;}));
-document.getElementById('photo_ITAM_device_select').addEventListener('input',(event) => saveFile(event,(data) => {num.fileName3[1]=data;}));
+
+
+
 document.getElementById('exit').addEventListener('click',() => {
 	fetch('/exit', {
 		method: 'POST',
@@ -82,12 +111,21 @@ document.getElementById("form-add").addEventListener('click',()=>{
 	num.fileName3.push("");
 	input1.querySelector('form').id= `form${number}` ;
 	input1.getElementById('photo_device_select').addEventListener('input',(event) => saveFile(event,(data) => {
+		if(num.fileName1[number]!=""){
+			deleteFile(num.fileName1[number]);
+		}
 		num.fileName1[number]=data;
 	}));
 	input1.getElementById('photo_serial_number_device_select').addEventListener('input',(event) => saveFile(event,(data) => {
+		if(num.fileName2[number]!=""){
+			deleteFile(num.fileName2[number]);
+		}
 		num.fileName2[number]=data;
 	}));
 	input1.getElementById('photo_ITAM_device_select').addEventListener('input',(event) => saveFile(event,(data) => {
+		if(num.fileName3[number]!=""){
+			deleteFile(num.fileName3[number]);
+		}
 		num.fileName3[number]=data;
 	}));
 
@@ -140,7 +178,6 @@ document.getElementById("submit").addEventListener('click',()=>{
 			}
 		}
 	}
-	document.getElementById('form1').reset();
 
 	num.fileName1.length=2;
 	num.fileName2.length=2;
@@ -152,10 +189,7 @@ document.getElementById("submit").addEventListener('click',()=>{
 
 	num.countForm=2;
 
-	document.getElementById('check1').classList.add("visually-hidden");
-	document.getElementById('check2').classList.add("visually-hidden");
-	document.getElementById('check3').classList.add("visually-hidden");
-
 	document.getElementById("forms").textContent = '';
 
+	createFirstForm();
 })
