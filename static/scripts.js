@@ -3,7 +3,6 @@ import { globalData as num } from '/static/globalData.js';
 import {saveFile} from '/static/saveFile.js';
 import {deleteFile} from '/static/deleteFile.js';
 
-
 function getData(){
 	fetch('/data',{
 		method: 'GET',
@@ -130,7 +129,15 @@ document.getElementById("form-add").addEventListener('click',()=>{
 	}));
 
 	input1.getElementById('form-delete').addEventListener('click',()=>{
-
+		if(num.fileName1[number]!=""){
+			deleteFile(num.fileName1[number]);
+		}
+		if(num.fileName2[number]!=""){
+			deleteFile(num.fileName2[number]);
+		}
+		if(num.fileName3[number]!=""){
+			deleteFile(num.fileName3[number]);
+		}
 		num.fileName1[number]="none";
 		num.fileName2[number]="none";
 		num.fileName3[number]="none";
