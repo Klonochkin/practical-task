@@ -16,15 +16,6 @@ body{
 	max-width: 1200px;
 	margin-inline: auto;
 }
-.form__content{
-	display: flex;
-	flex-wrap: wrap;
-	gap:1rem;
-	padding: 1rem;
-	border: 2px rgb(210, 210, 210) solid;
-	border-radius: 0.35rem;
-	align-items:start;
-}
 .form__fields-upload-file{
 	display: flex;
 	flex-direction: column;
@@ -32,19 +23,37 @@ body{
 	gap:1rem;
 }
 
+.form__content{
+	display: flex;
+	flex-wrap: wrap;
+	gap:1rem;
+	padding: 1rem;
+
+	align-items:start;
+}
 .form{
   border-style: none;
   display: flex;
   flex-direction:column;
   gap: 20px;
+  border: 2px rgb(210, 210, 210) solid;
+  border-radius: 0.35rem;
+  margin-bottom: 10px;
   align-items:start;
 }
-.form__submit{
+.form__button-add{
   padding: 6px;
   display: inline-flex;
   align-items:center;
   gap: 5px;
 }
+.form__submit{
+	padding: 6px;
+	display: inline-flex;
+	align-items:center;
+	gap: 5px;
+	margin-top: 10px;
+  }
 .form__field-input{
   padding: 2.5px;
   text-align: left;
@@ -103,7 +112,16 @@ body{
   line-height: 30px;
 }
 .visually-hidden{
-  visibility: hidden;
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	border: 0;
+	padding: 0;
+	white-space: nowrap;
+	clip-path: inset(100%);
+	clip: rect(0 0 0 0);
+	overflow: hidden;
 }
 .table__head-button{
   width: 45px;
@@ -182,4 +200,18 @@ tbody > tr td{
 	margin: 0;
 	margin-top: 0.5rem;
 	font-size: 0.8rem;
+}
+
+.form__delete-button{
+	padding: 0.5rem;
+	margin-left:15px;
+	margin-bottom:15px;
+	display: flex;
+	align-items: center;
+}
+.form__error-submit{
+	color:red;
+}
+.forms{
+	margin-top: 10px; margin-bottom: 10px;
 }
