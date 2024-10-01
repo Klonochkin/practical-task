@@ -1,6 +1,5 @@
 import { updateTableData } from '/static/updateTableData.js';
 import { globalData as num } from '/static/globalData.js';
-import {saveFile} from '/static/saveFile.js';
 import {deleteFile} from '/static/deleteFile.js';
 
 function getData(){
@@ -72,42 +71,80 @@ function createForm(){
 	input1.querySelector('form').id= `form${number}` ;
 	let maxSizeError = document.querySelector(`#form${number}`);
 	let p = Array.from(parentForm.parentNode.querySelectorAll("p"))
-	input1.getElementById('photo_device_select').addEventListener('input',(event) => saveFile(event,(data) => {
-		if(data==="maxSize"){
+	const img = Array.from(parentForm.parentNode.querySelectorAll("img"));
+	input1.getElementById('photo_device_select').addEventListener('input',(event) => {
+		const input = event.target;
+		if(event.target.files[0]===undefined){
+			input.nextElementSibling.classList.add("visually-hidden")
+			img[0].classList.add("visually-hidden")
+			return;
+		}
+		const fileSize = event.target.files[0].size;
+		const maxSize = 10*1024*1024;
+		if (fileSize > maxSize) {
+			input.type = 'text';
+			input.type = "file";
+			input.nextElementSibling.classList.add("visually-hidden")
 			p[4].classList.add("form__field-lable-error")
+			input.nextElementSibling.classList.add("visually-hidden")
+			img[0].classList.add("visually-hidden")
 		}
 		else{
 			p[4].classList.remove("form__field-lable-error")
+			input.nextElementSibling.classList.remove("visually-hidden")
+			img[0].classList.remove("visually-hidden")
+			img[0].src = URL.createObjectURL(event.target.files[0]);
 		}
-		if(num.fileName1[number]!=""){
-			deleteFile(num.fileName1[number]);
+	});
+	input1.getElementById('photo_serial_number_device_select').addEventListener('input',(event) =>{
+		const input = event.target;
+		if(event.target.files[0]===undefined){
+			input.nextElementSibling.classList.add("visually-hidden")
+			img[1].classList.add("visually-hidden")
+			return;
 		}
-		num.fileName1[number]=data;
-	}));
-	input1.getElementById('photo_serial_number_device_select').addEventListener('input',(event) => saveFile(event,(data) => {
-		if(data==="maxSize"){
+		const fileSize = event.target.files[0].size;
+		const maxSize = 10*1024*1024;
+		if (fileSize > maxSize) {
+			input.type = 'text';
+			input.type = "file";
+			input.nextElementSibling.classList.add("visually-hidden")
 			p[5].classList.add("form__field-lable-error")
+			input.nextElementSibling.classList.add("visually-hidden")
+			img[1].classList.add("visually-hidden")
 		}
 		else{
 			p[5].classList.remove("form__field-lable-error")
+			input.nextElementSibling.classList.remove("visually-hidden")
+			img[1].classList.remove("visually-hidden")
+			img[1].src = URL.createObjectURL(event.target.files[0]);
 		}
-		if(num.fileName2[number]!=""){
-			deleteFile(num.fileName2[number]);
+	});
+	input1.getElementById('photo_ITAM_device_select').addEventListener('input',(event) => {
+		const input = event.target;
+		if(event.target.files[0]===undefined){
+			input.nextElementSibling.classList.add("visually-hidden")
+			img[2].classList.add("visually-hidden")
+			return;
 		}
-		num.fileName2[number]=data;
-	}));
-	input1.getElementById('photo_ITAM_device_select').addEventListener('input',(event) => saveFile(event,(data) => {
-		if(data==="maxSize"){
+
+		const fileSize = event.target.files[0].size;
+		const maxSize = 10*1024*1024;
+		if (fileSize > maxSize) {
+			input.type = 'text';
+			input.type = "file";
+			input.nextElementSibling.classList.add("visually-hidden")
 			p[6].classList.add("form__field-lable-error")
+			input.nextElementSibling.classList.add("visually-hidden")
+			img[2].classList.add("visually-hidden")
 		}
 		else{
 			p[6].classList.remove("form__field-lable-error")
+			input.nextElementSibling.classList.remove("visually-hidden")
+			img[2].classList.remove("visually-hidden")
+			img[2].src = URL.createObjectURL(event.target.files[0]);
 		}
-		if(num.fileName3[number]!=""){
-			deleteFile(num.fileName3[number]);
-		}
-		num.fileName3[number]=data;
-	}));
+	});
 
 	input1.getElementById('form-delete').addEventListener('click',()=>{
 		if(num.fileName1[number]!=""){
@@ -213,11 +250,6 @@ document.getElementById("submit").addEventListener('click',()=>{
 			if (form.checkValidity()) {
 
 				const formData = new FormData(form);
-
-				formData.set('photo_device',num.fileName1[i+1]);
-				formData.set('photo_serial_number_device',num.fileName2[i+1]);
-				formData.set('photo_ITAM_device',num.fileName3[i+1]);
-
 				fetch('/form', {
 					method: 'POST',
 					credentials: 'include',

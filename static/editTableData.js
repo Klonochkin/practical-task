@@ -1,9 +1,6 @@
 
 import {globalData as num} from '/static/globalData.js';
 
-import {saveFile} from '/static/saveFile.js';
-
-import {deleteFile} from '/static/deleteFile.js';
 
 export function editTableData(numId) {
 	const name = document.getElementById(`add${numId}`);
@@ -58,34 +55,61 @@ export function editTableData(numId) {
 	const input4 = templateFile.content.cloneNode(true);
 	input4.querySelector('input').id="newValue4";
 	row.cells[5].append(input4);
-	document.getElementById('newValue4').addEventListener('input',(event) => saveFile(event,(data) => {
-		num.lastFile1 = data;
+	document.getElementById('newValue4').addEventListener('input',(event) => {
 		let deleteName = row.cells[5].querySelector('img').src;
+		let name = deleteName;
+		const input = event.target;
+		const fileSize = event.target.files[0].size;
+		const maxSize = 10*1024*1024;
+		if (fileSize > maxSize) {
+			input.type = 'text';
+			input.type = "file";
+			row.cells[5].querySelector('img').src = name;
+			return;
+		}
 		deleteName = deleteName.split('/', 6);
-		deleteFile(deleteName[5]);
-		row.cells[5].querySelector('img').src = `static/images/${data}`;
-	}));
+		num.lastFile1 = deleteName[5];
+		row.cells[5].querySelector('img').src = URL.createObjectURL(event.target.files[0]);
 
+	});
 	const input5 = templateFile.content.cloneNode(true);
 	input5.querySelector('input').id="newValue5";
 	row.cells[6].append(input5);
-	document.getElementById('newValue5').addEventListener('input',(event) => saveFile(event,(data) => {
-		num.lastFile2 = data;
+	document.getElementById('newValue5').addEventListener('input',(event) => {
 		let deleteName = row.cells[6].querySelector('img').src;
+		let name = deleteName;
+		const input = event.target;
+		const fileSize = event.target.files[0].size;
+		const maxSize = 10*1024*1024;
+		if (fileSize > maxSize) {
+			input.type = 'text';
+			input.type = "file";
+			row.cells[6].querySelector('img').src = name;
+			return;
+		}
 		deleteName = deleteName.split('/', 6);
-		deleteFile(deleteName[5]);
-		row.cells[6].querySelector('img').src = `static/images/${data}`;
-	}));
+		num.lastFile2 = deleteName[5];
+		row.cells[6].querySelector('img').src = URL.createObjectURL(event.target.files[0]);
+	});
 
 	const input6 = templateFile.content.cloneNode(true);
 	input6.querySelector('input').id="newValue6";
 	row.cells[7].append(input6);
-	document.getElementById('newValue6').addEventListener('input',(event) => saveFile(event,(data) => {
-		num.lastFile3 = data;
+	document.getElementById('newValue6').addEventListener('input',(event) =>{
 		let deleteName = row.cells[7].querySelector('img').src;
+		let name = deleteName;
+		const input = event.target;
+		const fileSize = event.target.files[0].size;
+		const maxSize = 10*1024*1024;
+		if (fileSize > maxSize) {
+			input.type = 'text';
+			input.type = "file";
+			row.cells[7].querySelector('img').src = name;
+			return;
+		}
 		deleteName = deleteName.split('/', 6);
-		deleteFile(deleteName[5]);
-		row.cells[7].querySelector('img').src = `static/images/${data}`;
-	}));
+		num.lastFile3 = deleteName[5];
+		row.cells[7].querySelector('img').src = URL.createObjectURL(event.target.files[0]);
+	});
 
 }
