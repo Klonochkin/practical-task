@@ -53,65 +53,7 @@ function getData(){
 	.catch((error) => console.error('Ошибка:', error));
 }
 
-function createFirstForm(){
-	let templateForms = document.getElementById("forms");
-	const templateText = document.querySelector('#template-form');
-	const input1 = templateText.content.cloneNode(true);
-	input1.querySelector('form').id= `form1` ;
-	input1.getElementById('form-delete').classList.add("visually-hidden");
-	templateForms.append(input1);
-	document.getElementById('photo_device_select').addEventListener('input',(event) => saveFile(event,(data) => {
-		if(num.fileName1[1]!=""){
-			deleteFile(num.fileName1[1]);
-		}
-		num.fileName1[1]=data;
-	}));
-	document.getElementById('photo_serial_number_device_select').addEventListener('input',(event) => saveFile(event,(data) => {
-		if(num.fileName2[1]!=""){
-			deleteFile(num.fileName2[1]);
-		}
-		num.fileName2[1]=data;
-	}));
-	document.getElementById('photo_ITAM_device_select').addEventListener('input',(event) => saveFile(event,(data) => {
-		if(num.fileName3[1]!=""){
-			deleteFile(num.fileName3[1]);
-		}
-		num.fileName3[1]=data;
-	}));
-	document.querySelector("select").addEventListener('blur', ()=>{
-		validitySelect(document.querySelector("select"))
-	})
-	let fieldInput = Array.from(document.querySelectorAll("input"));
-	for(let i=0;i<fieldInput.length;i++){
-		if(fieldInput[i].type==="text"){
-			fieldInput[i].addEventListener('blur', ()=>{
-				validitySelect(fieldInput[i])
-			})
-		}
-	}
-}
-
-createFirstForm();
-
-getData();
-
-
-
-
-document.getElementById('exit').addEventListener('click',() => {
-	fetch('/exit', {
-		method: 'POST',
-		credentials: 'include'
-	})
-	.then(response => response.json())
-	.then(()=>{
-		window.location.href = '/';
-	})
-	.catch(error => console.error(error));
-});
-
-
-document.getElementById("form-add").addEventListener('click',()=>{
+function createForm(){
 	let templateForms = document.getElementById("forms");
 	const templateText = document.querySelector('#template-form');
 	const input1 = templateText.content.cloneNode(true);
@@ -119,6 +61,9 @@ document.getElementById("form-add").addEventListener('click',()=>{
 	num.fileName1.push("");
 	num.fileName2.push("");
 	num.fileName3.push("");
+	if(number===1){
+		input1.getElementById('form-delete').classList.add("visually-hidden");
+	}
 	input1.querySelector('form').id= `form${number}` ;
 	input1.getElementById('photo_device_select').addEventListener('input',(event) => saveFile(event,(data) => {
 		if(num.fileName1[number]!=""){
@@ -149,35 +94,86 @@ document.getElementById("form-add").addEventListener('click',()=>{
 		if(num.fileName3[number]!=""){
 			deleteFile(num.fileName3[number]);
 		}
-		num.fileName1[number]="none";
-		num.fileName2[number]="none";
-		num.fileName3[number]="none";
+		num.fileName1[number]=null;
+		num.fileName2[number]=null;
+		num.fileName3[number]=null;
 		document.getElementById(`form${number}`).remove();
 
 	})
-
-	input1.querySelector("select").addEventListener('blur', ()=>{
-		validitySelect(input1.querySelector("select"))
+	let field = input1.querySelector("select");
+	let parentField = field.parentNode;
+	let parentForm = parentField.parentNode;
+	let paragraph = Array.from(parentForm.querySelectorAll("p"));
+	console.log(paragraph);
+	field.addEventListener('blur', ()=>{
+		validitySelect(field,paragraph[0]);
+	})
+	field.addEventListener('focus',()=>{
+		field.classList.remove("form__field-input-error");
+		parentField.classList.remove("form__field-lable-error");
 	})
 	let fieldInput = Array.from(input1.querySelectorAll("input"));
 	for(let i=0;i<fieldInput.length;i++){
 		if(fieldInput[i].type==="text"){
-			fieldInput[i].addEventListener('blur', ()=>{
-				validitySelect(fieldInput[i])
+			let fieldInputValue = fieldInput[i];
+			let parentField = fieldInputValue.parentNode;
+			fieldInputValue.addEventListener('blur', ()=>{
+				validitySelect(fieldInputValue,paragraph[i+1])
+			})
+			fieldInputValue.addEventListener('focus',()=>{
+				fieldInputValue.classList.remove("form__field-input-error");
+				parentField.classList.remove("form__field-lable-error");
+			})
+		}
+		if(fieldInput[i].type==="file"){
+			let input = fieldInput[i]
+			input.addEventListener('input', ()=>{
+				let parentField = input.parentNode.parentNode;
+				if(!input.value){
+					parentField.classList.add("form__field-lable-error");
+					input.classList.add("form__field-input-error");
+					input.addEventListener('input', ()=>{
+						parentField.classList.remove("form__field-lable-error");
+					})
+				}else{
+					parentField.classList.remove("form__field-lable-error");
+				}
 			})
 		}
 	}
-
 	templateForms.append(input1);
 	num.countForm +=1;
 	num.numberForm+=1;
+}
 
+createForm();
+
+getData();
+
+
+
+
+document.getElementById('exit').addEventListener('click',() => {
+	fetch('/exit', {
+		method: 'POST',
+		credentials: 'include'
+	})
+	.then(response => response.json())
+	.then(()=>{
+		window.location.href = '/';
+	})
+	.catch(error => console.error(error));
+});
+
+
+document.getElementById("form-add").addEventListener('click',()=>{
+	createForm();
 })
 
 document.getElementById("submit").addEventListener('click',()=>{
 
 	for(let i=0;i<num.fileName1.length-1;i++){
-		if(num.fileName1[i+1]!="none"){
+		if(num.fileName1[i+1]!==null){
 			let form = document.getElementById(`form${i+1}`);
 			validityForm(form)
 
@@ -188,7 +184,7 @@ document.getElementById("submit").addEventListener('click',()=>{
 	}
 
 	for(let i=0;i<num.fileName1.length-1;i++){
-		if(num.fileName1[i+1]!="none"){
+		if(num.fileName1[i+1]!==null){
 			let form = document.getElementById(`form${i+1}`);
 
 			if (form.checkValidity()) {
@@ -211,59 +207,66 @@ document.getElementById("submit").addEventListener('click',()=>{
 		}
 	}
 
-	num.fileName1.length=2;
-	num.fileName2.length=2;
-	num.fileName3.length=2;
+	num.fileName1.length=1;
+	num.fileName2.length=1;
+	num.fileName3.length=1;
 
-	num.fileName1[1]="";
-	num.fileName2[1]="";
-	num.fileName3[1]="";
-
-	num.countForm=2;
+	num.countForm=1;
 
 	document.getElementById("forms").textContent = '';
 
-	createFirstForm();
+	createForm();
 })
-
 
 function validityForm(form){
 
 	let fieldSelect = form.querySelector("select");
-	console.log(form)
+	let parentField = fieldSelect.parentNode;
+	let parentForm = parentField.parentNode;
+	let paragraph = Array.from(parentForm.querySelectorAll("p"));
 	if(!fieldSelect.value){
-		validitySelect(fieldSelect)
-		console.log("1")
+		validitySelect(fieldSelect,paragraph[0])
 	}
 	let fieldInput = Array.from(form.querySelectorAll("input"));
 	for(let i=0;i<fieldInput.length;i++){
 		if(fieldInput[i].type==="text"){
-			validityText(fieldInput[i])
+			validitySelect(fieldInput[i],paragraph[i+1])
+		}
+		if(fieldInput[i].type==="file"){
+			validityFile(fieldInput[i])
 		}
 	}
-
-
-
 }
 
-function validitySelect(select){
-	if(!select.value){
-		select.classList.add("form__field-input-error")
-		select.addEventListener('change', ()=>{
-			validitySelect(select)
+function validitySelect(field,paragraph){
+	let parentField = field.parentNode;
+
+	console.log(paragraph)
+	if(!field.value){
+		field.classList.add("form__field-input-error");
+		parentField.classList.add("form__field-lable-error");
+		paragraph.classList.remove("visually-hidden")
+		field.addEventListener('input', ()=>{
+			parentField.classList.remove("form__field-lable-error");
+			field.classList.remove("form__field-input-error");
+			paragraph.classList.add("visually-hidden")
 		})
 	}else{
-		select.classList.remove("form__field-input-error")
+		field.classList.remove("form__field-input-error");
+		parentField.classList.remove("form__field-lable-error");
+		paragraph.classList.add("visually-hidden")
 	}
 }
-function validityText(input){
+function validityFile(input){
+	let parentField = input.parentNode.parentNode;
 	if(!input.value){
-		input.classList.add("form__field-input-error")
-		input.addEventListener('change', ()=>{
-			validitySelect(input)
+		parentField.classList.add("form__field-lable-error");
+		input.classList.add("form__field-input-error");
+		input.addEventListener('input', ()=>{
+			parentField.classList.remove("form__field-lable-error");
 		})
 	}else{
-		input.classList.remove("form__field-input-error")
+		parentField.classList.remove("form__field-lable-error");
 	}
 }
 

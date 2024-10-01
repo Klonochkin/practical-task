@@ -4,7 +4,6 @@ import {globalData as num} from '/static/globalData.js';
 import {updateTableData} from '/static/updateTableData.js';
 
 export function saveTableData(numId) {
-	console.log(`add${numId}`)
 
 	document.getElementById(`save${numId}`).classList.remove("visually-hidden")
 	let newValue0 = document.getElementById('newValue0').value;

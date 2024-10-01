@@ -1,13 +1,13 @@
 
 export const globalData = {
     defaultValue2: "",
-    fileName1: ["none",""],
-    fileName2: ["none",""],
-    fileName3: ["none",""],
+    fileName1: [null],
+    fileName2: [null],
+    fileName3: [null],
 	lastFile1: '',
 	lastFile2: '',
 	lastFile3: '',
 	fetchData: '',
-	countForm: 2,
+	countForm: 1,
 	numberForm:0,
 };
