@@ -13,6 +13,10 @@ body{
 	align-items: center;
 }
 .container{
+	max-width: 1000px;
+	margin-inline: auto;
+}
+.container__table{
 	max-width: 1200px;
 	margin-inline: auto;
 }
@@ -27,8 +31,6 @@ body{
 	display: flex;
 	flex-wrap: wrap;
 	gap:1rem;
-	padding: 1rem;
-
 	align-items:start;
 }
 .form{
@@ -36,6 +38,7 @@ body{
   display: flex;
   flex-direction:column;
   gap: 20px;
+  padding: 1rem;
   border: 2px rgb(210, 210, 210) solid;
   border-radius: 0.35rem;
   margin-bottom: 10px;
@@ -66,6 +69,11 @@ body{
   font-size: 15px;
   border-radius: 0.35rem;
 }
+.form__field-input:focus{
+	border: 1px deepskyblue solid;
+	background: rgba(173, 216, 230, 0.25);
+}
+
 .table__field-input{
 	text-align: left;
 	background: rgb(255, 255, 255);
@@ -204,8 +212,6 @@ tbody > tr td{
 
 .form__delete-button{
 	padding: 0.5rem;
-	margin-left:15px;
-	margin-bottom:15px;
 	display: flex;
 	align-items: center;
 }
@@ -214,4 +220,21 @@ tbody > tr td{
 }
 .forms{
 	margin-top: 10px; margin-bottom: 10px;
+}
+
+.form__field-input-error{
+	border: 1px rgb(255, 0, 0) solid;
+	background: rgba(255, 0, 0, 0.1);
+}
+.form__field-input:focus{
+	outline: none;
+}
+.form__field-lable-error{
+	color: red;
+}
+.form__message-error{
+	color: rgba(255, 0, 0);
+	margin: 0;
+	margin-top: -0.6rem;
+	font-size: 0.8rem;
 }

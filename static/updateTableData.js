@@ -73,7 +73,6 @@ export function updateTableData(
 	const buttonEdit = template.content.cloneNode(true);
 	buttonEdit.querySelector('button').id = `add${number}`;
 	buttonEdit.querySelector('button').addEventListener("click", () => {
-		console.log(number);
 		editTableData(number);
 	});
 	buttonEdit.querySelector('button').value = "Изменить";

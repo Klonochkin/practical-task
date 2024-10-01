@@ -53,34 +53,123 @@ function getData(){
 	.catch((error) => console.error('Ошибка:', error));
 }
 
-function createFirstForm(){
+function createForm(){
 	let templateForms = document.getElementById("forms");
 	const templateText = document.querySelector('#template-form');
 	const input1 = templateText.content.cloneNode(true);
-	input1.querySelector('form').id= `form1` ;
-	input1.getElementById('form-delete').classList.add("visually-hidden");
+	let number = num.countForm;
+	num.fileName1.push("");
+	num.fileName2.push("");
+	num.fileName3.push("");
+	let field = input1.querySelector("select");
+	let parentField = field.parentNode;
+	let parentForm = parentField.parentNode;
+	let paragraph = Array.from(parentForm.querySelectorAll("p"));
+	let fieldInput = Array.from(input1.querySelectorAll("input"));
+	if(number===1){
+		input1.getElementById('form-delete').classList.add("visually-hidden");
+	}
+	input1.querySelector('form').id= `form${number}` ;
+	let maxSizeError = document.querySelector(`#form${number}`);
+	let p = Array.from(parentForm.parentNode.querySelectorAll("p"))
+	input1.getElementById('photo_device_select').addEventListener('input',(event) => saveFile(event,(data) => {
+		if(data==="maxSize"){
+			p[4].classList.add("form__field-lable-error")
+		}
+		else{
+			p[4].classList.remove("form__field-lable-error")
+		}
+		if(num.fileName1[number]!=""){
+			deleteFile(num.fileName1[number]);
+		}
+		num.fileName1[number]=data;
+	}));
+	input1.getElementById('photo_serial_number_device_select').addEventListener('input',(event) => saveFile(event,(data) => {
+		if(data==="maxSize"){
+			p[5].classList.add("form__field-lable-error")
+		}
+		else{
+			p[5].classList.remove("form__field-lable-error")
+		}
+		if(num.fileName2[number]!=""){
+			deleteFile(num.fileName2[number]);
+		}
+		num.fileName2[number]=data;
+	}));
+	input1.getElementById('photo_ITAM_device_select').addEventListener('input',(event) => saveFile(event,(data) => {
+		if(data==="maxSize"){
+			p[6].classList.add("form__field-lable-error")
+		}
+		else{
+			p[6].classList.remove("form__field-lable-error")
+		}
+		if(num.fileName3[number]!=""){
+			deleteFile(num.fileName3[number]);
+		}
+		num.fileName3[number]=data;
+	}));
+
+	input1.getElementById('form-delete').addEventListener('click',()=>{
+		if(num.fileName1[number]!=""){
+			deleteFile(num.fileName1[number]);
+		}
+		if(num.fileName2[number]!=""){
+			deleteFile(num.fileName2[number]);
+		}
+		if(num.fileName3[number]!=""){
+			deleteFile(num.fileName3[number]);
+		}
+		num.fileName1[number]=null;
+		num.fileName2[number]=null;
+		num.fileName3[number]=null;
+		document.getElementById(`form${number}`).remove();
+
+	})
+
+	field.addEventListener('blur', ()=>{
+		validitySelect(field,paragraph[0]);
+	})
+	field.addEventListener('focus',()=>{
+		field.classList.remove("form__field-input-error");
+		parentField.classList.remove("form__field-lable-error");
+	})
+
+	for(let i=0;i<fieldInput.length;i++){
+		if(fieldInput[i].type==="text"){
+			let fieldInputValue = fieldInput[i];
+			let parentField = fieldInputValue.parentNode;
+			fieldInputValue.addEventListener('blur', ()=>{
+				validitySelect(fieldInputValue,paragraph[i+1])
+			})
+			fieldInputValue.addEventListener('focus',()=>{
+				fieldInputValue.classList.remove("form__field-input-error");
+				parentField.classList.remove("form__field-lable-error");
+			})
+		}
+		if(fieldInput[i].type==="file"){
+			let input = fieldInput[i]
+			input.addEventListener('input', ()=>{
+				let parentField = input.parentNode.parentNode;
+				if(!input.value){
+					parentField.classList.add("form__field-lable-error");
+					input.classList.add("form__field-input-error");
+					input.addEventListener('input', ()=>{
+						if(input.value){
+							parentField.classList.remove("form__field-lable-error");
+						}
+					})
+				}else{
+					parentField.classList.remove("form__field-lable-error");
+				}
+			})
+		}
+	}
 	templateForms.append(input1);
-	document.getElementById('photo_device_select').addEventListener('input',(event) => saveFile(event,(data) => {
-		if(num.fileName1[1]!=""){
-			deleteFile(num.fileName1[1]);
-		}
-		num.fileName1[1]=data;
-	}));
-	document.getElementById('photo_serial_number_device_select').addEventListener('input',(event) => saveFile(event,(data) => {
-		if(num.fileName2[1]!=""){
-			deleteFile(num.fileName2[1]);
-		}
-		num.fileName2[1]=data;
-	}));
-	document.getElementById('photo_ITAM_device_select').addEventListener('input',(event) => saveFile(event,(data) => {
-		if(num.fileName3[1]!=""){
-			deleteFile(num.fileName3[1]);
-		}
-		num.fileName3[1]=data;
-	}));
+	num.countForm +=1;
+	num.numberForm+=1;
 }
 
-createFirstForm();
+createForm();
 
 getData();
 
@@ -101,71 +190,26 @@ document.getElementById('exit').addEventListener('click',() => {
 
 
 document.getElementById("form-add").addEventListener('click',()=>{
-	let templateForms = document.getElementById("forms");
-	const templateText = document.querySelector('#template-form');
-	const input1 = templateText.content.cloneNode(true);
-	let number = num.countForm;
-	num.fileName1.push("");
-	num.fileName2.push("");
-	num.fileName3.push("");
-	input1.querySelector('form').id= `form${number}` ;
-	input1.getElementById('photo_device_select').addEventListener('input',(event) => saveFile(event,(data) => {
-		if(num.fileName1[number]!=""){
-			deleteFile(num.fileName1[number]);
-		}
-		num.fileName1[number]=data;
-	}));
-	input1.getElementById('photo_serial_number_device_select').addEventListener('input',(event) => saveFile(event,(data) => {
-		if(num.fileName2[number]!=""){
-			deleteFile(num.fileName2[number]);
-		}
-		num.fileName2[number]=data;
-	}));
-	input1.getElementById('photo_ITAM_device_select').addEventListener('input',(event) => saveFile(event,(data) => {
-		if(num.fileName3[number]!=""){
-			deleteFile(num.fileName3[number]);
-		}
-		num.fileName3[number]=data;
-	}));
-
-	input1.getElementById('form-delete').addEventListener('click',()=>{
-		if(num.fileName1[number]!=""){
-			deleteFile(num.fileName1[number]);
-		}
-		if(num.fileName2[number]!=""){
-			deleteFile(num.fileName2[number]);
-		}
-		if(num.fileName3[number]!=""){
-			deleteFile(num.fileName3[number]);
-		}
-		num.fileName1[number]="none";
-		num.fileName2[number]="none";
-		num.fileName3[number]="none";
-		document.getElementById(`form${number}`).remove();
-
-	})
-
-	templateForms.append(input1);
-	num.countForm +=1;
-	num.numberForm+=1;
-
+	createForm();
 })
 
 document.getElementById("submit").addEventListener('click',()=>{
 
 	for(let i=0;i<num.fileName1.length-1;i++){
-		if(num.fileName1[i+1]!="none"){
+		if(num.fileName1[i+1]!==null){
 			let form = document.getElementById(`form${i+1}`);
-			if (!(form.checkValidity())) {
-				alert("Не все поля формы заполнены")
+			validityForm(form)
+
+			if(!(form.checkValidity())){
 				return;
 			}
 		}
 	}
 
 	for(let i=0;i<num.fileName1.length-1;i++){
-		if(num.fileName1[i+1]!="none"){
+		if(num.fileName1[i+1]!==null){
 			let form = document.getElementById(`form${i+1}`);
+
 			if (form.checkValidity()) {
 
 				const formData = new FormData(form);
@@ -186,17 +230,67 @@ document.getElementById("submit").addEventListener('click',()=>{
 		}
 	}
 
-	num.fileName1.length=2;
-	num.fileName2.length=2;
-	num.fileName3.length=2;
+	num.fileName1.length=1;
+	num.fileName2.length=1;
+	num.fileName3.length=1;
 
-	num.fileName1[1]="";
-	num.fileName2[1]="";
-	num.fileName3[1]="";
-
-	num.countForm=2;
+	num.countForm=1;
 
 	document.getElementById("forms").textContent = '';
 
-	createFirstForm();
+	createForm();
 })
+
+function validityForm(form){
+
+	let fieldSelect = form.querySelector("select");
+	let parentField = fieldSelect.parentNode;
+	let parentForm = parentField.parentNode;
+	let paragraph = Array.from(parentForm.querySelectorAll("p"));
+	if(!fieldSelect.value){
+		validitySelect(fieldSelect,paragraph[0])
+	}
+	let fieldInput = Array.from(form.querySelectorAll("input"));
+	for(let i=0;i<fieldInput.length;i++){
+		if(fieldInput[i].type==="text"){
+			validitySelect(fieldInput[i],paragraph[i+1])
+		}
+		if(fieldInput[i].type==="file"){
+			validityFile(fieldInput[i])
+		}
+	}
+}
+
+function validitySelect(field,paragraph){
+	let parentField = field.parentNode;
+
+	if(!field.value){
+		field.classList.add("form__field-input-error");
+		parentField.classList.add("form__field-lable-error");
+		paragraph.classList.remove("visually-hidden")
+		field.addEventListener('input', ()=>{
+			parentField.classList.remove("form__field-lable-error");
+			field.classList.remove("form__field-input-error");
+			paragraph.classList.add("visually-hidden")
+		})
+	}else{
+		field.classList.remove("form__field-input-error");
+		parentField.classList.remove("form__field-lable-error");
+		paragraph.classList.add("visually-hidden")
+	}
+}
+function validityFile(input){
+	let parentField = input.parentNode.parentNode;
+	if(!input.value){
+		parentField.classList.add("form__field-lable-error");
+		input.classList.add("form__field-input-error");
+		input.addEventListener('input', ()=>{
+			if(input.value){
+				parentField.classList.remove("form__field-lable-error");
+			}
+		})
+	}else{
+		parentField.classList.remove("form__field-lable-error");
+	}
+}
+
