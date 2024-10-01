@@ -87,7 +87,6 @@ async def upload(request: Request):
     photo_serial_number_device = form_data.get("photo_serial_number_device")
     photo_ITAM_device = form_data.get("photo_ITAM_device")
 
-
     check = posts.find_one({"user_id":res["id"],"id": int(id)})
     if(check==None):
         raise HTTPException(status_code=404, detail="Запись не найдена")
@@ -97,22 +96,26 @@ async def upload(request: Request):
     posts.update_many(filter, {'$set': {'model_device': form_data.get("model_device")}})
     posts.update_many(filter, {'$set': {'serial_number': form_data.get("serial_number")}})
     posts.update_many(filter, {'$set': {'ITAM_device': form_data.get("ITAM_device")}})
+    delete = posts.find_one({'user_id':res["id"],'id': int(id)})
     if(photo_device!="undefined"):
+        await new_delete_file(delete['photo_device'])
         name_photo_device = await newUpload(photo_device)
         posts.update_many(filter, {'$set': {'photo_device': name_photo_device}})
     if(photo_serial_number_device!="undefined"):
+        await new_delete_file(delete['photo_serial_number_device'])
         name_photo_serial_number_device = await newUpload(photo_serial_number_device)
         posts.update_many(filter, {'$set': {'photo_serial_number_device': name_photo_serial_number_device}})
     if(photo_ITAM_device!="undefined"):
+        await new_delete_file(delete['photo_ITAM_device'])
         name_photo_ITAM_device = await newUpload(photo_ITAM_device)
         posts.update_many(filter, {'$set': {'photo_ITAM_device': name_photo_ITAM_device}})
 
-    delete1 = form_data.get("delete1")
-    await new_delete_file(delete1)
-    delete2 = form_data.get("delete2")
-    await new_delete_file(delete2)
-    delete3 = form_data.get("delete3")
-    await new_delete_file(delete3)
+    # delete1 = form_data.get("delete1")
+    # await new_delete_file(delete1)
+    # delete2 = form_data.get("delete2")
+    # await new_delete_file(delete2)
+    # delete3 = form_data.get("delete3")
+    # await new_delete_file(delete3)
 
     return {"message": "Запись успешно изменена"}
 

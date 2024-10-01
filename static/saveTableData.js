@@ -39,9 +39,6 @@ export function saveTableData(numId) {
 	formData.append("photo_device", newValue4);
 	formData.append("photo_serial_number_device", newValue5);
 	formData.append("photo_ITAM_device", newValue6);
-	formData.append("delete1", num.lastFile1);
-	formData.append("delete2", num.lastFile2);
-	formData.append("delete3", num.lastFile3);
 	fetch('/data', {
 		method: 'PUT',
 		credentials: 'include',
