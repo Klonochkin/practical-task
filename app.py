@@ -59,6 +59,17 @@ async def welcome(request:Request) :
         return RedirectResponse(url="/")
     return templates.TemplateResponse(name='register.html',context={'request':request})
 
+async def new_delete_file(name: str):
+    path = "static/images/"
+    path+=name
+    try:
+        if(path!="static/images/"):
+            os.remove(path)
+    except FileNotFoundError:
+        pass
+    return {"message": "Файл успешно удалён"}
+
+
 @app.put('/data')
 async def upload(request: Request):
     cookies = request.cookies
@@ -66,27 +77,42 @@ async def upload(request: Request):
     res = postsSession.find_one({"Session": session_value})
     if(res==None):
         raise HTTPException(status_code=403, detail="Аккаунт не найден")
-    data = await request.json()
-    id = data["id"]
-    value0 = data["value0"]
-    value1 = data["value1"]
-    value2 = data["value2"]
-    value3 = data["value3"]
-    value4 = data["value4"]
-    value5 = data["value5"]
-    value6 = data["value6"]
+
+    form_data = await request.form()
+    n=posts.count_documents({})
+    newN = posts.find({'user_id': res["id"] })
+    count = int(len(list(newN)))+1
+    id=form_data.get("id")
+    photo_device = form_data.get("photo_device")
+    photo_serial_number_device = form_data.get("photo_serial_number_device")
+    photo_ITAM_device = form_data.get("photo_ITAM_device")
+
+
     check = posts.find_one({"user_id":res["id"],"id": int(id)})
     if(check==None):
         raise HTTPException(status_code=404, detail="Запись не найдена")
-    filter = {'user_id':res["id"],'id': id}
+    filter = {'user_id':res["id"],'id': int(id)}
 
-    posts.update_many(filter, {'$set': {'type_device': value0}})
-    posts.update_many(filter, {'$set': {'model_device': value1}})
-    posts.update_many(filter, {'$set': {'serial_number': value2}})
-    posts.update_many(filter, {'$set': {'ITAM_device': value3}})
-    posts.update_many(filter, {'$set': {'photo_device': value4}})
-    posts.update_many(filter, {'$set': {'photo_serial_number_device': value5}})
-    posts.update_many(filter, {'$set': {'photo_ITAM_device': value6}})
+    posts.update_many(filter, {'$set': {'type_device': form_data.get("type_device")}})
+    posts.update_many(filter, {'$set': {'model_device': form_data.get("model_device")}})
+    posts.update_many(filter, {'$set': {'serial_number': form_data.get("serial_number")}})
+    posts.update_many(filter, {'$set': {'ITAM_device': form_data.get("ITAM_device")}})
+    if(photo_device!="undefined"):
+        name_photo_device = await newUpload(photo_device)
+        posts.update_many(filter, {'$set': {'photo_device': name_photo_device}})
+    if(photo_serial_number_device!="undefined"):
+        name_photo_serial_number_device = await newUpload(photo_serial_number_device)
+        posts.update_many(filter, {'$set': {'photo_serial_number_device': name_photo_serial_number_device}})
+    if(photo_ITAM_device!="undefined"):
+        name_photo_ITAM_device = await newUpload(photo_ITAM_device)
+        posts.update_many(filter, {'$set': {'photo_ITAM_device': name_photo_ITAM_device}})
+
+    delete1 = form_data.get("delete1")
+    await new_delete_file(delete1)
+    delete2 = form_data.get("delete2")
+    await new_delete_file(delete2)
+    delete3 = form_data.get("delete3")
+    await new_delete_file(delete3)
 
     return {"message": "Запись успешно изменена"}
 
@@ -136,13 +162,7 @@ async def delete(request: Request,numDelete: str):
         result = posts.update_one(filter, {'$set': {'id': i-1}})
     return {"message": "Запись успешно удалена"}
 
-@app.post('/uploadFile')
-async def uploadFile(file: UploadFile, request: Request):
-    cookies = request.cookies
-    session_value = cookies.get("session")
-    res = postsSession.find_one({"Session": session_value})
-    if(res==None):
-        raise HTTPException(status_code=403, detail="Аккаунт не найден")
+async def newUpload(file: UploadFile):
     newName = "".join([alphabet[random.randint(0, len(alphabet) -1)] for _ in range(0, 60)])
     exp=f".{file.filename.rsplit('.', 1)[1]}"
     newName +=exp
@@ -162,6 +182,12 @@ async def sendForm(request: Request):
     n=posts.count_documents({})
     newN = posts.find({'user_id': res["id"] })
     count = int(len(list(newN)))+1
+    photo_device = form_data.get("photo_device")
+    photo_serial_number_device = form_data.get("photo_serial_number_device")
+    photo_ITAM_device = form_data.get("photo_ITAM_device")
+    name_photo_device = await newUpload(photo_device)
+    name_photo_serial_number_device = await newUpload(photo_serial_number_device)
+    name_photo_ITAM_device = await newUpload(photo_ITAM_device)
     if( posts.count_documents({}) == n):
         post = {
             "user_id": res["id"],
@@ -170,9 +196,9 @@ async def sendForm(request: Request):
             "model_device": form_data.get("model_device"),
             "serial_number": form_data.get("serial_number"),
             "ITAM_device": form_data.get("ITAM_device"),
-            "photo_device": form_data.get("photo_device"),
-            "photo_serial_number_device": form_data.get("photo_serial_number_device"),
-            "photo_ITAM_device": form_data.get("photo_ITAM_device"),
+            "photo_device": name_photo_device,
+            "photo_serial_number_device": name_photo_serial_number_device,
+            "photo_ITAM_device": name_photo_ITAM_device,
         }
         res = posts.insert_one(post).inserted_id
     return {"message": "Запись успешно добавлена"}

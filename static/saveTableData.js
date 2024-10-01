@@ -13,10 +13,9 @@ export function saveTableData(numId) {
 	let newValue1 = document.getElementById('newValue1').value;
 	let newValue2 = document.getElementById('newValue2').value;
 	let newValue3 = document.getElementById('newValue3').value;
-	let newValue4 = num.lastFile1;
-	let newValue5 = num.lastFile2;
-	let newValue6 = num.lastFile3;
-
+	let newValue4 = document.getElementById('newValue4').files[0];
+	let newValue5 = document.getElementById('newValue5').files[0];
+	let newValue6 = document.getElementById('newValue6').files[0];
 	let data = num.fetchData;
 	const photo_device = data[numId-1].photo_device;
 	const photo_serial_number_device =
@@ -31,22 +30,22 @@ export function saveTableData(numId) {
 	if(newValue6===""){
 		newValue6=photo_ITAM_device;
 	}
+	const formData = new FormData();
+	formData.append("id", numId);
+	formData.append("type_device", newValue0);
+	formData.append("model_device", newValue1);
+	formData.append("serial_number", newValue2);
+	formData.append("ITAM_device", newValue3);
+	formData.append("photo_device", newValue4);
+	formData.append("photo_serial_number_device", newValue5);
+	formData.append("photo_ITAM_device", newValue6);
+	formData.append("delete1", num.lastFile1);
+	formData.append("delete2", num.lastFile2);
+	formData.append("delete3", num.lastFile3);
 	fetch('/data', {
 		method: 'PUT',
 		credentials: 'include',
-		headers: {
-			'Content-Type': 'application/json',
-		},
-		body: JSON.stringify({
-			id: numId,
-			value0: newValue0,
-			value1: newValue1,
-			value2: newValue2,
-			value3: newValue3,
-			value4: newValue4,
-			value5: newValue5,
-			value6: newValue6
-		}),
+		body: formData
 	})
 		.then((response) => {
 			if (response.ok) {
