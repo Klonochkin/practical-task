@@ -61,23 +61,48 @@ function createForm(){
 	num.fileName1.push("");
 	num.fileName2.push("");
 	num.fileName3.push("");
+	let field = input1.querySelector("select");
+	let parentField = field.parentNode;
+	let parentForm = parentField.parentNode;
+	let paragraph = Array.from(parentForm.querySelectorAll("p"));
+	let fieldInput = Array.from(input1.querySelectorAll("input"));
 	if(number===1){
 		input1.getElementById('form-delete').classList.add("visually-hidden");
 	}
 	input1.querySelector('form').id= `form${number}` ;
+	let maxSizeError = document.querySelector(`#form${number}`);
+	let p = Array.from(parentForm.parentNode.querySelectorAll("p"))
 	input1.getElementById('photo_device_select').addEventListener('input',(event) => saveFile(event,(data) => {
+		if(data==="maxSize"){
+			p[4].classList.add("form__field-lable-error")
+		}
+		else{
+			p[4].classList.remove("form__field-lable-error")
+		}
 		if(num.fileName1[number]!=""){
 			deleteFile(num.fileName1[number]);
 		}
 		num.fileName1[number]=data;
 	}));
 	input1.getElementById('photo_serial_number_device_select').addEventListener('input',(event) => saveFile(event,(data) => {
+		if(data==="maxSize"){
+			p[5].classList.add("form__field-lable-error")
+		}
+		else{
+			p[5].classList.remove("form__field-lable-error")
+		}
 		if(num.fileName2[number]!=""){
 			deleteFile(num.fileName2[number]);
 		}
 		num.fileName2[number]=data;
 	}));
 	input1.getElementById('photo_ITAM_device_select').addEventListener('input',(event) => saveFile(event,(data) => {
+		if(data==="maxSize"){
+			p[6].classList.add("form__field-lable-error")
+		}
+		else{
+			p[6].classList.remove("form__field-lable-error")
+		}
 		if(num.fileName3[number]!=""){
 			deleteFile(num.fileName3[number]);
 		}
@@ -100,11 +125,7 @@ function createForm(){
 		document.getElementById(`form${number}`).remove();
 
 	})
-	let field = input1.querySelector("select");
-	let parentField = field.parentNode;
-	let parentForm = parentField.parentNode;
-	let paragraph = Array.from(parentForm.querySelectorAll("p"));
-	console.log(paragraph);
+
 	field.addEventListener('blur', ()=>{
 		validitySelect(field,paragraph[0]);
 	})
@@ -112,7 +133,7 @@ function createForm(){
 		field.classList.remove("form__field-input-error");
 		parentField.classList.remove("form__field-lable-error");
 	})
-	let fieldInput = Array.from(input1.querySelectorAll("input"));
+
 	for(let i=0;i<fieldInput.length;i++){
 		if(fieldInput[i].type==="text"){
 			let fieldInputValue = fieldInput[i];
@@ -133,7 +154,9 @@ function createForm(){
 					parentField.classList.add("form__field-lable-error");
 					input.classList.add("form__field-input-error");
 					input.addEventListener('input', ()=>{
-						parentField.classList.remove("form__field-lable-error");
+						if(input.value){
+							parentField.classList.remove("form__field-lable-error");
+						}
 					})
 				}else{
 					parentField.classList.remove("form__field-lable-error");
@@ -241,7 +264,6 @@ function validityForm(form){
 function validitySelect(field,paragraph){
 	let parentField = field.parentNode;
 
-	console.log(paragraph)
 	if(!field.value){
 		field.classList.add("form__field-input-error");
 		parentField.classList.add("form__field-lable-error");
@@ -263,7 +285,9 @@ function validityFile(input){
 		parentField.classList.add("form__field-lable-error");
 		input.classList.add("form__field-input-error");
 		input.addEventListener('input', ()=>{
-			parentField.classList.remove("form__field-lable-error");
+			if(input.value){
+				parentField.classList.remove("form__field-lable-error");
+			}
 		})
 	}else{
 		parentField.classList.remove("form__field-lable-error");

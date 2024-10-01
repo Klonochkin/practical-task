@@ -16,6 +16,10 @@ body{
 	max-width: 1000px;
 	margin-inline: auto;
 }
+.container__table{
+	max-width: 1200px;
+	margin-inline: auto;
+}
 .form__fields-upload-file{
 	display: flex;
 	flex-direction: column;
