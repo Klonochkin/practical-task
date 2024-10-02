@@ -52,6 +52,7 @@ function getData(){
 	.catch((error) => console.error('Ошибка:', error));
 }
 
+
 function createForm(){
 	let templateForms = document.getElementById("forms");
 	const templateText = document.querySelector('#template-form');
@@ -325,4 +326,21 @@ function validityFile(input){
 		parentField.classList.remove("form__field-lable-error");
 	}
 }
+
+document.getElementById("export").addEventListener('click',()=>{
+    fetch('/export',{
+        method: 'POST',
+        credentials: 'include',
+        })
+      .then(response => response.blob())
+      .then(blob => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'Table Device.xlsx';
+        a.click();
+      });
+
+})
+
 

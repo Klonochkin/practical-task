@@ -4,6 +4,8 @@ from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import JSONResponse,RedirectResponse
 from pymongo import MongoClient
+from openpyxl import Workbook
+from openpyxl.worksheet.hyperlink import Hyperlink
 import string
 import random
 import hashlib
@@ -300,3 +302,80 @@ async def auth(request:Request):
     response = JSONResponse(content=content)
     response.delete_cookie(key="session")
     return response
+
+@app.post("/export")
+async def export(request:Request):
+    cookies = request.cookies
+    session_value = cookies.get("session")
+    auth = postsSession.find_one({"Session": session_value})
+    if(auth==None):
+        raise HTTPException(status_code=403, detail="Аккаунт не найден")
+    wb = Workbook()
+    ws = wb.active
+
+    res = posts.find({'user_id': auth["id"] })
+
+    id = []
+    type_device = []
+    model_device = []
+    serial_number = []
+    ITAM_device = []
+    photo_device = []
+    photo_serial_number_device = []
+    photo_ITAM_device = []
+
+    for document in res:
+        id.append(document['id'])
+        type_device.append(document['type_device'])
+        model_device.append(document['model_device'])
+        serial_number.append(document['serial_number'])
+        ITAM_device.append(document['ITAM_device'])
+        _photo_device = "localhost:8000/static/images/"
+        _photo_device+=document['photo_device']
+        photo_device.append(_photo_device)
+        _photo_serial_number_device = "localhost:8000/static/images/"
+        _photo_serial_number_device +=document['photo_serial_number_device']
+        photo_serial_number_device.append(_photo_serial_number_device)
+        _photo_ITAM_device = "localhost:8000/static/images/"
+        _photo_ITAM_device +=document['photo_serial_number_device']
+        photo_ITAM_device.append(_photo_ITAM_device)
+
+    ws['A1'] = '№'
+    ws['B1'] = 'Вид техники'
+    ws['C1'] = 'Модель'
+    ws['D1'] = 'Серийный номер'
+    ws['E1'] = 'ITAM'
+    ws['F1'] = 'Устройство'
+    ws['G1'] = 'Серийный номер'
+    ws['H1'] = 'Инвентарный номер'
+
+    for i in range(len(id)):
+        ws.cell(row=i+2, column=1).value = id[i]
+        ws.cell(row=i+2, column=2).value = type_device[i]
+        ws.cell(row=i+2, column=3).value = model_device[i]
+        ws.cell(row=i+2, column=4).value = serial_number[i]
+        ws.cell(row=i+2, column=5).value = ITAM_device[i]
+        hyperlink_obj = Hyperlink(ref="", target=photo_device[i])
+        ws.cell(row=i+2, column=6).hyperlink = hyperlink_obj
+        ws.cell(row=i+2, column=7).value = photo_serial_number_device[i]
+        ws.cell(row=i+2, column=8).value = photo_ITAM_device[i]
+
+    for col_idx, col in enumerate(ws.columns, start=1):
+        max_width = 0
+        for cell in col:
+            if cell.value:
+                width = len(str(cell.value)) + 2
+                if width > max_width:
+                    max_width = width
+        ws.column_dimensions[chr(64 + col_idx)].width = max_width
+
+    wb.save('Table Device.xlsx')
+    data = list(ws.values)
+    print(data)
+    return Response(
+        content=open("Table Device.xlsx", "rb").read(),
+        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        headers={
+            "Content-Disposition": "attachment; filename=Table Device.xlsx"
+        }
+    )
