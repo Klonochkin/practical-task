@@ -337,7 +337,7 @@ document.getElementById("export").addEventListener('click',()=>{
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'Table Device.xlsx';
+        a.download = 'Table Device.zip';
         a.click();
       });
 
