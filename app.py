@@ -6,7 +6,8 @@ from fastapi.responses import JSONResponse,RedirectResponse
 from pymongo import MongoClient
 from openpyxl import Workbook
 from openpyxl.worksheet.hyperlink import Hyperlink
-from openpyxl.drawing.image import Image
+from PIL import Image
+# from openpyxl.drawing.image import Image
 import string
 import random
 import hashlib
@@ -165,10 +166,17 @@ async def delete(request: Request,numDelete: str):
 async def newUpload(file: UploadFile):
     newName = "".join([alphabet[random.randint(0, len(alphabet) -1)] for _ in range(0, 60)])
     exp=f".{file.filename.rsplit('.', 1)[1]}"
-    newName +=exp
-    file.filename = newName
+    tempName = newName + exp
+    file.filename = tempName
+    newName += ".webp"
+
     with open(f"static/images/{file.filename}", "wb") as f:
             f.write(await file.read())
+
+    img = Image.open(f"static/images/{file.filename}")
+    img.save(os.path.join("static/images", newName), format="webp")
+
+    print(f"new name: {newName}")
     return newName
 
 @app.post('/form')
@@ -402,3 +410,31 @@ async def export(request:Request):
             "Accept-Encoding": "gzip, compress, br"
         }
     )
+
+@app.get('/{name}/{size}')
+async def test(request:Request,name: str,size: int):
+
+    img = Image.open(f"static/images/{name}")
+
+    width, height = img.size
+    print(width, height)
+
+    path = f"static/images/{name}"
+
+    width_percent = (size / float(img.size[0]))
+
+    height_size = int((float(img.size[1]) * float(width_percent)))
+
+    new_image = img.resize((size, height_size))
+
+    new_image.save("new_image.webp", format="webp")
+
+    width, height = new_image.size
+    print(width, height)
+
+    with open("new_image.webp", "rb") as f:
+        image_data = f.read()
+
+    os.remove("new_image.webp")
+
+    return Response(content=image_data, media_type="image/webp")
