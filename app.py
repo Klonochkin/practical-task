@@ -37,7 +37,7 @@ postsSession = dbSession.posts
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 @app.get('/')
-async def welcome(request:Request) :
+async def welcome(request:Request):
     cookies = request.cookies
     session_value = cookies.get("session")
     res = postsSession.find_one({"Session": session_value})
@@ -397,6 +397,8 @@ async def export(request:Request):
         content=open("Table Device.zip", "rb").read(),
         media_type="application/zip",
         headers={
-            "Content-Disposition": "attachment; filename=Table Device.zip"
+            "Content-Disposition": "attachment; filename=Table Device.zip",
+            "Cache-Control": "max-age=3600",
+            "Accept-Encoding": "gzip, compress, br"
         }
     )

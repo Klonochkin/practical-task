@@ -4,6 +4,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
+    <meta http-equiv="Accept-Encoding" content="gzip, compress, br">
 	<link href="/static/style-auth.css" rel="stylesheet">
 	<link rel="shortcut icon" href="/static/favicon-32x32.png">
     <title>Добро пожаловать</title>
@@ -14,10 +15,10 @@
 		<form class="form" id="form-register">
 			<legend class="form__title">Регистрация</legend>
 			<label class="form__label-text">Email:
-				<input id="email-register" type="text" required placeholder="example@yandex.ru" class="input">
+				<input id="email-register" type="email" name="email" autocomplete="on" required placeholder="example@yandex.ru" class="input">
 			</label>
 			<label class="form__label-text">Пароль:
-				<input id="password-register" type="password" required class="input">
+				<input id="password-register" type="password" name="password" autocomplete="on" required class="input">
 			</label>
 			<div class="form__error visually-hidden" id="error-register"></div>
 			<button class="button">Зарегистрироваться</button>

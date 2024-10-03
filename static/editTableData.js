@@ -1,4 +1,3 @@
-
 import {globalData as num} from '/static/globalData.js';
 
 

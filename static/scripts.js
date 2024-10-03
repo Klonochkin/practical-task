@@ -68,7 +68,26 @@ function createForm(){
 	let fieldInput = Array.from(input1.querySelectorAll("input"));
 	if(number===1){
 		input1.getElementById('form-delete').classList.add("visually-hidden");
+        input1.getElementById('form-delete').remove();
 	}
+    else{
+        input1.getElementById('form-delete').addEventListener('click',()=>{
+            if(num.fileName1[number]!=""){
+                deleteFile(num.fileName1[number]);
+            }
+            if(num.fileName2[number]!=""){
+                deleteFile(num.fileName2[number]);
+            }
+            if(num.fileName3[number]!=""){
+                deleteFile(num.fileName3[number]);
+            }
+            num.fileName1[number]=null;
+            num.fileName2[number]=null;
+            num.fileName3[number]=null;
+            document.getElementById(`form${number}`).remove();
+
+        })
+    }
 	input1.querySelector('form').id= `form${number}` ;
 	let maxSizeError = document.querySelector(`#form${number}`);
 	let p = Array.from(parentForm.parentNode.querySelectorAll("p"))
@@ -147,22 +166,7 @@ function createForm(){
 		}
 	});
 
-	input1.getElementById('form-delete').addEventListener('click',()=>{
-		if(num.fileName1[number]!=""){
-			deleteFile(num.fileName1[number]);
-		}
-		if(num.fileName2[number]!=""){
-			deleteFile(num.fileName2[number]);
-		}
-		if(num.fileName3[number]!=""){
-			deleteFile(num.fileName3[number]);
-		}
-		num.fileName1[number]=null;
-		num.fileName2[number]=null;
-		num.fileName3[number]=null;
-		document.getElementById(`form${number}`).remove();
 
-	})
 
 	field.addEventListener('blur', ()=>{
 		validitySelect(field,paragraph[0]);
@@ -342,5 +346,3 @@ document.getElementById("export").addEventListener('click',()=>{
       });
 
 })
-
-
