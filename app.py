@@ -4,10 +4,14 @@ from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import JSONResponse,RedirectResponse
 from pymongo import MongoClient
+from openpyxl import Workbook
+from openpyxl.worksheet.hyperlink import Hyperlink
+from openpyxl.drawing.image import Image
 import string
 import random
 import hashlib
 import os
+import zipfile
 
 
 # Алфавит для создания случайных названий картинок
@@ -109,13 +113,6 @@ async def upload(request: Request):
         await new_delete_file(delete['photo_ITAM_device'])
         name_photo_ITAM_device = await newUpload(photo_ITAM_device)
         posts.update_many(filter, {'$set': {'photo_ITAM_device': name_photo_ITAM_device}})
-
-    # delete1 = form_data.get("delete1")
-    # await new_delete_file(delete1)
-    # delete2 = form_data.get("delete2")
-    # await new_delete_file(delete2)
-    # delete3 = form_data.get("delete3")
-    # await new_delete_file(delete3)
 
     return {"message": "Запись успешно изменена"}
 
@@ -300,3 +297,106 @@ async def auth(request:Request):
     response = JSONResponse(content=content)
     response.delete_cookie(key="session")
     return response
+
+@app.post("/export")
+async def export(request:Request):
+    cookies = request.cookies
+    session_value = cookies.get("session")
+    auth = postsSession.find_one({"Session": session_value})
+    if(auth==None):
+        raise HTTPException(status_code=403, detail="Аккаунт не найден")
+    wb = Workbook()
+    ws = wb.active
+
+    res = posts.find({'user_id': auth["id"] })
+
+    id = []
+    type_device = []
+    model_device = []
+    serial_number = []
+    ITAM_device = []
+    photo_device = []
+    photo_serial_number_device = []
+    photo_ITAM_device = []
+    files_to_add = []
+
+    for document in res:
+        id.append(document['id'])
+        type_device.append(document['type_device'])
+        model_device.append(document['model_device'])
+        serial_number.append(document['serial_number'])
+        ITAM_device.append(document['ITAM_device'])
+        _photo_device = "static/images/"
+        _photo_device+=document['photo_device']
+        photo_device.append(_photo_device)
+        files_to_add.append(_photo_device)
+        _photo_serial_number_device = "static/images/"
+        _photo_serial_number_device +=document['photo_serial_number_device']
+        photo_serial_number_device.append(_photo_serial_number_device)
+        files_to_add.append(_photo_serial_number_device)
+        _photo_ITAM_device = "static/images/"
+        _photo_ITAM_device +=document['photo_ITAM_device']
+        photo_ITAM_device.append(_photo_ITAM_device)
+        files_to_add.append(_photo_ITAM_device)
+
+    with zipfile.ZipFile('Table Device.zip', 'w') as zip_file:
+        pass
+
+
+    wb.save('Table Device.xlsx')
+    with zipfile.ZipFile('Table Device.zip', 'a') as zip_file:
+        for file in files_to_add:
+            zip_file.write(file)
+
+    ws['A1'] = '№'
+    ws['B1'] = 'Вид техники'
+    ws['C1'] = 'Модель'
+    ws['D1'] = 'Серийный номер'
+    ws['E1'] = 'ITAM'
+    ws['F1'] = 'Устройство'
+    ws['G1'] = 'Серийный номер'
+    ws['H1'] = 'Инвентарный номер'
+    for i in range(len(id)):
+        ws.cell(row=i+2, column=1).value = id[i]
+        ws.cell(row=i+2, column=2).value = type_device[i]
+        ws.cell(row=i+2, column=3).value = model_device[i]
+        ws.cell(row=i+2, column=4).value = serial_number[i]
+        ws.cell(row=i+2, column=5).value = ITAM_device[i]
+        hyperlink_photo_device = Hyperlink(ref="", target=photo_device[i])
+        ws.cell(row=i+2, column=6).hyperlink = hyperlink_photo_device
+        hyperlink_photo_serial_number_device = Hyperlink(ref="", target=photo_serial_number_device[i])
+        ws.cell(row=i+2, column=7).hyperlink = hyperlink_photo_serial_number_device
+        hyperlink_photo_ITAM_device = Hyperlink(ref="", target=photo_ITAM_device[i])
+        ws.cell(row=i+2, column=8).hyperlink = hyperlink_photo_ITAM_device
+
+    for col_idx, col in enumerate(ws.columns, start=1):
+        max_width = 0
+        for cell in col:
+            if cell.value:
+                width = len(str(cell.value)) + 2
+                if width > max_width:
+                    max_width = width
+        ws.column_dimensions[chr(64 + col_idx)].width = max_width
+
+    wb.save('Table Device.xlsx')
+
+
+
+    data = list(ws.values)
+
+
+    path_to_dir = 'dir'
+
+    output_filename = 'zip'
+
+
+    with zipfile.ZipFile('Table Device.zip', 'a') as zip_file:
+        zip_file.write("Table Device.xlsx")
+
+    return Response(
+        content=open("Table Device.zip", "rb").read(),
+        media_type="application/zip",
+        headers={
+            "Content-Disposition": "attachment; filename=Table Device.zip"
+        }
+    )

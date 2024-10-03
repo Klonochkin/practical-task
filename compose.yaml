@@ -1,13 +1,13 @@
 services:
     db:
         image: mongo
-        restart: always
+        restart: on-failure
         ports:
             - 27017:27017
 
     app:
         build: .
-        restart: always
+        restart: on-failure
         volumes:
         - myimage:/app/static/images
         ports:
