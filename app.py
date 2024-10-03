@@ -13,6 +13,7 @@ import random
 import hashlib
 import os
 import zipfile
+import brotli
 
 
 # Алфавит для создания случайных названий картинок
@@ -44,7 +45,10 @@ async def welcome(request:Request):
     res = postsSession.find_one({"Session": session_value})
     if(res==None):
         return RedirectResponse(url="/auth")
-    return templates.TemplateResponse(name='index.html',context={'request':request})
+
+    html = templates.TemplateResponse(name='index.html',context={'request':request})
+    compressed_html = brotli.compress(html.body)
+    return Response(content=compressed_html, media_type="text/html", headers={"Content-Encoding": "br"})
 
 @app.get('/auth')
 async def welcome(request:Request) :
@@ -53,7 +57,9 @@ async def welcome(request:Request) :
     res = postsSession.find_one({"Session": session_value})
     if(res!=None):
         return RedirectResponse(url="/")
-    return templates.TemplateResponse(name='auth.html',context={'request':request})
+    html = templates.TemplateResponse(name='auth.html',context={'request':request})
+    compressed_html = brotli.compress(html.body)
+    return Response(content=compressed_html, media_type="text/html", headers={"Content-Encoding": "br"})
 
 @app.get('/register')
 async def welcome(request:Request) :
@@ -62,7 +68,9 @@ async def welcome(request:Request) :
     res = postsSession.find_one({"Session": session_value})
     if(res!=None):
         return RedirectResponse(url="/")
-    return templates.TemplateResponse(name='register.html',context={'request':request})
+    html = templates.TemplateResponse(name='register.html',context={'request':request})
+    compressed_html = brotli.compress(html.body)
+    return Response(content=compressed_html, media_type="text/html", headers={"Content-Encoding": "br"})
 
 async def new_delete_file(name: str):
     path = "static/images/"
@@ -176,7 +184,6 @@ async def newUpload(file: UploadFile):
     img = Image.open(f"static/images/{file.filename}")
     img.save(os.path.join("static/images", newName), format="webp")
 
-    print(f"new name: {newName}")
     return newName
 
 @app.post('/form')
@@ -417,7 +424,6 @@ async def test(request:Request,name: str,size: int):
     img = Image.open(f"static/images/{name}")
 
     width, height = img.size
-    print(width, height)
 
     path = f"static/images/{name}"
 
@@ -430,7 +436,6 @@ async def test(request:Request,name: str,size: int):
     new_image.save("new_image.webp", format="webp")
 
     width, height = new_image.size
-    print(width, height)
 
     with open("new_image.webp", "rb") as f:
         image_data = f.read()
