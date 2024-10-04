@@ -1,8 +1,10 @@
 @font-face {
   font-family: 'Roboto';
-  src: url('/static/Roboto.woff2');
+  src: url('/static/assets/Roboto.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
+  font-display: swap;
+  Accept-Encoding: gzip, compress, br
 }
 body{
   font-family: 'Roboto', sans-serif;
@@ -204,7 +206,7 @@ tbody > tr td{
 	gap:5px
 }
 .form__field-input-tip{
-	color: rgb(151, 151, 151);
+	color: rgb(85, 85, 85);
 	margin: 0;
 	margin-top: 0.5rem;
 	font-size: 0.8rem;
@@ -237,4 +239,7 @@ tbody > tr td{
 	margin: 0;
 	margin-top: -0.6rem;
 	font-size: 0.8rem;
+}
+.table__img{
+    object-fit: contain;
 }

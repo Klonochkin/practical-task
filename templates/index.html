@@ -4,8 +4,10 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
-    <link href="/static/style.css" rel="stylesheet">
-	<link rel="shortcut icon" href="/static/favicon-32x32.png">
+    <meta http-equiv="Accept-Encoding" content="gzip, compress, br">
+    <meta name="description" content="инвентаризация">
+    <link href="/static/styles/style.css" rel="stylesheet">
+	<link rel="shortcut icon" href="/static/assets/favicon-32x32.png">
     <title>Форма</title>
 </head>
 
@@ -19,7 +21,88 @@
 	</header>
 	<main>
 		<div class="container">
-			<div class="forms" id="forms"></div>
+			<div class="forms" id="forms">
+                <form class="form" id="form1">
+                    <div class="form__content">
+                        <label  class="form__label-text" id="error1">Выберите тип оборудования:
+                            <select class="form__field-input" name="type_device" id="type_device_select" required>
+                                <option value="" disabled selected>Выберите тип оборудования</option>
+                                <option value="Компьютер">Компьютер</option>
+                                <option value="Принтер">Принтер</option>
+                                <option value="Сканер">Сканер</option>
+                                <option value="Ксерокс">Ксерокс</option>
+                                <option value="Телефон">Телефон</option>
+                                <option value="Шредер">Шредер</option>
+                            </select>
+                        </label>
+                        <p class="form__message-error visually-hidden">Выберите элемент в списке.</p>
+                        <label class="form__label-text" id="error2">Введите модель оборудования:
+                            <input class="form__field-input" type="text" name="model_device"
+                                id="model_device_select" placeholder="Pantum P215" required autocomplete="off">
+                        </label>
+                        <p class="form__message-error visually-hidden">Заполните это поле.</p>
+                        <label class="form__label-text" id="error3">Введите серийный номер:
+                            <input class="form__field-input" type="text" name="serial_number"
+                                id="serial_number_device_select" placeholder="151810310001" required
+                                autocomplete="off">
+                        </label>
+                        <p class="form__message-error visually-hidden">Заполните это поле.</p>
+                        <label class="form__label-text" id="error4">Введите инвентарный номер (ITAM):
+                            <input class="form__field-input" type="text" name="ITAM_device" id="ITAM_device_select"
+                                placeholder="11111" required autocomplete="off">
+                        </label>
+                        <p class="form__message-error visually-hidden">Заполните это поле.</p>
+                    </div>
+                    <div class="form__content form__fields-upload-file">
+                        <div>
+                            <label class="form__label-file" id="error5">Фотография устройства:
+                                <span class="form__field-file">
+                                    <span class="form__upload-button">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-upload"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+                                        Загрузить
+                                    </span>
+                                    <input class="form__field-input form__field-input--ghost" type="file" name="photo_device"
+                                    id="photo_device_select" accept=".png,.jpeg,.jpg" required>
+                                    <svg class="visually-hidden" id="check1" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><path d="M20 6 9 17l-5-5"/></svg>
+                                </span>
+                            </label>
+                            <p class="form__field-input-tip">Файл не может быть больше 10МБ</p>
+                            <img width="150" class="visually-hidden" alt="photo-device">
+                        </div>
+                        <div>
+                            <label class="form__label-text" id="error6">Фотография серийного номера:
+                                <span class="form__field-file">
+                                    <span class="form__upload-button">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-upload"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+                                        Загрузить
+                                    </span>
+                                    <input class="form__field-input form__field-input--ghost" type="file" name="photo_serial_number_device"
+                                        id="photo_serial_number_device_select" accept=".png,.jpeg,.jpg" required>
+                                        <svg class="visually-hidden" id="check2" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><path d="M20 6 9 17l-5-5"/></svg>
+                                    </span>
+                                </label>
+                            <p class="form__field-input-tip">Файл не может быть больше 10МБ</p>
+                            <img width="150" class="visually-hidden" alt="photo-serial">
+                        </div>
+                        <div>
+                            <label class="form__label-text" id="error7">Фотография инвентарного номера (ITAM):
+                                <span class="form__field-file">
+                                    <span class="form__upload-button">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-upload"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+                                        Загрузить
+                                    </span>
+                                    <input class="form__field-input form__field-input--ghost" type="file" name="photo_ITAM_device"
+                                        id="photo_ITAM_device_select" accept=".png,.jpeg,.jpg" required>
+                                        <svg class="visually-hidden" id="check3" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><path d="M20 6 9 17l-5-5"/></svg>
+                                    </span>
+                                </label>
+                            <p class="form__field-input-tip">Файл не может быть больше 10МБ</p>
+                            <img width="150" class="visually-hidden" alt="photo-ITAM">
+                        </div>
+                    </div>
+                </form>
+
+            </div>
 
 			<div class="container header">
 				<button class="form__button-add" id="form-add">
@@ -103,7 +186,7 @@
     </template>
 
     <template id="template-img">
-        <img width="150">
+        <img class="table__img" width="150" height="150" loading="lazy" alt="tablePhoto">
     </template>
 
 	<template id="template-form">
@@ -152,7 +235,7 @@
 						</span>
 					</label>
 					<p class="form__field-input-tip">Файл не может быть больше 10МБ</p>
-					<img width="150" class="visually-hidden">
+					<img width="150" class="visually-hidden" alt="photo-device">
 				</div>
 				<div>
 					<label class="form__label-text" id="error6">Фотография серийного номера:
@@ -167,7 +250,7 @@
 							</span>
 						</label>
 					<p class="form__field-input-tip">Файл не может быть больше 10МБ</p>
-					<img width="150" class="visually-hidden">
+					<img width="150" class="visually-hidden" alt="photo-serial">
 				</div>
 				<div>
 					<label class="form__label-text" id="error7">Фотография инвентарного номера (ITAM):
@@ -182,18 +265,18 @@
 							</span>
 						</label>
 					<p class="form__field-input-tip">Файл не может быть больше 10МБ</p>
-					<img width="150" class="visually-hidden">
+					<img width="150" class="visually-hidden" alt="photo-ITAM">
 				</div>
 			</div>
-			<button class="form__delete-button" type="button" id="form-delete" data-id="1">
+			<button class="form__delete-button" type="button" id="form-delete" data-id="1" aria-label="delete">
 				<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
 			</button>
 		</form>
 
 	</template>
-	<script src="/static/updateTableData.js" type="module"></script>
-	<script src="/static/globalData.js" type="module"></script>
-    <script src="/static/scripts.js" type="module"></script>
+	<script src="/static/scripts/updateTableData.js" type="module"></script>
+	<script src="/static/scripts/globalData.js" type="module"></script>
+    <script src="/static/scripts/scripts.js" type="module"></script>
 </body>
 
 </html>

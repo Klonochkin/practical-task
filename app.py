@@ -1,18 +1,21 @@
 from fastapi import FastAPI, Request,Form,Response,File,UploadFile,HTTPException
 from fastapi.staticfiles import StaticFiles
+from starlette.types import Scope
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import JSONResponse,RedirectResponse
+from fastapi.responses import JSONResponse,RedirectResponse, HTMLResponse
 from pymongo import MongoClient
 from openpyxl import Workbook
 from openpyxl.worksheet.hyperlink import Hyperlink
-from openpyxl.drawing.image import Image
+from PIL import Image
+# from openpyxl.drawing.image import Image
 import string
 import random
 import hashlib
 import os
 import zipfile
-
+import brotli
+from brotli_asgi import BrotliMiddleware
 
 # Алфавит для создания случайных названий картинок
 alphabet = string.digits + string.ascii_lowercase
@@ -34,10 +37,19 @@ posts = db.posts
 postsPassword = dbPassword.posts
 postsSession = dbSession.posts
 
-app.mount("/static", StaticFiles(directory="static"), name="static")
+
+app.add_middleware(BrotliMiddleware)
+
+class CacheControlledStaticFiles(StaticFiles):
+    async def get_response(self, path: str, scope: Scope) -> Response:
+        response = await super().get_response(path, scope)
+        response.headers["Cache-Control"] = "public, max-age=31536000"
+        return response
+
+app.mount("/static", CacheControlledStaticFiles(directory="static"), name="static")
 
 @app.get('/')
-async def welcome(request:Request) :
+async def welcome(request:Request):
     cookies = request.cookies
     session_value = cookies.get("session")
     res = postsSession.find_one({"Session": session_value})
@@ -53,6 +65,7 @@ async def welcome(request:Request) :
     if(res!=None):
         return RedirectResponse(url="/")
     return templates.TemplateResponse(name='auth.html',context={'request':request})
+
 
 @app.get('/register')
 async def welcome(request:Request) :
@@ -165,10 +178,16 @@ async def delete(request: Request,numDelete: str):
 async def newUpload(file: UploadFile):
     newName = "".join([alphabet[random.randint(0, len(alphabet) -1)] for _ in range(0, 60)])
     exp=f".{file.filename.rsplit('.', 1)[1]}"
-    newName +=exp
-    file.filename = newName
+    tempName = newName + exp
+    file.filename = tempName
+    newName += ".webp"
+
     with open(f"static/images/{file.filename}", "wb") as f:
             f.write(await file.read())
+
+    img = Image.open(f"static/images/{file.filename}")
+    img.save(os.path.join("static/images", newName), format="webp")
+
     return newName
 
 @app.post('/form')
@@ -380,16 +399,6 @@ async def export(request:Request):
 
     wb.save('Table Device.xlsx')
 
-
-
-    data = list(ws.values)
-
-
-    path_to_dir = 'dir'
-
-    output_filename = 'zip'
-
-
     with zipfile.ZipFile('Table Device.zip', 'a') as zip_file:
         zip_file.write("Table Device.xlsx")
 
@@ -397,6 +406,34 @@ async def export(request:Request):
         content=open("Table Device.zip", "rb").read(),
         media_type="application/zip",
         headers={
-            "Content-Disposition": "attachment; filename=Table Device.zip"
+            "Content-Disposition": "attachment; filename=Table Device.zip",
+            "Cache-Control": "max-age=3600",
+            "Accept-Encoding": "gzip, compress, br"
         }
     )
+
+@app.get('/{name}/{size}')
+async def test(request:Request,name: str,size: int):
+
+    cookies = request.cookies
+    session_value = cookies.get("session")
+    auth = postsSession.find_one({"Session": session_value})
+    if(auth==None):
+        raise HTTPException(status_code=403, detail="Аккаунт не найден")
+
+    img = Image.open(f"static/images/{name}")
+
+    width_percent = (size / float(img.size[0]))
+
+    height_size = int((float(img.size[1]) * float(width_percent)))
+
+    new_image = img.resize((size, height_size))
+
+    new_image.save("new_image.webp", format="webp")
+
+    with open("new_image.webp", "rb") as f:
+        image_data = f.read()
+
+    os.remove("new_image.webp")
+
+    return Response(content=image_data, media_type="image/webp", headers={"Cache-Control": "max-age=31536000"})
