@@ -1,4 +1,4 @@
-import {globalData as num} from '/static/globalData.js';
+import {globalData as num} from '/static/scripts/globalData.js';
 
 
 export function editTableData(numId) {

@@ -1,9 +1,9 @@
 
-import {editTableData} from '/static/editTableData.js';
+import {editTableData} from '/static/scripts/editTableData.js';
 
-import {saveTableData} from '/static/saveTableData.js';
+import {saveTableData} from '/static/scripts/saveTableData.js';
 
-import {deleteTableData} from '/static/deleteTableData.js';
+import {deleteTableData} from '/static/scripts/deleteTableData.js';
 
 export function updateTableData(
 	number,

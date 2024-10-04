@@ -1,7 +1,7 @@
 
-import {globalData as num} from '/static/globalData.js';
+import {globalData as num} from '/static/scripts/globalData.js';
 
-import {updateTableData} from '/static/updateTableData.js';
+import {updateTableData} from '/static/scripts/updateTableData.js';
 
 export function saveTableData(numId) {
 

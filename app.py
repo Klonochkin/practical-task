@@ -399,16 +399,6 @@ async def export(request:Request):
 
     wb.save('Table Device.xlsx')
 
-
-
-    data = list(ws.values)
-
-
-    path_to_dir = 'dir'
-
-    output_filename = 'zip'
-
-
     with zipfile.ZipFile('Table Device.zip', 'a') as zip_file:
         zip_file.write("Table Device.xlsx")
 
@@ -425,11 +415,13 @@ async def export(request:Request):
 @app.get('/{name}/{size}')
 async def test(request:Request,name: str,size: int):
 
+    cookies = request.cookies
+    session_value = cookies.get("session")
+    auth = postsSession.find_one({"Session": session_value})
+    if(auth==None):
+        raise HTTPException(status_code=403, detail="Аккаунт не найден")
+
     img = Image.open(f"static/images/{name}")
-
-    width, height = img.size
-
-    path = f"static/images/{name}"
 
     width_percent = (size / float(img.size[0]))
 
@@ -438,8 +430,6 @@ async def test(request:Request,name: str,size: int):
     new_image = img.resize((size, height_size))
 
     new_image.save("new_image.webp", format="webp")
-
-    width, height = new_image.size
 
     with open("new_image.webp", "rb") as f:
         image_data = f.read()
