@@ -5,17 +5,31 @@ import {updateTableData} from '/static/scripts/updateTableData.js';
 
 export function saveTableData(numId) {
 
+
+    let isValidity = true
+    let newValue1 = document.getElementById('newValue1').value;
+    // if(newValue1 === ""){
+    //     validity(newValue1)
+    // }
+    let newValue2 = document.getElementById('newValue2').value;
+    let newValue3 = document.getElementById('newValue3').value;
+    for(let i=1;i<4;i++){
+        if(!validity(document.getElementById(`newValue${i}`))){
+            isValidity=false;
+        }
+        console.log(isValidity)
+    }
+    if(!isValidity){
+        return;
+    }
+    let newValue4 = document.getElementById('newValue4').files[0];
+    let newValue5 = document.getElementById('newValue5').files[0];
+    let newValue6 = document.getElementById('newValue6').files[0];
 	document.getElementById(`save${numId}`).classList.remove("visually-hidden")
 	let newValue0 = document.getElementById('newValue0').value;
 	if(document.getElementById('newValue0').value === ""){
 		newValue0 = num.defaultValue2;
 	}
-	let newValue1 = document.getElementById('newValue1').value;
-	let newValue2 = document.getElementById('newValue2').value;
-	let newValue3 = document.getElementById('newValue3').value;
-	let newValue4 = document.getElementById('newValue4').files[0];
-	let newValue5 = document.getElementById('newValue5').files[0];
-	let newValue6 = document.getElementById('newValue6').files[0];
 	let data = num.fetchData;
 	const photo_device = data[numId-1].photo_device;
 	const photo_serial_number_device =
@@ -109,7 +123,22 @@ export function saveTableData(numId) {
 		.catch((error) => console.error('Ошибка:', error));
 		})
 		.catch((error) => console.error('Ошибка:', error));
-
-
 }
 
+function validity(input){
+    console.log(input)
+    if(input.value===""){
+        input.parentNode.querySelector("p").classList.remove('visually-hidden')
+        input.classList.add("form__field-input-error")
+        input.addEventListener('input', ()=>{
+			input.classList.remove("form__field-input-error");
+			input.parentNode.querySelector("p").classList.add('visually-hidden')
+		})
+        return false;
+    }
+    else{
+        input.parentNode.querySelector("p").classList.add('visually-hidden')
+        input.classList.remove("form__field-input-error");
+    }
+    return true;
+}

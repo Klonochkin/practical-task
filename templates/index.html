@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta http-equiv="Accept-Encoding" content="gzip, compress, br">
     <meta name="description" content="инвентаризация">
-    <link href="/static/style.css" rel="stylesheet">
+    <link href="/static/styles/style.css" rel="stylesheet">
 	<link rel="shortcut icon" href="/static/favicon-32x32.png">
     <title>Форма</title>
 </head>
@@ -167,6 +167,8 @@
 
     <template id="template__input-text">
         <input size=8 class="table__field-input" type="text"required autocomplete="off">
+        <p class="table__message-error visually-hidden">Заполните это поле.</p>
+
     </template>
 
     <template id="template__table-button">
