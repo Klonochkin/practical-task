@@ -1,8 +1,9 @@
 from fastapi import FastAPI, Request,Form,Response,File,UploadFile,HTTPException
 from fastapi.staticfiles import StaticFiles
+from starlette.types import Scope
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import JSONResponse,RedirectResponse
+from fastapi.responses import JSONResponse,RedirectResponse, HTMLResponse
 from pymongo import MongoClient
 from openpyxl import Workbook
 from openpyxl.worksheet.hyperlink import Hyperlink
@@ -14,7 +15,7 @@ import hashlib
 import os
 import zipfile
 import brotli
-
+from brotli_asgi import BrotliMiddleware
 
 # Алфавит для создания случайных названий картинок
 alphabet = string.digits + string.ascii_lowercase
@@ -36,7 +37,16 @@ posts = db.posts
 postsPassword = dbPassword.posts
 postsSession = dbSession.posts
 
-app.mount("/static", StaticFiles(directory="static"), name="static")
+
+app.add_middleware(BrotliMiddleware)
+
+class CacheControlledStaticFiles(StaticFiles):
+    async def get_response(self, path: str, scope: Scope) -> Response:
+        response = await super().get_response(path, scope)
+        response.headers["Cache-Control"] = "public, max-age=31536000"
+        return response
+
+app.mount("/static", CacheControlledStaticFiles(directory="static"), name="static")
 
 @app.get('/')
 async def welcome(request:Request):
@@ -45,10 +55,7 @@ async def welcome(request:Request):
     res = postsSession.find_one({"Session": session_value})
     if(res==None):
         return RedirectResponse(url="/auth")
-
-    html = templates.TemplateResponse(name='index.html',context={'request':request})
-    compressed_html = brotli.compress(html.body)
-    return Response(content=compressed_html, media_type="text/html", headers={"Content-Encoding": "br"})
+    return templates.TemplateResponse(name='index.html',context={'request':request})
 
 @app.get('/auth')
 async def welcome(request:Request) :
@@ -57,9 +64,8 @@ async def welcome(request:Request) :
     res = postsSession.find_one({"Session": session_value})
     if(res!=None):
         return RedirectResponse(url="/")
-    html = templates.TemplateResponse(name='auth.html',context={'request':request})
-    compressed_html = brotli.compress(html.body)
-    return Response(content=compressed_html, media_type="text/html", headers={"Content-Encoding": "br"})
+    return templates.TemplateResponse(name='auth.html',context={'request':request})
+
 
 @app.get('/register')
 async def welcome(request:Request) :
@@ -68,9 +74,7 @@ async def welcome(request:Request) :
     res = postsSession.find_one({"Session": session_value})
     if(res!=None):
         return RedirectResponse(url="/")
-    html = templates.TemplateResponse(name='register.html',context={'request':request})
-    compressed_html = brotli.compress(html.body)
-    return Response(content=compressed_html, media_type="text/html", headers={"Content-Encoding": "br"})
+    return templates.TemplateResponse(name='register.html',context={'request':request})
 
 async def new_delete_file(name: str):
     path = "static/images/"
@@ -442,4 +446,4 @@ async def test(request:Request,name: str,size: int):
 
     os.remove("new_image.webp")
 
-    return Response(content=image_data, media_type="image/webp")
+    return Response(content=image_data, media_type="image/webp", headers={"Cache-Control": "max-age=31536000"})
