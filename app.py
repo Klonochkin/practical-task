@@ -66,6 +66,7 @@ async def welcome(request:Request) :
         return RedirectResponse(url="/")
     return templates.TemplateResponse(name='auth.html',context={'request':request})
 
+@app.get('/static/style.css')
 
 @app.get('/register')
 async def welcome(request:Request) :
