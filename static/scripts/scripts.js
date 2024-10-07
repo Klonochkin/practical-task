@@ -54,46 +54,49 @@ function getData(){
 
 
 function createForm(){
-	let templateForms = document.getElementById("forms");
+    let templateForms = document.getElementById("forms");
 	const templateText = document.querySelector('#template-form');
-	const input1 = templateText.content.cloneNode(true);
-	let number = num.countForm;
-	num.fileName1.push("");
-	num.fileName2.push("");
-	num.fileName3.push("");
-	let field = input1.querySelector("select");
-	let parentField = field.parentNode;
-	let parentForm = parentField.parentNode;
-	let paragraph = Array.from(parentForm.querySelectorAll("p"));
-	let fieldInput = Array.from(input1.querySelectorAll("input"));
-	if(number===1){
-		input1.getElementById('form-delete').classList.add("visually-hidden");
+	let input1 = templateText.content.cloneNode(true);
+    let number = num.countForm;
+    if(number===1){
+        input1 = document.getElementById("form1");
+        num.countForm+=1;
+    }
+    else if(number===2){
+        input1.getElementById('form-delete').classList.add("visually-hidden");
         input1.getElementById('form-delete').remove();
-	}
+    }
     else{
+        input1.querySelector('form').id= `form${number}` ;
         input1.getElementById('form-delete').addEventListener('click',()=>{
-            if(num.fileName1[number]!=""){
-                deleteFile(num.fileName1[number]);
-            }
-            if(num.fileName2[number]!=""){
-                deleteFile(num.fileName2[number]);
-            }
-            if(num.fileName3[number]!=""){
-                deleteFile(num.fileName3[number]);
-            }
-            num.fileName1[number]=null;
-            num.fileName2[number]=null;
-            num.fileName3[number]=null;
             document.getElementById(`form${number}`).remove();
 
         })
     }
-	input1.querySelector('form').id= `form${number}` ;
-	let maxSizeError = document.querySelector(`#form${number}`);
-	let p = Array.from(parentForm.parentNode.querySelectorAll("p"))
+	let field = input1.querySelector("select");
+	let parentField = field.parentNode;
+	let parentForm = parentField.parentNode;
+	let paragraph = Array.from(parentForm.querySelectorAll("p"));
+    let p = Array.from(parentForm.parentNode.querySelectorAll("p"))
+    let elements = field.parentNode.parentNode.parentNode.elements
+    for (let i = 0; i < elements.length; i++) {
+        const element = elements[i];
+        if(element.type === "text" || element.type === "select-one"){
+            element.addEventListener('blur', ()=>{
+                validityInputUpdate(element,paragraph[i])
+            });
+        }
+        else if(element.type === "file"){
+            element.addEventListener('input', ()=>{
+                let parentField = element.parentNode.parentNode;
+                validityFileUpdate(element,parentField)
+            });
+        }
+    }
+
 	const img = Array.from(parentForm.parentNode.querySelectorAll("img"));
-	input1.getElementById('photo_device_select').addEventListener('input',(event) => {
-		const input = event.target;
+	input1.querySelector('#photo_device_select').addEventListener('input',(event) => {
+        let input = event.target;
 		if(event.target.files[0]===undefined){
 			input.nextElementSibling.classList.add("visually-hidden")
 			img[0].classList.add("visually-hidden")
@@ -102,6 +105,7 @@ function createForm(){
 		const fileSize = event.target.files[0].size;
 		const maxSize = 10*1024*1024;
 		if (fileSize > maxSize) {
+
 			input.type = 'text';
 			input.type = "file";
 			input.nextElementSibling.classList.add("visually-hidden")
@@ -116,7 +120,7 @@ function createForm(){
 			img[0].src = URL.createObjectURL(event.target.files[0]);
 		}
 	});
-	input1.getElementById('photo_serial_number_device_select').addEventListener('input',(event) =>{
+	input1.querySelector('#photo_serial_number_device_select').addEventListener('input',(event) =>{
 		const input = event.target;
 		if(event.target.files[0]===undefined){
 			input.nextElementSibling.classList.add("visually-hidden")
@@ -140,7 +144,7 @@ function createForm(){
 			img[1].src = URL.createObjectURL(event.target.files[0]);
 		}
 	});
-	input1.getElementById('photo_ITAM_device_select').addEventListener('input',(event) => {
+	input1.querySelector('#photo_ITAM_device_select').addEventListener('input',(event) => {
 		const input = event.target;
 		if(event.target.files[0]===undefined){
 			input.nextElementSibling.classList.add("visually-hidden")
@@ -166,183 +170,13 @@ function createForm(){
 		}
 	});
 
-
-
-	field.addEventListener('blur', ()=>{
-		validitySelect(field,paragraph[0]);
-	})
-	field.addEventListener('focus',()=>{
-		field.classList.remove("form__field-input-error");
-		parentField.classList.remove("form__field-lable-error");
-	})
-
-	for(let i=0;i<fieldInput.length;i++){
-		if(fieldInput[i].type==="text"){
-			let fieldInputValue = fieldInput[i];
-			let parentField = fieldInputValue.parentNode;
-			fieldInputValue.addEventListener('blur', ()=>{
-				validitySelect(fieldInputValue,paragraph[i+1])
-			})
-			fieldInputValue.addEventListener('focus',()=>{
-				fieldInputValue.classList.remove("form__field-input-error");
-				parentField.classList.remove("form__field-lable-error");
-			})
-		}
-		if(fieldInput[i].type==="file"){
-			let input = fieldInput[i]
-			input.addEventListener('input', ()=>{
-				let parentField = input.parentNode.parentNode;
-				if(!input.value){
-					parentField.classList.add("form__field-lable-error");
-					input.classList.add("form__field-input-error");
-					input.addEventListener('input', ()=>{
-						if(input.value){
-							parentField.classList.remove("form__field-lable-error");
-						}
-					})
-				}else{
-					parentField.classList.remove("form__field-lable-error");
-				}
-			})
-		}
-	}
 	templateForms.append(input1);
 	num.countForm +=1;
-	num.numberForm+=1;
 }
 
-let firstForm = document.getElementById("form1");
-
-num.fileName1.push("");
-num.fileName2.push("");
-num.fileName3.push("");
-let field = firstForm.querySelector("select");
-let parentField = field.parentNode;
-let parentForm = parentField.parentNode;
-let paragraph = Array.from(parentForm.querySelectorAll("p"));
-let fieldInput = Array.from(firstForm.querySelectorAll("input"));
-
-let p = Array.from(parentForm.parentNode.querySelectorAll("p"))
-const img = Array.from(parentForm.parentNode.querySelectorAll("img"));
-firstForm.querySelector('#photo_device_select').addEventListener('input',(event) => {
-    const input = event.target;
-    if(event.target.files[0]===undefined){
-        input.nextElementSibling.classList.add("visually-hidden")
-        img[0].classList.add("visually-hidden")
-        return;
-    }
-    const fileSize = event.target.files[0].size;
-    const maxSize = 10*1024*1024;
-    if (fileSize > maxSize) {
-        input.type = 'text';
-        input.type = "file";
-        input.nextElementSibling.classList.add("visually-hidden")
-        p[4].classList.add("form__field-lable-error")
-        input.nextElementSibling.classList.add("visually-hidden")
-        img[0].classList.add("visually-hidden")
-    }
-    else{
-        p[4].classList.remove("form__field-lable-error")
-        input.nextElementSibling.classList.remove("visually-hidden")
-        img[0].classList.remove("visually-hidden")
-        img[0].src = URL.createObjectURL(event.target.files[0]);
-    }
-});
-firstForm.querySelector('#photo_serial_number_device_select').addEventListener('input',(event) =>{
-    const input = event.target;
-    if(event.target.files[0]===undefined){
-        input.nextElementSibling.classList.add("visually-hidden")
-        img[1].classList.add("visually-hidden")
-        return;
-    }
-    const fileSize = event.target.files[0].size;
-    const maxSize = 10*1024*1024;
-    if (fileSize > maxSize) {
-        input.type = 'text';
-        input.type = "file";
-        input.nextElementSibling.classList.add("visually-hidden")
-        p[5].classList.add("form__field-lable-error")
-        input.nextElementSibling.classList.add("visually-hidden")
-        img[1].classList.add("visually-hidden")
-    }
-    else{
-        p[5].classList.remove("form__field-lable-error")
-        input.nextElementSibling.classList.remove("visually-hidden")
-        img[1].classList.remove("visually-hidden")
-        img[1].src = URL.createObjectURL(event.target.files[0]);
-    }
-});
-firstForm.querySelector('#photo_ITAM_device_select').addEventListener('input',(event) => {
-    const input = event.target;
-    if(event.target.files[0]===undefined){
-        input.nextElementSibling.classList.add("visually-hidden")
-        img[2].classList.add("visually-hidden")
-        return;
-    }
-
-    const fileSize = event.target.files[0].size;
-    const maxSize = 10*1024*1024;
-    if (fileSize > maxSize) {
-        input.type = 'text';
-        input.type = "file";
-        input.nextElementSibling.classList.add("visually-hidden")
-        p[6].classList.add("form__field-lable-error")
-        input.nextElementSibling.classList.add("visually-hidden")
-        img[2].classList.add("visually-hidden")
-    }
-    else{
-        p[6].classList.remove("form__field-lable-error")
-        input.nextElementSibling.classList.remove("visually-hidden")
-        img[2].classList.remove("visually-hidden")
-        img[2].src = URL.createObjectURL(event.target.files[0]);
-    }
-});
-
-
-
-field.addEventListener('blur', ()=>{
-    validitySelect(field,paragraph[0]);
-})
-field.addEventListener('focus',()=>{
-    field.classList.remove("form__field-input-error");
-    parentField.classList.remove("form__field-lable-error");
-})
-
-for(let i=0;i<fieldInput.length;i++){
-    if(fieldInput[i].type==="text"){
-        let fieldInputValue = fieldInput[i];
-        let parentField = fieldInputValue.parentNode;
-        fieldInputValue.addEventListener('blur', ()=>{
-            validitySelect(fieldInputValue,paragraph[i+1])
-        })
-        fieldInputValue.addEventListener('focus',()=>{
-            fieldInputValue.classList.remove("form__field-input-error");
-            parentField.classList.remove("form__field-lable-error");
-        })
-    }
-    if(fieldInput[i].type==="file"){
-        let input = fieldInput[i]
-        input.addEventListener('input', ()=>{
-            let parentField = input.parentNode.parentNode;
-            if(!input.value){
-                parentField.classList.add("form__field-lable-error");
-                input.classList.add("form__field-input-error");
-                input.addEventListener('input', ()=>{
-                    if(input.value){
-                        parentField.classList.remove("form__field-lable-error");
-                    }
-                })
-            }else{
-                parentField.classList.remove("form__field-lable-error");
-            }
-        })
-    }
-}
+createForm();
 
 getData();
-
-
-
 
 document.getElementById('exit').addEventListener('click',() => {
 	fetch('/exit', {
@@ -362,21 +196,20 @@ document.getElementById("form-add").addEventListener('click',()=>{
 })
 
 document.getElementById("submit").addEventListener('click',()=>{
-
-	for(let i=0;i<num.fileName1.length-1;i++){
-		if(num.fileName1[i+1]!==null){
-			let form = document.getElementById(`form${i+1}`);
-			validityForm(form)
-
+    let forms = document.querySelectorAll("form");
+    console.log(forms)
+	for(let i=0;i<forms.length;i++){
+		let form = forms[i]
+            newValidityForm(form)
 			if(!(form.checkValidity())){
+                const invalidFields = form.querySelectorAll(':invalid');
+                invalidFields[0].focus();
 				return;
 			}
-		}
 	}
 
-	for(let i=0;i<num.fileName1.length-1;i++){
-		if(num.fileName1[i+1]!==null){
-			let form = document.getElementById(`form${i+1}`);
+	for(let i=0;i<forms.length;i++){
+		let form = forms[i]
 
 			if (form.checkValidity()) {
 
@@ -390,71 +223,45 @@ document.getElementById("submit").addEventListener('click',()=>{
 				.then(getData)
 				.catch(error => console.error(error));
 			}
-		}
 	}
 
-	num.fileName1.length=1;
-	num.fileName2.length=1;
-	num.fileName3.length=1;
-
-	num.countForm=1;
+	num.countForm=2;
 
 	document.getElementById("forms").textContent = '';
 
 	createForm();
 })
 
-function validityForm(form){
+function newValidityForm(form){
+    const elements = form.elements;
+    let parentField = elements[0].parentNode;
+    let parentForm = parentField.parentNode;
+    let paragraph = Array.from(parentForm.querySelectorAll("p"));
+    for (let i = 0; i < elements.length; i++) {
+        const element = elements[i];
 
-	let fieldSelect = form.querySelector("select");
-	let parentField = fieldSelect.parentNode;
-	let parentForm = parentField.parentNode;
-	let paragraph = Array.from(parentForm.querySelectorAll("p"));
-	if(!fieldSelect.value){
-		validitySelect(fieldSelect,paragraph[0])
-	}
-	let fieldInput = Array.from(form.querySelectorAll("input"));
-	for(let i=0;i<fieldInput.length;i++){
-		if(fieldInput[i].type==="text"){
-			validitySelect(fieldInput[i],paragraph[i+1])
-		}
-		if(fieldInput[i].type==="file"){
-			validityFile(fieldInput[i])
-		}
-	}
+        const isInputValid = element.checkValidity();
+        element.classList.toggle('is-invalid', !isInputValid);
+
+        if(element.type === "text" || element.type === "select-one"){
+            element.addEventListener('input', validityInputUpdate(element,paragraph[i]));
+        }
+        else if(element.type === "file"){
+            let parentField = element.parentNode.parentNode;
+            element.addEventListener('input', validityFileUpdate(element,parentField));
+        }
+
+      }
 }
 
-function validitySelect(field,paragraph){
-	let parentField = field.parentNode;
-
-	if(!field.value){
-		field.classList.add("form__field-input-error");
-		parentField.classList.add("form__field-lable-error");
-		paragraph.classList.remove("visually-hidden")
-		field.addEventListener('input', ()=>{
-			parentField.classList.remove("form__field-lable-error");
-			field.classList.remove("form__field-input-error");
-			paragraph.classList.add("visually-hidden")
-		})
-	}else{
-		field.classList.remove("form__field-input-error");
-		parentField.classList.remove("form__field-lable-error");
-		paragraph.classList.add("visually-hidden")
-	}
+function validityInputUpdate(el,paragraph){
+    const isInputValid = el.checkValidity();
+    el.classList.toggle('is-invalid', !isInputValid);
+    paragraph.classList.toggle('visually-hidden', isInputValid);
 }
-function validityFile(input){
-	let parentField = input.parentNode.parentNode;
-	if(!input.value){
-		parentField.classList.add("form__field-lable-error");
-		input.classList.add("form__field-input-error");
-		input.addEventListener('input', ()=>{
-			if(input.value){
-				parentField.classList.remove("form__field-lable-error");
-			}
-		})
-	}else{
-		parentField.classList.remove("form__field-lable-error");
-	}
+function validityFileUpdate(el,paragraph){
+    const isInputValid = el.checkValidity();
+    paragraph.classList.toggle('form__field-lable-error', !isInputValid);
 }
 
 document.getElementById("export").addEventListener('click',()=>{
