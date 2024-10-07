@@ -1,6 +1,5 @@
 import { updateTableData } from '/static/scripts/updateTableData.js';
 import { globalData as num } from '/static/scripts/globalData.js';
-import {deleteFile} from '/static/scripts/deleteFile.js';
 
 function getData(){
 	fetch('/data',{
@@ -81,17 +80,9 @@ function createForm(){
     let elements = field.parentNode.parentNode.parentNode.elements
     for (let i = 0; i < elements.length; i++) {
         const element = elements[i];
-        if(element.type === "text" || element.type === "select-one"){
-            element.addEventListener('blur', ()=>{
-                validityInputUpdate(element,paragraph[i])
-            });
-        }
-        else if(element.type === "file"){
-            element.addEventListener('input', ()=>{
-                let parentField = element.parentNode.parentNode;
-                validityFileUpdate(element,parentField)
-            });
-        }
+        element.addEventListener('blur', ()=>{
+            validityField(element,paragraph[i])
+        });
     }
 
 	const img = Array.from(parentForm.parentNode.querySelectorAll("img"));
@@ -197,7 +188,6 @@ document.getElementById("form-add").addEventListener('click',()=>{
 
 document.getElementById("submit").addEventListener('click',()=>{
     let forms = document.querySelectorAll("form");
-    console.log(forms)
 	for(let i=0;i<forms.length;i++){
 		let form = forms[i]
             newValidityForm(form)
@@ -243,27 +233,47 @@ function newValidityForm(form){
         const isInputValid = element.checkValidity();
         element.classList.toggle('is-invalid', !isInputValid);
 
-        if(element.type === "text" || element.type === "select-one"){
-            element.addEventListener('input', validityInputUpdate(element,paragraph[i]));
-        }
-        else if(element.type === "file"){
-            let parentField = element.parentNode.parentNode;
-            element.addEventListener('input', validityFileUpdate(element,parentField));
-        }
+        element.addEventListener('input', validityField(element,paragraph[i]));
 
       }
 }
 
-function validityInputUpdate(el,paragraph){
+function validityField(el,paragraph){
     const isInputValid = el.checkValidity();
-    el.classList.toggle('is-invalid', !isInputValid);
-    paragraph.classList.toggle('visually-hidden', isInputValid);
+    if(el.type === "text" || el.type === "select-one"){
+        el.classList.toggle('is-invalid', !isInputValid);
+        paragraph.classList.toggle('visually-hidden', isInputValid);
+        paragraph.textContent = getValidationMessageForInput(el);
+    }
+    else if(el.type === "file"){
+        el.addEventListener('input', ()=>{
+            let message = el.parentNode.parentNode;
+            message.classList.toggle('form__field-lable-error', isInputValid);
+        });
+    }
 }
-function validityFileUpdate(el,paragraph){
-    const isInputValid = el.checkValidity();
-    paragraph.classList.toggle('form__field-lable-error', !isInputValid);
-}
+function getValidationMessageForInput(el){
 
+    if (el.validity.valid) return '';
+
+    if (el.validity.valueMissing) {
+        return `Пожалуйста, введите ${el.name} (Это поле обязательно для заполнения)`;
+    }
+    if (el.validity.typeMismatch) {
+        return 'Пожалуйста, введите действительный адрес электронной почты';
+    }
+    if(el.validity.patternMismatch){
+        return `Пожалуйста, введите значение по соответственному шаблону: ${el.pattern}`
+    }
+    if(el.validity.tooLong){
+        return `Введенное значение слишком длинное. Максимальная длина: ${el.maxLength}`
+    }
+    if(el.validity.tooShort){
+        return `Введенное значение слишком короткое. Минимальная длина: ${el.minLength}`
+    }
+
+
+  }
 document.getElementById("export").addEventListener('click',()=>{
     fetch('/export',{
         method: 'POST',
