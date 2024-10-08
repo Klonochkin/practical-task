@@ -266,3 +266,10 @@ input:user-invalid{
 .table__img{
     vertical-align:top;
 }
+
+dialog{
+    border: none;
+    border-radius: 0.5rem;
+    /* background: none; */
+    width: 1000px;
+}

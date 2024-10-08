@@ -9,6 +9,26 @@ export function validityFileUpdate(el){
     let message = el.parentNode.parentNode;
     message.classList.toggle('form__field-lable-error', !isInputValid);
 }
+export function newValidityForm(form){
+    const elements = form.elements;
+    let parentField = elements[0].parentNode;
+    let parentForm = parentField.parentNode;
+    let paragraph = Array.from(parentForm.querySelectorAll("p"));
+    for (let i = 0; i < elements.length; i++) {
+        const element = elements[i];
+
+        const isInputValid = element.checkValidity();
+        element.classList.toggle('is-invalid', !isInputValid);
+
+        if(element.type === "text" || element.type === "select-one"){
+            element.addEventListener('input', validityInputUpdate(element,paragraph[i]));
+        }
+        else if(element.type === "file"){
+            element.addEventListener('input', validityFileUpdate(element));
+        }
+
+      }
+}
 function getValidationMessageForInput(el){
 
     if (el.validity.valid) return '';
@@ -29,3 +49,5 @@ function getValidationMessageForInput(el){
         return `Введенное значение слишком короткое. Минимальная длина: ${el.minLength}`
     }
 }
+
+

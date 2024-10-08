@@ -29,7 +29,6 @@ export function updateTableData(
 	const ceil8 = newRow.insertCell(7);
 	const ceil9 = newRow.insertCell(8);
 	const ceil10 = newRow.insertCell(9);
-	const ceil11 = newRow.insertCell(10);
 	ceil1.textContent = number;
 	ceil2.textContent = type_device;
 	ceil3.textContent = model_device;
@@ -79,23 +78,17 @@ export function updateTableData(
 	const buttonEdit = template.content.cloneNode(true);
 	buttonEdit.querySelector('button').id = `add${number}`;
 	buttonEdit.querySelector('button').addEventListener("click", () => {
-		editTableData(number);
+        editTableData(number)
+        let dialog = document.getElementById('edit_dialog');
+
+        dialog.addEventListener('keydown', event => {
+            if (event.key === 'Escape') {
+              event.preventDefault();
+            }
+          });
+
 	});
 	buttonEdit.querySelector('button').value = "Изменить";
 	buttonEdit.querySelector('button').textContent = "Изменить";
 	ceil10.append(buttonEdit);
-
-	ceil11.textContent = '';
-	const buttonSave = template.content.cloneNode(true);
-	buttonSave.querySelector('button').id = `save${number}`;
-    buttonSave.querySelector('button').setAttribute('form','edit');
-	buttonSave.querySelector('button').addEventListener("click", (event) => {
-        event.preventDefault();
-		saveTableData(number);
-	});
-
-	buttonSave.querySelector('button').classList.add("visually-hidden")
-	buttonSave.querySelector('button').value = "Сохранить";
-	buttonSave.querySelector('button').textContent = "Сохранить";
-	ceil11.append(buttonSave);
 }
