@@ -80,9 +80,16 @@ function createForm(){
     let elements = field.parentNode.parentNode.parentNode.elements
     for (let i = 0; i < elements.length; i++) {
         const element = elements[i];
-        element.addEventListener('blur', ()=>{
-            validityField(element,paragraph[i])
-        });
+        if(element.type === "text" || element.type === "select-one"){
+            element.addEventListener('blur', ()=>{
+                validityInputUpdate(element,paragraph[i])
+            });
+        }
+        else if(element.type === "file"){
+            element.addEventListener('input', ()=>{
+                validityFileUpdate(element)
+            });
+        }
     }
 
 	const img = Array.from(parentForm.parentNode.querySelectorAll("img"));
@@ -192,8 +199,8 @@ document.getElementById("submit").addEventListener('click',()=>{
 		let form = forms[i]
             newValidityForm(form)
 			if(!(form.checkValidity())){
-                const invalidFields = form.querySelectorAll(':invalid');
-                invalidFields[0].focus();
+                const firstInvalidInputEl = form.querySelector('input:invalid');
+                firstInvalidInputEl?.focus();
 				return;
 			}
 	}
@@ -233,37 +240,39 @@ function newValidityForm(form){
         const isInputValid = element.checkValidity();
         element.classList.toggle('is-invalid', !isInputValid);
 
-        element.addEventListener('input', validityField(element,paragraph[i]));
+        if(element.type === "text" || element.type === "select-one"){
+            element.addEventListener('input', validityInputUpdate(element,paragraph[i]));
+        }
+        else if(element.type === "file"){
+            element.addEventListener('input', validityFileUpdate(element));
+        }
 
       }
 }
 
-function validityField(el,paragraph){
+function validityInputUpdate(el,paragraph){
     const isInputValid = el.checkValidity();
-    if(el.type === "text" || el.type === "select-one"){
-        el.classList.toggle('is-invalid', !isInputValid);
-        paragraph.classList.toggle('visually-hidden', isInputValid);
-        paragraph.textContent = getValidationMessageForInput(el);
-    }
-    else if(el.type === "file"){
-        el.addEventListener('input', ()=>{
-            let message = el.parentNode.parentNode;
-            message.classList.toggle('form__field-lable-error', isInputValid);
-        });
-    }
+    el.classList.toggle('is-invalid', !isInputValid);
+    paragraph.classList.toggle('visually-hidden', isInputValid);
+    paragraph.textContent = getValidationMessageForInput(el);
+}
+function validityFileUpdate(el){
+    const isInputValid = el.checkValidity();
+    let message = el.parentNode.parentNode;
+    message.classList.toggle('form__field-lable-error', !isInputValid);
 }
 function getValidationMessageForInput(el){
 
     if (el.validity.valid) return '';
 
     if (el.validity.valueMissing) {
-        return `Пожалуйста, введите ${el.name} (Это поле обязательно для заполнения)`;
+        return `Пожалуйста, введите значение (Это поле обязательно для заполнения)`;
     }
     if (el.validity.typeMismatch) {
         return 'Пожалуйста, введите действительный адрес электронной почты';
     }
     if(el.validity.patternMismatch){
-        return `Пожалуйста, введите значение по соответственному шаблону: ${el.pattern}`
+        return `Пожалуйста, введите значение по соответственному шаблону`
     }
     if(el.validity.tooLong){
         return `Введенное значение слишком длинное. Максимальная длина: ${el.maxLength}`
