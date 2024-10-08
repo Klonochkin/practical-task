@@ -163,10 +163,11 @@
             <option value="Телефон">Телефон</option>
             <option value="Шредер" >Шредер</option>
           </select>
+          <p class="table__message-error visually-hidden">Заполните это поле.</p>
     </template>
 
     <template id="template__input-text">
-        <input size=8 class="table__field-input" type="text"required autocomplete="off">
+        <input size=8 class="table__field-input" type="text" required autocomplete="off">
         <p class="table__message-error visually-hidden">Заполните это поле.</p>
 
     </template>
@@ -276,6 +277,9 @@
 		</form>
 
 	</template>
+    <template id="form-edit">
+        <form id="edit"></form>
+    </template>
 	<script src="/static/scripts/updateTableData.js" type="module"></script>
 	<script src="/static/scripts/globalData.js" type="module"></script>
     <script src="/static/scripts/scripts.js" type="module"></script>

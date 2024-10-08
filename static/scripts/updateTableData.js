@@ -88,7 +88,9 @@ export function updateTableData(
 	ceil11.textContent = '';
 	const buttonSave = template.content.cloneNode(true);
 	buttonSave.querySelector('button').id = `save${number}`;
-	buttonSave.querySelector('button').addEventListener("click", () => {
+    buttonSave.querySelector('button').setAttribute('form','edit');
+	buttonSave.querySelector('button').addEventListener("click", (event) => {
+        event.preventDefault();
 		saveTableData(number);
 	});
 
