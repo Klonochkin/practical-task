@@ -19,7 +19,7 @@
             <button id="exit" class="exit">Выйти</button>
         </span>
 	</header>
-	<main>
+    <main>
 		<div class="container">
 			<div class="forms" id="forms">
                 <form class="form" id="form1">
@@ -67,7 +67,7 @@
                                 </span>
                             </label>
                             <p class="form__field-input-tip">Файл не может быть больше 10МБ</p>
-                            <img width="150" class="visually-hidden" alt="photo-device">
+                            <img width="75" height="75" class="visually-hidden table__img" alt="photo-device">
                         </div>
                         <div>
                             <label class="form__label-text" id="error6">Фотография серийного номера:
@@ -82,7 +82,7 @@
                                     </span>
                                 </label>
                             <p class="form__field-input-tip">Файл не может быть больше 10МБ</p>
-                            <img width="150" class="visually-hidden" alt="photo-serial">
+                            <img width="75" height="75" class="visually-hidden table__img" alt="photo-serial">
                         </div>
                         <div>
                             <label class="form__label-text" id="error7">Фотография инвентарного номера (ITAM):
@@ -97,7 +97,7 @@
                                     </span>
                                 </label>
                             <p class="form__field-input-tip">Файл не может быть больше 10МБ</p>
-                            <img width="150" class="visually-hidden" alt="photo-ITAM">
+                            <img width="75" height="75" class="visually-hidden table__img" alt="photo-ITAM">
                         </div>
                     </div>
                 </form>
@@ -188,7 +188,7 @@
     </template>
 
     <template id="template-img">
-        <img class="table__img" width="150" height="150" loading="lazy" alt="tablePhoto">
+        <img class="table__img" width="100" height="100" loading="lazy" alt="tablePhoto">
     </template>
 
 	<template id="template-form">
@@ -237,7 +237,7 @@
 						</span>
 					</label>
 					<p class="form__field-input-tip">Файл не может быть больше 10МБ</p>
-					<img width="150" class="visually-hidden" alt="photo-device" id="img_photo_device">
+					<img width="75" height="75" class="visually-hidden table__img" alt="photo-device" id="img_photo_device">
 				</div>
 				<div>
 					<label class="form__label-text" id="error6">Фотография серийного номера:
@@ -252,7 +252,7 @@
 							</span>
 						</label>
 					<p class="form__field-input-tip">Файл не может быть больше 10МБ</p>
-					<img width="150" class="visually-hidden" alt="photo-serial" id="img_photo_serial">
+					<img width="75" height="75" class="visually-hidden table__img" alt="photo-serial" id="img_photo_serial">
 				</div>
 				<div>
 					<label class="form__label-text" id="error7">Фотография инвентарного номера (ITAM):
@@ -267,7 +267,7 @@
 							</span>
 						</label>
 					<p class="form__field-input-tip">Файл не может быть больше 10МБ</p>
-					<img width="150" class="visually-hidden" alt="photo-ITAM" id="img_photo_ITAM">
+					<img width="75" height="75" class="visually-hidden table__img" alt="photo-ITAM" id="img_photo_ITAM">
 				</div>
 			</div>
 			<button class="form__delete-button" type="button" id="form-delete" data-id="1" aria-label="delete">
@@ -280,16 +280,13 @@
     <template id="form-edit">
         <form id="edit"></form>
     </template>
-    <template id="cross">
+    <dialog class="dialog" id="edit_dialog" aria-label="edit-table-data">
         <div class="dialog__cross">
             <button class="dialog__cross-button" id="dialog_cross">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" transform="rotate(45)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
             </button>
         </div>
-    </template>
-    <dialog class="dialog" id="edit_dialog" aria-label="edit-table-data">
         <span id="dialog_content" class="dialog__wrapper dialog__content">
-
         </span>
     </dialog>
 

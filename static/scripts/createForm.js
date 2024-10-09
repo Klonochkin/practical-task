@@ -139,12 +139,4 @@ export function createForm(isDialog = false){
 	});
 
 	templateForms.append(input1);
-    if(isDialog){
-        const templateCross = document.querySelector('#cross');
-        const cross = templateCross.content.cloneNode(true);
-        templateForms.append(cross);
-        templateForms.querySelector('#dialog_cross').addEventListener('click',()=>{
-            document.getElementById('edit_dialog').close();
-        })
-    }
 }

@@ -236,11 +236,12 @@ tbody > tr td{
     border-radius: 0.5rem;
     background: none;
     max-width: 1250px;
+    position: relative;
   }
 .dialog__cross{
-    display: flex;
-    justify-content: flex-end;
-    margin: 0rem 1rem;
+    position: absolute;
+    right: 0;
+
 }
   .dialog__wrapper {
     padding: 1em;
@@ -253,7 +254,8 @@ tbody > tr td{
 .dialog__content{
     display: flex;
     margin: 1rem;
-    align-items: flex-start
+    align-items: flex-start;
+
 }
 .form__error-submit{
 	color:red;

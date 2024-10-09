@@ -39,4 +39,7 @@ export function editTableData(numId) {
     document.getElementById("submit_dialog").addEventListener('click',()=>{
         saveTableData(numId)
     })
+    document.getElementById('dialog_cross').addEventListener('click',()=>{
+        document.getElementById('edit_dialog').close();
+    })
 }
