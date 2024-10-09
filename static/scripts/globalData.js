@@ -8,6 +8,6 @@ export const globalData = {
 	lastFile2: '',
 	lastFile3: '',
 	fetchData: '',
-	countForm: 2,
+	countForm: 1,
 	numberForm: 0,
 };

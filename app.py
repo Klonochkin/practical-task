@@ -96,13 +96,12 @@ async def upload(request: Request):
         raise HTTPException(status_code=403, detail="Аккаунт не найден")
 
     form_data = await request.form()
-    n=posts.count_documents({})
-    newN = posts.find({'user_id': res["id"] })
-    count = int(len(list(newN)))+1
+    print(f"ПОЛУЧЕННЫЕ ДАННЫЕ{form_data}")
     id=form_data.get("id")
     photo_device = form_data.get("photo_device")
     photo_serial_number_device = form_data.get("photo_serial_number_device")
     photo_ITAM_device = form_data.get("photo_ITAM_device")
+    print(f"НАЗВАНИЕ ФАЙЛА: {photo_device}")
 
     check = posts.find_one({"user_id":res["id"],"id": int(id)})
     if(check==None):
@@ -114,15 +113,15 @@ async def upload(request: Request):
     posts.update_many(filter, {'$set': {'serial_number': form_data.get("serial_number")}})
     posts.update_many(filter, {'$set': {'ITAM_device': form_data.get("ITAM_device")}})
     delete = posts.find_one({'user_id':res["id"],'id': int(id)})
-    if(photo_device!="undefined"):
+    if(photo_device.filename!=""):
         await new_delete_file(delete['photo_device'])
         name_photo_device = await newUpload(photo_device)
         posts.update_many(filter, {'$set': {'photo_device': name_photo_device}})
-    if(photo_serial_number_device!="undefined"):
+    if(photo_serial_number_device.filename!=""):
         await new_delete_file(delete['photo_serial_number_device'])
         name_photo_serial_number_device = await newUpload(photo_serial_number_device)
         posts.update_many(filter, {'$set': {'photo_serial_number_device': name_photo_serial_number_device}})
-    if(photo_ITAM_device!="undefined"):
+    if(photo_ITAM_device.filename!=""):
         await new_delete_file(delete['photo_ITAM_device'])
         name_photo_ITAM_device = await newUpload(photo_ITAM_device)
         posts.update_many(filter, {'$set': {'photo_ITAM_device': name_photo_ITAM_device}})

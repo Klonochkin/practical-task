@@ -1,58 +1,21 @@
-
 import {globalData as num} from '/static/scripts/globalData.js';
 
 import {updateTableData} from '/static/scripts/updateTableData.js';
 
+import { newValidityForm } from '/static/scripts/validation.js';
+
 export function saveTableData(numId) {
 
+    let forms = document.getElementById('form_dialog');
 
-    let isValidity = true
-    let newValue1 = document.getElementById('newValue1').value;
-    // if(newValue1 === ""){
-    //     validity(newValue1)
-    // }
-    let newValue2 = document.getElementById('newValue2').value;
-    let newValue3 = document.getElementById('newValue3').value;
-    for(let i=1;i<4;i++){
-        if(!validity(document.getElementById(`newValue${i}`))){
-            isValidity=false;
-        }
-        console.log(isValidity)
-    }
-    if(!isValidity){
+	const formData = new FormData(forms);
+    formData.append("id", numId);
+    if(!(forms.checkValidity())){
+        const firstInvalidInputEl = forms.querySelector(':invalid');
+        firstInvalidInputEl?.focus();
+        newValidityForm(forms);
         return;
     }
-    let newValue4 = document.getElementById('newValue4').files[0];
-    let newValue5 = document.getElementById('newValue5').files[0];
-    let newValue6 = document.getElementById('newValue6').files[0];
-	document.getElementById(`save${numId}`).classList.remove("visually-hidden")
-	let newValue0 = document.getElementById('newValue0').value;
-	if(document.getElementById('newValue0').value === ""){
-		newValue0 = num.defaultValue2;
-	}
-	let data = num.fetchData;
-	const photo_device = data[numId-1].photo_device;
-	const photo_serial_number_device =
-		data[numId-1].photo_serial_number_device;
-	const photo_ITAM_device = data[numId-1].photo_ITAM_device;
-	if(newValue4===""){
-		newValue4=photo_device;
-	}
-	if(newValue5===""){
-		newValue5=photo_serial_number_device;
-	}
-	if(newValue6===""){
-		newValue6=photo_ITAM_device;
-	}
-	const formData = new FormData();
-	formData.append("id", numId);
-	formData.append("type_device", newValue0);
-	formData.append("model_device", newValue1);
-	formData.append("serial_number", newValue2);
-	formData.append("ITAM_device", newValue3);
-	formData.append("photo_device", newValue4);
-	formData.append("photo_serial_number_device", newValue5);
-	formData.append("photo_ITAM_device", newValue6);
 	fetch('/data', {
 		method: 'PUT',
 		credentials: 'include',
@@ -74,6 +37,9 @@ export function saveTableData(numId) {
 			}
 		})
 		.then(() => {
+        let dialog = document.getElementById('edit_dialog');
+        dialog.close();
+        document.getElementById('dialog_content').textContent = '';
 		fetch('/data',{
 			method: 'GET',
 			credentials: 'include'
@@ -123,22 +89,4 @@ export function saveTableData(numId) {
 		.catch((error) => console.error('Ошибка:', error));
 		})
 		.catch((error) => console.error('Ошибка:', error));
-}
-
-function validity(input){
-    console.log(input)
-    if(input.value===""){
-        input.parentNode.querySelector("p").classList.remove('visually-hidden')
-        input.classList.add("form__field-input-error")
-        input.addEventListener('input', ()=>{
-			input.classList.remove("form__field-input-error");
-			input.parentNode.querySelector("p").classList.add('visually-hidden')
-		})
-        return false;
-    }
-    else{
-        input.parentNode.querySelector("p").classList.add('visually-hidden')
-        input.classList.remove("form__field-input-error");
-    }
-    return true;
 }
