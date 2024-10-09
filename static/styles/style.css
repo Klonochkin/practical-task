@@ -45,6 +45,7 @@ body{
   border-radius: 0.35rem;
   margin-bottom: 10px;
   align-items:start;
+  background: white;
 }
 .form__button-add{
   padding: 6px;
@@ -222,19 +223,37 @@ tbody > tr td{
 }
 .dialog__delete-button{
 	padding: 0.5rem;
-	display: flex;
-	align-items: center;
-    margin-left: 0.5rem;
+}
+.dialog__cross-button{
+	padding: 0.3rem;
 }
 .dialog__submit-button{
 	padding: 0.5rem;
-	display: flex;
-	align-items: center;
 }
+.dialog {
+    border: none;
+    padding: 0;
+    border-radius: 0.5rem;
+    background: none;
+    max-width: 1250px;
+  }
+.dialog__cross{
+    display: flex;
+    justify-content: flex-end;
+    margin: 0rem 1rem;
+}
+  .dialog__wrapper {
+    padding: 1em;
+  }
 .dialog__button{
     display: flex;
     width: 100%;
     justify-content: space-between;
+}
+.dialog__content{
+    display: flex;
+    margin: 1rem;
+    align-items: flex-start
 }
 .form__error-submit{
 	color:red;
@@ -280,11 +299,4 @@ input:user-invalid{
 }
 .table__img{
     vertical-align:top;
-}
-
-dialog{
-    border: none;
-    border-radius: 0.5rem;
-    /* background: none; */
-    width: 1000px;
 }

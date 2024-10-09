@@ -81,12 +81,19 @@ export function updateTableData(
         editTableData(number)
         let dialog = document.getElementById('edit_dialog');
 
-        dialog.addEventListener('keydown', event => {
-            if (event.key === 'Escape') {
-              event.preventDefault();
-            }
-          });
+        dialog.addEventListener('close', () => {
+            document.getElementById('dialog_content').textContent='';
+        });
 
+        dialog.addEventListener("click", closeOnBackDropClick)
+
+        function closeOnBackDropClick({ currentTarget, target }) {
+        const dialogElement = currentTarget
+        const isClickedOnBackDrop = target === dialogElement
+        if (isClickedOnBackDrop) {
+            dialogElement.close()
+        }
+        }
 	});
 	buttonEdit.querySelector('button').value = "Изменить";
 	buttonEdit.querySelector('button').textContent = "Изменить";

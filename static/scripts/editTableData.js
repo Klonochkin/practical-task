@@ -6,7 +6,7 @@ import {saveTableData} from '/static/scripts/saveTableData.js';
 
 export function editTableData(numId) {
 
-    let dialog = document.getElementById('edit_dialog');
+    let dialog = document.getElementById('dialog_content');
     createForm(true);
     const table = document.getElementById('table_device');
 	const row = table.rows[numId];
@@ -14,11 +14,10 @@ export function editTableData(numId) {
 	let defaultValue3 = row.cells[2].innerHTML;
 	let defaultValue4 = row.cells[3].innerHTML;
 	let defaultValue5 = row.cells[4].innerHTML;
-    let defaultValue6 = row.cells[5].innerHTML;
     const elements = dialog.querySelector('select').querySelectorAll('option');
 	elements.forEach(element => {
-		if(element.value===num.defaultValue2){
-			element.selected = true;
+        if(element.value===num.defaultValue2){
+            element.selected = true;
 		}
 	});
     dialog.querySelector('#model_device_select').value = defaultValue3;
@@ -36,15 +35,8 @@ export function editTableData(numId) {
     photo_ITAM.classList.remove("visually-hidden")
     photo_ITAM.setAttribute('src',row.cells[7].querySelector('img').getAttribute('src'))
 
+    document.getElementById('edit_dialog').showModal();
     document.getElementById("submit_dialog").addEventListener('click',()=>{
         saveTableData(numId)
     })
-    dialog.showModal();
-
-    document.getElementById("delete_dialog").addEventListener('click',()=>{
-        let dialog = document.getElementById('edit_dialog');
-        dialog.close();
-        dialog.textContent = '';
-    })
-
 }

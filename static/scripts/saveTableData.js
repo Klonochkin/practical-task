@@ -39,7 +39,7 @@ export function saveTableData(numId) {
 		.then(() => {
         let dialog = document.getElementById('edit_dialog');
         dialog.close();
-        dialog.textContent = '';
+        document.getElementById('dialog_content').textContent = '';
 		fetch('/data',{
 			method: 'GET',
 			credentials: 'include'

@@ -273,18 +273,24 @@
 			<button class="form__delete-button" type="button" id="form-delete" data-id="1" aria-label="delete">
 				<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
 			</button>
-            <div class="dialog__button">
-                <button class="dialog__submit-button visually-hidden" id="submit_dialog" type="button">Сохранить</button>
-                <button class="dialog__delete-button visually-hidden" id="delete_dialog" type="button">Отменить изменения</button>
-            </div>
+            <button class="dialog__submit-button visually-hidden" id="submit_dialog" type="button">Сохранить</button>
 		</form>
 
 	</template>
     <template id="form-edit">
         <form id="edit"></form>
     </template>
+    <template id="cross">
+        <div class="dialog__cross">
+            <button class="dialog__cross-button" id="dialog_cross">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" transform="rotate(45)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+            </button>
+        </div>
+    </template>
+    <dialog class="dialog" id="edit_dialog" aria-label="edit-table-data">
+        <span id="dialog_content" class="dialog__wrapper dialog__content">
 
-    <dialog id="edit_dialog" aria-label="edit-table-data" cancelable="false" >
+        </span>
     </dialog>
 
 	<script src="/static/scripts/updateTableData.js" type="module"></script>

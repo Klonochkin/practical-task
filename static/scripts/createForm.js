@@ -13,7 +13,8 @@ export function createForm(isDialog = false){
         num.countForm+=1;
     }
     else{
-        templateForms = document.getElementById('edit_dialog')
+        templateForms = document.getElementById('dialog_content')
+
         number = 152;
         input1.querySelector("#photo_device_select").removeAttribute('required')
         input1.querySelector("#photo_serial_number_device_select").removeAttribute('required')
@@ -25,13 +26,13 @@ export function createForm(isDialog = false){
     }
     else if(number===2){
         input1.getElementById('form-delete').classList.add("visually-hidden");
+        input1.getElementById('submit_dialog').remove();
         input1.getElementById('form-delete').remove();
     }
     else if(number===152){
         input1.getElementById('form-delete').classList.add("visually-hidden");
         input1.getElementById('form-delete').remove();
         input1.getElementById('submit_dialog').classList.remove("visually-hidden");
-        input1.getElementById('delete_dialog').classList.remove("visually-hidden");
         input1.querySelector('form').id= `form_dialog` ;
     }
     else{
@@ -138,4 +139,12 @@ export function createForm(isDialog = false){
 	});
 
 	templateForms.append(input1);
+    if(isDialog){
+        const templateCross = document.querySelector('#cross');
+        const cross = templateCross.content.cloneNode(true);
+        templateForms.append(cross);
+        templateForms.querySelector('#dialog_cross').addEventListener('click',()=>{
+            document.getElementById('edit_dialog').close();
+        })
+    }
 }
