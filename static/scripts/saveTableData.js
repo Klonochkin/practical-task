@@ -4,6 +4,14 @@ import {updateTableData} from '/static/scripts/updateTableData.js';
 
 import { newValidityForm } from '/static/scripts/validation.js';
 
+import {addNotification,removeNotification} from '/static/scripts/notifications.js';
+
+const NOTIFICATION_TYPES = {
+	WARNING: 'warning',
+	SUCCESS: 'success',
+}
+
+
 export function saveTableData(numId) {
 
     let forms = document.getElementById('form_dialog');
@@ -57,6 +65,12 @@ export function saveTableData(numId) {
 				}
 		})
 		.then((data2) => {
+            setTimeout(() => {
+                const warning = addNotification("Успешно",NOTIFICATION_TYPES.SUCCESS, 'Данные обновлены');
+                setTimeout(() => {
+                    removeNotification(warning);
+                }, 2000);
+            }, 1);
 			num.fetchData = data2;
 			const table = document.getElementById('table_device');
 			const n = table.rows.length;

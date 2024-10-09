@@ -151,11 +151,16 @@ button:not(:disabled){
   cursor: pointer;
 }
 button:hover:not(:disabled) {
-  background: rgb(255, 255, 255);
-  color: #000000;
-  border-color: rgb(210, 210, 210);
-}
-
+    /* background: rgb(255, 255, 255);
+    color: #000000;
+    border-color: rgb(210, 210, 210); */
+    animation: button_hover forwards;
+  }
+  @keyframes button_hover {
+      to {
+          transform: scale(1.1);
+      }
+  }
 button:disabled {
   color: rgba(0, 0, 0, 0.5);
   border: 1px rgba(210, 210, 210, 0.5) solid;
@@ -189,6 +194,9 @@ tbody > tr td{
   display: inline-flex;
   align-items:center;
   gap: 0.5rem;
+}
+.form__upload-button:hover{
+    animation: button_hover forwards;
 }
 .form__field-file{
 	display: inline-flex;
@@ -235,12 +243,13 @@ tbody > tr td{
     padding: 0;
     border-radius: 0.5rem;
     background: none;
-    max-width: 1250px;
+    max-width: 1000px;
     position: relative;
   }
 .dialog__cross{
     position: absolute;
-    right: 0;
+    right: 5px;
+    top: 5px;
 
 }
   .dialog__wrapper {

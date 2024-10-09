@@ -11,7 +11,6 @@ const NOTIFICATION_TYPES = {
 }
 
 
-
 function getData(){
 	fetch('/data',{
 		method: 'GET',
@@ -91,6 +90,12 @@ document.getElementById("submit").addEventListener('click',()=>{
 			if(!(form.checkValidity())){
                 const firstInvalidInputEl = form.querySelector(':invalid');
                 firstInvalidInputEl?.focus();
+                setTimeout(() => {
+                    const warning = addNotification("Ошибка",NOTIFICATION_TYPES.WARNING, 'Не все поля формы заполнены');
+                    setTimeout(() => {
+                        removeNotification(warning);
+                    }, 750);
+                }, 1);
 				return;
 			}
 	}

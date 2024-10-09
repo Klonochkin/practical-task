@@ -3,6 +3,13 @@ import {globalData as num} from '/static/scripts/globalData.js';
 
 import {updateTableData} from '/static/scripts/updateTableData.js';
 
+import {addNotification,removeNotification} from '/static/scripts/notifications.js';
+
+const NOTIFICATION_TYPES = {
+	WARNING: 'warning',
+	SUCCESS: 'success',
+}
+
 export function deleteTableData(numId) {
 	const table = document.getElementById('table_device');
 	let a = table.rows.length;
@@ -38,6 +45,12 @@ export function deleteTableData(numId) {
 				  }
 			})
 			.then((data) => {
+            setTimeout(() => {
+                const warning = addNotification("Успешно",NOTIFICATION_TYPES.SUCCESS, 'Данные удалены');
+                setTimeout(() => {
+                    removeNotification(warning);
+                }, 2000);
+            }, 1);
 			num.fetchData = data;
 			const n = data.length;
 			for (let i = 0; i < n; i++) {
