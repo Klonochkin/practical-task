@@ -31,6 +31,7 @@ export function createForm(isDialog = false){
         input1.getElementById('form-delete').classList.add("visually-hidden");
         input1.getElementById('form-delete').remove();
         input1.getElementById('submit_dialog').classList.remove("visually-hidden");
+        input1.getElementById('delete_dialog').classList.remove("visually-hidden");
         input1.querySelector('form').id= `form_dialog` ;
     }
     else{

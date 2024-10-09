@@ -37,9 +37,14 @@ export function editTableData(numId) {
     photo_ITAM.setAttribute('src',row.cells[7].querySelector('img').getAttribute('src'))
 
     document.getElementById("submit_dialog").addEventListener('click',()=>{
-        console.log("PICK PICK PICK")
         saveTableData(numId)
     })
     dialog.showModal();
+
+    document.getElementById("delete_dialog").addEventListener('click',()=>{
+        let dialog = document.getElementById('edit_dialog');
+        dialog.close();
+        dialog.textContent = '';
+    })
 
 }

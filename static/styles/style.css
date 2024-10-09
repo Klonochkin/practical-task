@@ -215,11 +215,26 @@ tbody > tr td{
 	margin-top: 0.5rem;
 	font-size: 0.8rem;
 }
-
 .form__delete-button{
+    padding: 0.5rem;
+	display: flex;
+	align-items: center;
+}
+.dialog__delete-button{
 	padding: 0.5rem;
 	display: flex;
 	align-items: center;
+    margin-left: 0.5rem;
+}
+.dialog__submit-button{
+	padding: 0.5rem;
+	display: flex;
+	align-items: center;
+}
+.dialog__button{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
 }
 .form__error-submit{
 	color:red;
