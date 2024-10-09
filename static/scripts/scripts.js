@@ -3,6 +3,15 @@ import { globalData as num } from '/static/scripts/globalData.js';
 import { createForm } from '/static/scripts/createForm.js';
 import { validityInputUpdate,validityFileUpdate } from '/static/scripts/validation.js';
 
+import {addNotification,removeNotification} from '/static/scripts/notifications.js';
+
+const NOTIFICATION_TYPES = {
+	WARNING: 'warning',
+	SUCCESS: 'success',
+}
+
+
+
 function getData(){
 	fetch('/data',{
 		method: 'GET',
@@ -102,6 +111,13 @@ document.getElementById("submit").addEventListener('click',()=>{
 				.catch(error => console.error(error));
 			}
 	}
+
+    setTimeout(() => {
+        const warning = addNotification("Успешно",NOTIFICATION_TYPES.SUCCESS, 'Данные сохранены');
+        setTimeout(() => {
+            removeNotification(warning);
+        }, 2000);
+    }, 1);
 
 	num.countForm=2;
 
