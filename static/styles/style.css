@@ -248,8 +248,8 @@ tbody > tr td{
   }
 .dialog__cross{
     position: absolute;
-    right: 5px;
-    top: 5px;
+    right: 1px;
+    top: 32px;
 
 }
   .dialog__wrapper {
@@ -314,6 +314,8 @@ input:user-invalid{
 
 .notification {
 	background-color: #fff;
+    display: flex;
+    align-items: center;
 	border-radius: 5px;
 	box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 	color: #fff;
@@ -322,14 +324,17 @@ input:user-invalid{
 	line-height: 20px;
 	margin-bottom: 15px;
 }
-.notification-warning {
+.notification__warning {
 	background-color: #ff9e0f;
 }
-.notification-success {
+.notification__success {
 	background-color: #55b559;
 }
+.notification__error {
+	background-color: #ff3f3f;
+}
 
-.notification.hide {
+.notification--hide {
 	animation: shrink 0.3s ease-out forwards;
 }
 @keyframes shrink {
@@ -339,13 +344,14 @@ input:user-invalid{
 	}
 }
 
-.notification strong {
+.notification__strong {
 	font-size: 12px;
 	line-height: 20px;
 	letter-spacing: 0.5px;
 	text-transform: uppercase;
 }
-.notification-container {
+.notification__container {
+    z-index: 10;
 	position: fixed;
 	top: 15px;
 	right: 15px;

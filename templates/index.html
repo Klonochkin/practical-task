@@ -12,10 +12,7 @@
 </head>
 
 <body>
-    <div class="notification-container" id="notification-container">
-		<div class="notification notification-danger visually-hidden">
-			<strong>Ошибка:</strong>
-		</div>
+    <div class="notification__container" id="notification-container">
     </div>
     <header class="container header">
         <h1>Форма заполнения</h1>
@@ -284,6 +281,9 @@
 	</template>
     <template id="form-edit">
         <form id="edit"></form>
+    </template>
+    <template id="notification-strong">
+        <strong class="notification__strong"></strong><p></p>
     </template>
     <dialog class="dialog" id="edit_dialog" aria-label="edit-table-data">
         <div class="dialog__cross">

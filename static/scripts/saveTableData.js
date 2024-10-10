@@ -1,16 +1,14 @@
 import {globalData as num} from '/static/scripts/globalData.js';
-
 import {updateTableData} from '/static/scripts/updateTableData.js';
-
 import { newValidityForm } from '/static/scripts/validation.js';
-
 import {addNotification,removeNotification} from '/static/scripts/notifications.js';
-
 import {checkResponse} from '/static/scripts/response.js';
+import {getData} from '/static/scripts/getData.js';
 
 const NOTIFICATION_TYPES = {
 	WARNING: 'warning',
 	SUCCESS: 'success',
+    ERROR: 'error',
 }
 
 
@@ -31,79 +29,30 @@ export function saveTableData(numId) {
 		credentials: 'include',
 		body: formData
 	})
-		.then((response) => {
-			// if (response.ok) {
-			// 	return response.json();
-			// }
-			// if (response.status === 403) {
-			// 	console.error('Аккаунт не найден');
-			// 	window.location.href = '/auth';
-			// }
-			// else if(response.status === 404){
-			// 	console.error('Запись не найдена');
-			// }
-			// else {
-			// 	console.error('Error:', response.status);
-			// }
-            checkResponse(response)
-		})
-		.then(() => {
-        let dialog = document.getElementById('edit_dialog');
-        dialog.close();
-        document.getElementById('dialog_content').textContent = '';
-		fetch('/data',{
-			method: 'GET',
-			credentials: 'include'
-			})
-		.then((response) => {
-			if (response.ok) {
-				return response.json();
-			}
-			if (response.status === 403) {
-				console.error('Аккаунт не найден');
-				window.location.href = '/auth';
-			}
-				else {
-				console.error('Error:', response.status);
-				}
-		})
-		.then((data2) => {
+    .then((response) => {
+        checkResponse(response);
+        if(response.ok){
             setTimeout(() => {
                 const warning = addNotification("Успешно",NOTIFICATION_TYPES.SUCCESS, 'Данные обновлены');
                 setTimeout(() => {
                     removeNotification(warning);
                 }, 2000);
             }, 1);
-			num.fetchData = data2;
-			const table = document.getElementById('table_device');
-			const n = table.rows.length;
-			for (let i = 1; i < n; i++) {
-				table.deleteRow(1);
-			}
-			let n2 = data2.length;
-			for (let i = 0; i < n2; i++) {
-				const number = data2[i].id;
-				const type_device = data2[i].type_device;
-				const model_device = data2[i].model_device;
-				const serial_number = data2[i].serial_number;
-				const ITAM_device = data2[i].ITAM_device;
-				const photo_device = data2[i].photo_device;
-				const photo_serial_number_device =
-				data2[i].photo_serial_number_device;
-				const photo_ITAM_device = data2[i].photo_ITAM_device;
-				updateTableData(
-					number,
-					type_device,
-					model_device,
-					serial_number,
-					ITAM_device,
-					photo_device,
-					photo_serial_number_device,
-					photo_ITAM_device
-				);
-			}
-		})
-		.catch((error) => console.error('Ошибка:', error));
-		})
-		.catch((error) => console.error('Ошибка:', error));
+        }
+    })
+    .then(() => {
+        let dialog = document.getElementById('edit_dialog');
+        dialog.close();
+        document.getElementById('dialog_content').textContent = '';
+        getData();
+    })
+    .catch(() => {
+        let dialog = document.getElementById('edit_dialog');
+        dialog.close();
+        document.getElementById('dialog_content').textContent = '';
+        const warning = addNotification("Ошибка",NOTIFICATION_TYPES.ERROR, 'Попробуйте позже');
+        setTimeout(() => {
+            removeNotification(warning);
+        }, 2000);
+    });
 }

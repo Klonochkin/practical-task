@@ -7,16 +7,12 @@ const NOTIFICATION_TYPES = {
 }
 
 export function checkResponse(response){
-    console.log(response)
     if (response.ok) {
-        return response.json();
+        return;
     }
-    if (response.status === 403) {
+    else if (response.status === 401) {
         console.error('Вы не вошли');
-        const warning = addNotification("Ошибка",NOTIFICATION_TYPES.WARNING, 'Вы не вошли');
-        setTimeout(() => {
-            removeNotification(warning);
-        }, 2000);
+        window.location.href = '/auth';
     }
     else if(response.status === 404){
         console.error('Запись не найдена');
