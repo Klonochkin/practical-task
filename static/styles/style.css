@@ -36,6 +36,7 @@ body{
 	align-items:start;
 }
 .form{
+  position: relative;
   border-style: none;
   display: flex;
   flex-direction:column;
@@ -46,6 +47,10 @@ body{
   margin-bottom: 10px;
   align-items:start;
   background: white;
+}
+.form__dialog{
+    max-height: 80vh;
+    overflow: auto;
 }
 .form__button-add{
   padding: 6px;
@@ -235,6 +240,9 @@ tbody > tr td{
 .dialog__cross-button{
 	padding: 0.3rem;
 }
+.dialog__cross-svg{
+    display: block;
+}
 .dialog__submit-button{
 	padding: 0.5rem;
 }
@@ -245,11 +253,15 @@ tbody > tr td{
     background: none;
     max-width: 1000px;
     position: relative;
-  }
+    overflow: hidden;
+}
+dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+}
 .dialog__cross{
     position: absolute;
-    right: 1px;
-    top: 32px;
+    top: 3px;
+    right: 3px;
 
 }
   .dialog__wrapper {
@@ -314,8 +326,6 @@ input:user-invalid{
 
 .notification {
 	background-color: #fff;
-    display: flex;
-    align-items: center;
 	border-radius: 5px;
 	box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 	color: #fff;
@@ -358,3 +368,8 @@ input:user-invalid{
 	width: 500px;
 	max-width: calc(100% - 30px);
 }
+.notification__p{
+    padding: 0px;
+    margin: 9px 0px;
+}
+

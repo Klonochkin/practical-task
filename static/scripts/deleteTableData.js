@@ -22,7 +22,7 @@ export function deleteTableData(numId) {
             const warning = addNotification("Успешно",NOTIFICATION_TYPES.SUCCESS, 'Данные удалены');
             setTimeout(() => {
                 removeNotification(warning);
-            }, 2000);
+            }, 4000);
             getData();
         }
     })
@@ -30,7 +30,7 @@ export function deleteTableData(numId) {
         const warning = addNotification("Ошибка",NOTIFICATION_TYPES.ERROR, 'Попробуйте позже');
         setTimeout(() => {
             removeNotification(warning);
-        }, 2000);
+        }, 4000);
     });
 }
 

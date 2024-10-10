@@ -25,21 +25,19 @@ export function createForm(isDialog = false){
         num.countForm+=1;
     }
     else if(number===2){
-        input1.getElementById('form-delete').classList.add("visually-hidden");
+        input1.getElementById('dialog_cross').classList.add("visually-hidden");
         input1.getElementById('submit_dialog').remove();
-        input1.getElementById('form-delete').remove();
+        input1.getElementById('dialog_cross').remove();
     }
     else if(number===152){
-        input1.getElementById('form-delete').classList.add("visually-hidden");
-        input1.getElementById('form-delete').remove();
+        input1.querySelector('form').classList.add("form__dialog");
         input1.getElementById('submit_dialog').classList.remove("visually-hidden");
         input1.querySelector('form').id= `form_dialog` ;
     }
     else{
         input1.querySelector('form').id= `form${number}` ;
-        input1.getElementById('form-delete').addEventListener('click',()=>{
+        input1.getElementById('dialog_cross').addEventListener('click',()=>{
         document.getElementById(`form${number}`).remove();
-
         })
     }
 	let field = input1.querySelector("select");
@@ -48,8 +46,18 @@ export function createForm(isDialog = false){
 	let paragraph = Array.from(parentForm.querySelectorAll("p"));
     let p = Array.from(parentForm.parentNode.querySelectorAll("p"))
     let elements = field.parentNode.parentNode.parentNode.elements
-    for (let i = 0; i < elements.length; i++) {
-        const element = elements[i];
+    let count = elements.length
+    if(number!==1 && number!==2){
+        count--;
+    }
+    for (let i = 0; i < count; i++) {
+        let element = elements[i];
+        if(number!==1 && number!==2){
+            element = elements[i+1];
+        }
+        else{
+            element = elements[i];
+        }
         if(element.type === "text" || element.type === "select-one"){
             element.addEventListener('blur', ()=>{
                 validityInputUpdate(element,paragraph[i])
@@ -137,6 +145,5 @@ export function createForm(isDialog = false){
 			img[2].src = URL.createObjectURL(event.target.files[0]);
 		}
 	});
-
 	templateForms.append(input1);
 }

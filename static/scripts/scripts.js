@@ -7,6 +7,7 @@ import {getData} from '/static/scripts/getData.js';
 const NOTIFICATION_TYPES = {
 	WARNING: 'warning',
 	SUCCESS: 'success',
+    ERROR: 'error',
 }
 
 createForm();
@@ -33,18 +34,19 @@ document.getElementById("form-add").addEventListener('click',()=>{
 document.getElementById("submit").addEventListener('click',()=>{
     let forms = document.querySelectorAll("form");
 	for(let i=0;i<forms.length;i++){
-		let form = forms[i]
-            newValidityForm(form)
-			if(!(form.checkValidity())){
-                const firstInvalidInputEl = form.querySelector(':invalid');
-                firstInvalidInputEl?.focus();
-				return;
-			}
+        let form = forms[i]
+        newValidityForm(form)
+        if(!(form.checkValidity())){
+            const firstInvalidInputEl = form.querySelector(':invalid');
+            firstInvalidInputEl?.focus();
+            return;
+        }
 	}
 
+    let isConnectionLoss = false;
+    let temp = forms.length;
 	for(let i=0;i<forms.length;i++){
 		let form = forms[i]
-
 			if (form.checkValidity()) {
 
 				const formData = new FormData(form);
@@ -59,19 +61,30 @@ document.getElementById("submit").addEventListener('click',()=>{
                         const warning = addNotification("Успешно",NOTIFICATION_TYPES.SUCCESS, 'Данные сохранены');
                         setTimeout(() => {
                             removeNotification(warning);
-                        }, 2000);
+                        }, 4000);
                     }
                 })
-				.then(getData)
-				.catch(error => console.error(error));
+				.then(()=>{
+                    getData();
+                    temp-=1;
+                    if(temp===0){
+                        if(!isConnectionLoss){
+                            num.countForm=2;
+                            document.getElementById("forms").textContent = '';
+                            createForm();
+                        }
+                    }
+                })
+				.catch(() => {
+                    isConnectionLoss = true;
+                    const warning = addNotification("Ошибка",NOTIFICATION_TYPES.ERROR, 'Попробуйте позже');
+                    setTimeout(() => {
+                        removeNotification(warning);
+                    }, 4000);
+                });
 			}
 	}
 
-	num.countForm=2;
-
-	document.getElementById("forms").textContent = '';
-
-	createForm();
 })
 
 function newValidityForm(form){

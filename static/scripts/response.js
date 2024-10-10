@@ -19,49 +19,49 @@ export function checkResponse(response){
         const warning = addNotification("Ошибка",NOTIFICATION_TYPES.WARNING, 'Запись не найдена');
         setTimeout(() => {
             removeNotification(warning);
-        }, 2000);
+        }, 4000);
     }
     else if(response.status === 405){
         console.error('Неправильный метод запроса');
         const warning = addNotification("Ошибка",NOTIFICATION_TYPES.WARNING, 'Неправильный метод запроса');
         setTimeout(() => {
             removeNotification(warning);
-        }, 2000);
+        }, 4000);
     }
     else if(response.status === 408){
         console.error('Превышено время ожидания ответа');
         const warning = addNotification("Ошибка",NOTIFICATION_TYPES.WARNING, 'Превышено время ожидания ответа');
         setTimeout(() => {
             removeNotification(warning);
-        }, 2000);
+        }, 4000);
     }
     else if(response.status === 409){
         console.error('Аккаунт с таким email уже существует');
         const warning = addNotification("Ошибка",NOTIFICATION_TYPES.WARNING, 'Аккаунт с таким email уже существует');
         setTimeout(() => {
             removeNotification(warning);
-        }, 2000);
+        }, 4000);
     }
     else if(response.status === 422){
         console.error('Запрос имеет не обработанный элемент');
         const warning = addNotification("Ошибка",NOTIFICATION_TYPES.WARNING, 'Запрос имеет не обработанный элемент');
         setTimeout(() => {
             removeNotification(warning);
-        }, 2000);
+        }, 4000);
     }
     else if(response.status === 429){
         console.error('Превышено количество запросов');
         const warning = addNotification("Ошибка",NOTIFICATION_TYPES.WARNING, 'Превышено количество запросов');
         setTimeout(() => {
             removeNotification(warning);
-        }, 2000);
+        }, 4000);
     }
     else if(response.status === 500){
         console.error('Сервер не отвечает');
         const warning = addNotification("Ошибка",NOTIFICATION_TYPES.WARNING, 'Сервер не отвечает');
         setTimeout(() => {
             removeNotification(warning);
-        }, 2000);
+        }, 4000);
     }
     else {
         console.error('Error:', response.status);
