@@ -2,9 +2,8 @@ import { updateTableData } from '/static/scripts/updateTableData.js';
 import { globalData as num } from '/static/scripts/globalData.js';
 import { createForm } from '/static/scripts/createForm.js';
 import { validityInputUpdate,validityFileUpdate } from '/static/scripts/validation.js';
-
 import {addNotification,removeNotification} from '/static/scripts/notifications.js';
-
+import {checkResponse} from '/static/scripts/response.js';
 const NOTIFICATION_TYPES = {
 	WARNING: 'warning',
 	SUCCESS: 'success',
@@ -16,16 +15,7 @@ function getData(){
 		method: 'GET',
 		credentials: 'include',
 		})
-	.then((response) => {
-		if (response.ok) {
-			return response.json();
-		  } else if (response.status === 403) {
-			console.error('Аккаунт не найден');
-			window.location.href = '/auth';
-		  } else {
-			console.error('Error:', response.status);
-		  }
-	})
+	.then((response) => response.json())
 	.then((data) => {
 		num.fetchData = data;
 		const table = document.getElementById('table_device');
@@ -90,12 +80,6 @@ document.getElementById("submit").addEventListener('click',()=>{
 			if(!(form.checkValidity())){
                 const firstInvalidInputEl = form.querySelector(':invalid');
                 firstInvalidInputEl?.focus();
-                setTimeout(() => {
-                    const warning = addNotification("Ошибка",NOTIFICATION_TYPES.WARNING, 'Не все поля формы заполнены');
-                    setTimeout(() => {
-                        removeNotification(warning);
-                    }, 750);
-                }, 1);
 				return;
 			}
 	}
@@ -111,18 +95,19 @@ document.getElementById("submit").addEventListener('click',()=>{
 					credentials: 'include',
 					body: formData
 				})
-				.then(response => response.json())
+				.then(response => {
+                    checkResponse(response);
+                    if(response.ok){
+                        const warning = addNotification("Успешно",NOTIFICATION_TYPES.SUCCESS, 'Данные сохранены');
+                        setTimeout(() => {
+                            removeNotification(warning);
+                        }, 2000);
+                    }
+                })
 				.then(getData)
 				.catch(error => console.error(error));
 			}
 	}
-
-    setTimeout(() => {
-        const warning = addNotification("Успешно",NOTIFICATION_TYPES.SUCCESS, 'Данные сохранены');
-        setTimeout(() => {
-            removeNotification(warning);
-        }, 2000);
-    }, 1);
 
 	num.countForm=2;
 
@@ -167,3 +152,4 @@ document.getElementById("export").addEventListener('click',()=>{
       });
 
 })
+

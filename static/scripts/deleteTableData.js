@@ -5,6 +5,8 @@ import {updateTableData} from '/static/scripts/updateTableData.js';
 
 import {addNotification,removeNotification} from '/static/scripts/notifications.js';
 
+import {checkResponse} from '/static/scripts/response.js';
+
 const NOTIFICATION_TYPES = {
 	WARNING: 'warning',
 	SUCCESS: 'success',
@@ -23,34 +25,22 @@ export function deleteTableData(numId) {
 			'Content-Type': 'application/json',
 		},
 	})
-		.then((response) => response.json())
+		.then((response) => {
+            checkResponse(response);
+            if(response.ok){
+                const warning = addNotification("Успешно",NOTIFICATION_TYPES.SUCCESS, 'Данные удалены');
+                setTimeout(() => {
+                    removeNotification(warning);
+                }, 2000);
+            }
+        })
 		.then(() => {
 			fetch('/data',{
 				method: 'GET',
 				credentials: 'include',
 				})
-			.then((response) => {
-				if (response.ok) {
-					return response.json();
-				}
-				if (response.status === 403) {
-					console.error('Аккаунт не найден');
-					window.location.href = '/auth';
-				}
-				else if(response.status === 404){
-					console.error('Запись не найдена');
-				}
-				else {
-					console.error('Error:', response.status);
-				  }
-			})
+			.then((response) => response.json())
 			.then((data) => {
-            setTimeout(() => {
-                const warning = addNotification("Успешно",NOTIFICATION_TYPES.SUCCESS, 'Данные удалены');
-                setTimeout(() => {
-                    removeNotification(warning);
-                }, 2000);
-            }, 1);
 			num.fetchData = data;
 			const n = data.length;
 			for (let i = 0; i < n; i++) {
@@ -79,4 +69,5 @@ export function deleteTableData(numId) {
 		})
 		.catch((error) => console.error('Ошибка:', error));
 }
+
 

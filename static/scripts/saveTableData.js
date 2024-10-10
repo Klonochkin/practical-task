@@ -6,6 +6,8 @@ import { newValidityForm } from '/static/scripts/validation.js';
 
 import {addNotification,removeNotification} from '/static/scripts/notifications.js';
 
+import {checkResponse} from '/static/scripts/response.js';
+
 const NOTIFICATION_TYPES = {
 	WARNING: 'warning',
 	SUCCESS: 'success',
@@ -30,19 +32,20 @@ export function saveTableData(numId) {
 		body: formData
 	})
 		.then((response) => {
-			if (response.ok) {
-				return response.json();
-			}
-			if (response.status === 403) {
-				console.error('Аккаунт не найден');
-				window.location.href = '/auth';
-			}
-			else if(response.status === 404){
-				console.error('Запись не найдена');
-			}
-			else {
-				console.error('Error:', response.status);
-			}
+			// if (response.ok) {
+			// 	return response.json();
+			// }
+			// if (response.status === 403) {
+			// 	console.error('Аккаунт не найден');
+			// 	window.location.href = '/auth';
+			// }
+			// else if(response.status === 404){
+			// 	console.error('Запись не найдена');
+			// }
+			// else {
+			// 	console.error('Error:', response.status);
+			// }
+            checkResponse(response)
 		})
 		.then(() => {
         let dialog = document.getElementById('edit_dialog');
