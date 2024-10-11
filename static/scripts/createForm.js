@@ -15,8 +15,8 @@ export function createForm(isDialog = false){
     }
     else{
         templateForms = document.getElementById('dialog_content')
-
         number = 152;
+        document.querySelector("body").classList.add('body__open-dialog');
         input1.querySelector("#photo_device_select").removeAttribute('required')
         input1.querySelector("#photo_serial_number_device_select").removeAttribute('required')
         input1.querySelector("#photo_ITAM_device_select").removeAttribute('required')

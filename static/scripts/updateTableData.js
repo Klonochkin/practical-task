@@ -83,6 +83,7 @@ export function updateTableData(
 
         dialog.addEventListener('close', () => {
             document.getElementById('dialog_content').textContent='';
+            document.querySelector('body').classList.remove('body__open-dialog');
         });
 
         dialog.addEventListener("click", closeOnBackDropClick)
