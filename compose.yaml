@@ -6,7 +6,7 @@ services:
             - 27017:27017
 
     app:
-        build: .
+        build: ./backend
         restart: on-failure
         volumes:
         - myimage:/app/static/images
@@ -14,12 +14,6 @@ services:
             - 8000:8000
         develop:
             watch:
-                - action: sync
-                  path: ./templates
-                  target: /app/templates
-                - action: sync
-                  path: ./static
-                  target: /app/static
                 - action: sync
                   path: ./app.py
                   target: /app/app.py

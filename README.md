@@ -1,23 +1,29 @@
 # Practical Task
 
-## Running Locally
+## Running dev
 
-To run app:
+frontend:
+
+([./frontend](./frontend/))
 
 ```sh
-uvicorn main:app --reload
+npm run dev
 ```
 
-To run docker:
+backend:
+
+./
 
 ```sh
-docker compose up --watch --build
+docker compose up --build --watch
 ```
 
-## Running DB
+## Running production
+
+([./frontend](./frontend/))
 
 ```sh
-docker run --name some-mongo -d mongo:latest
+npm run build && docker compose up --build
 ```
 
 ## Links

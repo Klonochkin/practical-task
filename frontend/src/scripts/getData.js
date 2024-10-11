@@ -1,5 +1,5 @@
-import {globalData as num} from '/static/scripts/globalData.js';
-import { updateTableData } from '/static/scripts/updateTableData.js';
+import {globalData as num} from './globalData.js';
+import { updateTableData } from './updateTableData.js';
 
 export function getData(){
 	fetch('/data',{

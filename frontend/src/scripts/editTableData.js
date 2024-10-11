@@ -1,6 +1,6 @@
-import {globalData as num} from '/static/scripts/globalData.js';
-import { createForm } from '/static/scripts/createForm.js';
-import {saveTableData} from '/static/scripts/saveTableData.js';
+import {globalData as num} from './globalData.js';
+import { createForm } from './createForm.js';
+import {saveTableData} from './saveTableData.js';
 export function editTableData(numId) {
 
     let dialog = document.getElementById('dialog_content');

@@ -1,5 +1,5 @@
 
-import {addNotification,removeNotification} from '/static/scripts/notifications.js';
+import {addNotification,removeNotification} from './notifications.js';
 
 const NOTIFICATION_TYPES = {
 	WARNING: 'warning',

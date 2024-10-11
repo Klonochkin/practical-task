@@ -1,9 +1,9 @@
-import {globalData as num} from '/static/scripts/globalData.js';
-import {updateTableData} from '/static/scripts/updateTableData.js';
-import { newValidityForm } from '/static/scripts/validation.js';
-import {addNotification,removeNotification} from '/static/scripts/notifications.js';
-import {checkResponse} from '/static/scripts/response.js';
-import {getData} from '/static/scripts/getData.js';
+import {globalData as num} from './globalData.js';
+import {updateTableData} from './updateTableData.js';
+import { newValidityForm } from './validation.js';
+import {addNotification,removeNotification} from './notifications.js';
+import {checkResponse} from './response.js';
+import {getData} from './getData.js';
 
 const NOTIFICATION_TYPES = {
 	WARNING: 'warning',

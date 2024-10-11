@@ -20,7 +20,7 @@ from brotli_asgi import BrotliMiddleware
 alphabet = string.digits + string.ascii_lowercase
 
 
-templates=Jinja2Templates(directory='templates')
+templates=Jinja2Templates(directory='dist')
 app = FastAPI()
 
 client = MongoClient("db", 27017)
@@ -45,7 +45,7 @@ class CacheControlledStaticFiles(StaticFiles):
         response.headers["Cache-Control"] = "public, max-age=31536000"
         return response
 
-app.mount("/static", CacheControlledStaticFiles(directory="static"), name="static")
+app.mount("/assets", CacheControlledStaticFiles(directory="dist/assets"), name="static")
 
 @app.get('/')
 async def welcome(request:Request):

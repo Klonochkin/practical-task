@@ -1,6 +1,6 @@
-import {globalData as num} from '/static/scripts/globalData.js';
+import {globalData as num} from './globalData.js';
 
-import { validityInputUpdate,validityFileUpdate } from '/static/scripts/validation.js';
+import { validityInputUpdate,validityFileUpdate } from './validation.js';
 
 export function createForm(isDialog = false){
     let templateForms;

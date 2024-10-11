@@ -1,9 +1,9 @@
-import { globalData as num } from '/static/scripts/globalData.js';
-import { createForm } from '/static/scripts/createForm.js';
-import { validityInputUpdate,validityFileUpdate } from '/static/scripts/validation.js';
-import {addNotification,removeNotification} from '/static/scripts/notifications.js';
-import {checkResponse} from '/static/scripts/response.js';
-import {getData} from '/static/scripts/getData.js';
+import { globalData as num } from './scripts/globalData.js';
+import { createForm } from './scripts/createForm.js';
+import { validityInputUpdate,validityFileUpdate } from './scripts/validation.js';
+import {addNotification,removeNotification} from './scripts/notifications.js';
+import {checkResponse} from './scripts/response.js';
+import {getData} from './scripts/getData.js';
 const NOTIFICATION_TYPES = {
 	WARNING: 'warning',
 	SUCCESS: 'success',
