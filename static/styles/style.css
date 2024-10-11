@@ -417,3 +417,7 @@ input:user-invalid{
     padding: 0px;
     margin: 9px 0px;
 }
+
+body:has(dialog[open]) {
+    overflow: hidden;
+}
