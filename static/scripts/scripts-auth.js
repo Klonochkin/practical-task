@@ -19,7 +19,7 @@ document.getElementById('form-auth').addEventListener('submit', (event)=>{
 		if (response.ok) {
 			window.location.href = '/'
 			return response.json();
-		  } else if (response.status === 403) {
+		  } else if (response.status === 401) {
 			document.getElementById('error-auth').classList.remove("visually-hidden");
 			document.getElementById('error-auth').innerHTML="Аккаунта не существует";
 		  }else if(response.status === 422){

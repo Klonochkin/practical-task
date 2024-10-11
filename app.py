@@ -8,7 +8,6 @@ from pymongo import MongoClient
 from openpyxl import Workbook
 from openpyxl.worksheet.hyperlink import Hyperlink
 from PIL import Image
-# from openpyxl.drawing.image import Image
 import string
 import random
 import hashlib
@@ -96,12 +95,10 @@ async def upload(request: Request):
         raise HTTPException(status_code=401, detail="Аккаунт не найден")
 
     form_data = await request.form()
-    print(f"ПОЛУЧЕННЫЕ ДАННЫЕ{form_data}")
     id=form_data.get("id")
     photo_device = form_data.get("photo_device")
     photo_serial_number_device = form_data.get("photo_serial_number_device")
     photo_ITAM_device = form_data.get("photo_ITAM_device")
-    print(f"НАЗВАНИЕ ФАЙЛА: {photo_device}")
 
     check = posts.find_one({"user_id":res["id"],"id": int(id)})
     if(check==None):
