@@ -8,7 +8,6 @@ from pymongo import MongoClient
 from openpyxl import Workbook
 from openpyxl.worksheet.hyperlink import Hyperlink
 from PIL import Image
-# from openpyxl.drawing.image import Image
 import string
 import random
 import hashlib
@@ -93,15 +92,13 @@ async def upload(request: Request):
     session_value = cookies.get("session")
     res = postsSession.find_one({"Session": session_value})
     if(res==None):
-        raise HTTPException(status_code=403, detail="Аккаунт не найден")
+        raise HTTPException(status_code=401, detail="Аккаунт не найден")
 
     form_data = await request.form()
-    print(f"ПОЛУЧЕННЫЕ ДАННЫЕ{form_data}")
     id=form_data.get("id")
     photo_device = form_data.get("photo_device")
     photo_serial_number_device = form_data.get("photo_serial_number_device")
     photo_ITAM_device = form_data.get("photo_ITAM_device")
-    print(f"НАЗВАНИЕ ФАЙЛА: {photo_device}")
 
     check = posts.find_one({"user_id":res["id"],"id": int(id)})
     if(check==None):
@@ -134,7 +131,7 @@ async def read_data(request: Request):
     session_value = cookies.get("session")
     res = postsSession.find_one({"Session": session_value})
     if(res==None):
-        raise HTTPException(status_code=403, detail="Аккаунт не найден")
+        raise HTTPException(status_code=401, detail="Аккаунт не найден")
     dataSend = posts.find({'user_id': res["id"]})
     posts_list = []
     for post in dataSend:
@@ -149,7 +146,7 @@ async def delete(request: Request,numDelete: str):
     session_value = cookies.get("session")
     res = postsSession.find_one({"Session": session_value})
     if(res==None):
-        raise HTTPException(status_code=403, detail="Аккаунт не найден")
+        raise HTTPException(status_code=401, detail="Аккаунт не найден")
     count = posts.count_documents({})
     file = posts.find_one({"user_id":res["id"],"id": int(numDelete)})
     if(file==None):
@@ -195,7 +192,7 @@ async def sendForm(request: Request):
     session_value = cookies.get("session")
     res = postsSession.find_one({"Session": session_value})
     if(res==None):
-        raise HTTPException(status_code=403, detail="Аккаунт не найден")
+        raise HTTPException(status_code=401, detail="Аккаунт не найден")
     form_data = await request.form()
     n=posts.count_documents({})
     newN = posts.find({'user_id': res["id"] })
@@ -227,7 +224,7 @@ async def delete_file(request: Request,name: str):
     session_value = cookies.get("session")
     res = postsSession.find_one({"Session": session_value})
     if(res==None):
-        raise HTTPException(status_code=403, detail="Аккаунт не найден")
+        raise HTTPException(status_code=401, detail="Аккаунт не найден")
     path = "static/images/"
     path+=name
     try:
@@ -244,7 +241,7 @@ async def signIn(request: Request):
     password = data["password"]
     res = postsPassword.find_one({'email': email})
     if(res==None):
-        raise HTTPException(status_code=403, detail="Аккаунт не найден")
+        raise HTTPException(status_code=401, detail="Аккаунт не найден")
     salt = res['salt']
     hash = res['password']
     newHash = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000).hex()
@@ -278,7 +275,7 @@ async def signUp(request: Request):
     password = data["password"]
     res = postsPassword.find_one({'email': email})
     if(res!=None):
-        raise HTTPException(status_code=403, detail="Аккаунт не найден")
+        raise HTTPException(status_code=401, detail="Аккаунт не найден")
     if(len(password)<8):
         raise HTTPException(status_code=422, detail="Пароль слишком короткий")
     n=postsPassword.count_documents({})
@@ -322,7 +319,7 @@ async def export(request:Request):
     session_value = cookies.get("session")
     auth = postsSession.find_one({"Session": session_value})
     if(auth==None):
-        raise HTTPException(status_code=403, detail="Аккаунт не найден")
+        raise HTTPException(status_code=401, detail="Аккаунт не найден")
     wb = Workbook()
     ws = wb.active
 
@@ -418,7 +415,7 @@ async def test(request:Request,name: str,size: int):
     session_value = cookies.get("session")
     auth = postsSession.find_one({"Session": session_value})
     if(auth==None):
-        raise HTTPException(status_code=403, detail="Аккаунт не найден")
+        raise HTTPException(status_code=401, detail="Аккаунт не найден")
 
     img = Image.open(f"static/images/{name}")
 

@@ -19,7 +19,7 @@ document.getElementById('form-register').addEventListener('submit', (event)=>{
 		if (response.ok) {
 			window.location.href = '/auth';
 			return response.json();
-		  } else if (response.status === 403) {
+		  } else if (response.status === 401) {
 			document.getElementById('error-register').classList.remove("visually-hidden");
 			document.getElementById('error-register').innerHTML="Аккаунт с таким адресом уже существует";
 		  }else if(response.status === 422){

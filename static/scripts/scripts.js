@@ -1,56 +1,13 @@
-import { updateTableData } from '/static/scripts/updateTableData.js';
 import { globalData as num } from '/static/scripts/globalData.js';
 import { createForm } from '/static/scripts/createForm.js';
 import { validityInputUpdate,validityFileUpdate } from '/static/scripts/validation.js';
-
-function getData(){
-	fetch('/data',{
-		method: 'GET',
-		credentials: 'include',
-		})
-	.then((response) => {
-		if (response.ok) {
-			return response.json();
-		  } else if (response.status === 403) {
-			console.error('Аккаунт не найден');
-			window.location.href = '/auth';
-		  } else {
-			console.error('Error:', response.status);
-		  }
-	})
-	.then((data) => {
-		num.fetchData = data;
-		const table = document.getElementById('table_device');
-		const n = table.rows.length;
-
-		for (let i = 1; i < n; i++) {
-			table.deleteRow(1);
-		}
-
-		let n2 = data.length;
-
-		for (let i = 0; i < n2; i++) {
-			const id = data[i].id;
-			const type_device = data[i].type_device;
-			const model_device = data[i].model_device;
-			const serial_number = data[i].serial_number;
-			const ITAM_device = data[i].ITAM_device;
-			const photo_device = data[i].photo_device;
-			const photo_serial_number_device = data[i].photo_serial_number_device;
-			const photo_ITAM_device = data[i].photo_ITAM_device;
-			updateTableData(
-				id,
-				type_device,
-				model_device,
-				serial_number,
-				ITAM_device,
-				photo_device,
-				photo_serial_number_device,
-				photo_ITAM_device
-			);
-		}
-	})
-	.catch((error) => console.error('Ошибка:', error));
+import {addNotification,removeNotification} from '/static/scripts/notifications.js';
+import {checkResponse} from '/static/scripts/response.js';
+import {getData} from '/static/scripts/getData.js';
+const NOTIFICATION_TYPES = {
+	WARNING: 'warning',
+	SUCCESS: 'success',
+    ERROR: 'error',
 }
 
 createForm();
@@ -66,7 +23,12 @@ document.getElementById('exit').addEventListener('click',() => {
 	.then(()=>{
 		window.location.href = '/';
 	})
-	.catch(error => console.error(error));
+	.catch(() => {
+        const warning = addNotification("Ошибка",NOTIFICATION_TYPES.ERROR, 'Попробуйте позже');
+        setTimeout(() => {
+            removeNotification(warning);
+        }, 4000);
+    });
 });
 
 
@@ -77,37 +39,54 @@ document.getElementById("form-add").addEventListener('click',()=>{
 document.getElementById("submit").addEventListener('click',()=>{
     let forms = document.querySelectorAll("form");
 	for(let i=0;i<forms.length;i++){
-		let form = forms[i]
-            newValidityForm(form)
-			if(!(form.checkValidity())){
-                const firstInvalidInputEl = form.querySelector(':invalid');
-                firstInvalidInputEl?.focus();
-				return;
-			}
+        let form = forms[i]
+        newValidityForm(form)
+        if(!(form.checkValidity())){
+            const firstInvalidInputEl = form.querySelector(':invalid');
+            firstInvalidInputEl?.focus();
+            return;
+        }
 	}
 
+    let isConnectionLoss = false;
+    let promise = []
 	for(let i=0;i<forms.length;i++){
-		let form = forms[i]
+		let form = forms[i];
+        if (form.checkValidity()) {
 
-			if (form.checkValidity()) {
-
-				const formData = new FormData(form);
-				fetch('/form', {
-					method: 'POST',
-					credentials: 'include',
-					body: formData
-				})
-				.then(response => response.json())
-				.then(getData)
-				.catch(error => console.error(error));
-			}
+            const formData = new FormData(form);
+            promise.push(fetch('/form', {
+                method: 'POST',
+                credentials: 'include',
+                body: formData
+            })
+            .then(response => {
+                checkResponse(response);
+                if(response.ok){
+                    const warning = addNotification("Успешно",NOTIFICATION_TYPES.SUCCESS, 'Данные сохранены');
+                    setTimeout(() => {
+                        removeNotification(warning);
+                    }, 4000);
+                }
+            })
+            .catch(() => {
+                isConnectionLoss = true;
+                const warning = addNotification("Ошибка",NOTIFICATION_TYPES.ERROR, 'Попробуйте позже');
+                setTimeout(() => {
+                    removeNotification(warning);
+                }, 4000);
+            }));
+        }
 	}
-
-	num.countForm=2;
-
-	document.getElementById("forms").textContent = '';
-
-	createForm();
+    Promise.all(promise)
+    .then(()=>{
+        if(!isConnectionLoss){
+            getData();
+            num.countForm=2;
+            document.getElementById("forms").textContent = '';
+            createForm();
+        }
+    })
 })
 
 function newValidityForm(form){
@@ -136,13 +115,19 @@ document.getElementById("export").addEventListener('click',()=>{
         method: 'POST',
         credentials: 'include',
         })
-      .then(response => response.blob())
-      .then(blob => {
+    .then(response => response.blob())
+    .then(blob => {
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
         a.download = 'Table Device.zip';
         a.click();
-      });
-
+    })
+    .catch(()=>{
+        const warning = addNotification("Ошибка",NOTIFICATION_TYPES.ERROR, 'Попробуйте позже');
+        setTimeout(() => {
+            removeNotification(warning);
+        }, 4000);
+    });
 })
+

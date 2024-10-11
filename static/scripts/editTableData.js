@@ -1,9 +1,6 @@
 import {globalData as num} from '/static/scripts/globalData.js';
-
 import { createForm } from '/static/scripts/createForm.js';
-
 import {saveTableData} from '/static/scripts/saveTableData.js';
-
 export function editTableData(numId) {
 
     let dialog = document.getElementById('dialog_content');
@@ -36,10 +33,11 @@ export function editTableData(numId) {
     photo_ITAM.setAttribute('src',row.cells[7].querySelector('img').getAttribute('src'))
 
     document.getElementById('edit_dialog').showModal();
-    document.getElementById("submit_dialog").addEventListener('click',()=>{
+    dialog.querySelector("#submit_dialog").addEventListener('click',()=>{
         saveTableData(numId)
     })
-    document.getElementById('dialog_cross').addEventListener('click',()=>{
+    let buttons = document.querySelectorAll('#dialog_cross');
+    buttons[buttons.length-1].addEventListener('click',()=>{
         document.getElementById('edit_dialog').close();
     })
 }
