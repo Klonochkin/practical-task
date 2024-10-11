@@ -17,8 +17,8 @@
     <header class="container header">
         <h1>Форма заполнения</h1>
         <span>
-            <button id="export" class="exit">Скачать таблицу</button>
-            <button id="exit" class="exit">Выйти</button>
+            <button id="export" class="main__button exit">Скачать таблицу</button>
+            <button id="exit" class="main__button exit">Выйти</button>
         </span>
 	</header>
     <main>
@@ -107,12 +107,12 @@
             </div>
 
 			<div class="container header">
-				<button class="form__button-add" id="form-add">
+				<button class="main__button form__button-add" id="form-add">
 					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
 					Добавить устройство
 				</button>
 			</div>
-			<button class="form__submit" id="submit">Отправить</button>
+			<button class="main__button form__submit" id="submit">Отправить</button>
 		</div>
 		<div class="container__table">
 			<h2 class="heading-text">
@@ -174,7 +174,7 @@
     </template>
 
     <template id="template__table-button">
-        <button class="table__button"></button>
+        <button class="main__button table__button"></button>
     </template>
 
 	<template id="template-select-img">
@@ -195,9 +195,9 @@
 
 	<template id="template-form">
 		<form class="form">
-            <div class="dialog__cross">
+            <div id="cross">
                 <button class="dialog__cross-button" id="dialog_cross" type="button" aria-label="delete">
-                    <svg class="dialog__cross-svg" xmlns="http://www.w3.org/2000/svg" width="16" height="16" transform="rotate(45)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                    <svg class="form__cross-svg" xmlns="http://www.w3.org/2000/svg" width="20" height="20" transform="rotate(45)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
                 </button>
             </div>
 			<div class="form__content">
@@ -277,7 +277,7 @@
 					<img width="75" height="75" class="visually-hidden table__img" alt="photo-ITAM" id="img_photo_ITAM">
 				</div>
 			</div>
-            <button class="dialog__submit-button visually-hidden" id="submit_dialog" type="button">Сохранить</button>
+            <button class="main__button dialog__submit-button visually-hidden" id="submit_dialog" type="button">Сохранить</button>
 		</form>
 
 	</template>
@@ -288,7 +288,11 @@
         <strong class="notification__strong"></strong><p class="notification__p"></p>
     </template>
     <dialog class="dialog" id="edit_dialog" aria-label="edit-table-data">
-
+        <div class="dialog__cross">
+            <button class="dialog__cross-button" id="dialog_cross">
+                <svg class="dialog__cross-svg" xmlns="http://www.w3.org/2000/svg" width="30" height="30" transform="rotate(45)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+            </button>
+        </div>
         <span id="dialog_content" class="dialog__wrapper dialog__content">
         </span>
     </dialog>

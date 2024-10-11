@@ -33,7 +33,7 @@ export function editTableData(numId) {
     photo_ITAM.setAttribute('src',row.cells[7].querySelector('img').getAttribute('src'))
 
     document.getElementById('edit_dialog').showModal();
-    document.getElementById("submit_dialog").addEventListener('click',()=>{
+    dialog.querySelector("#submit_dialog").addEventListener('click',()=>{
         saveTableData(numId)
     })
     let buttons = document.querySelectorAll('#dialog_cross');

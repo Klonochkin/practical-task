@@ -44,47 +44,44 @@ document.getElementById("submit").addEventListener('click',()=>{
 	}
 
     let isConnectionLoss = false;
-    let temp = forms.length;
+    let promise = []
 	for(let i=0;i<forms.length;i++){
-		let form = forms[i]
-			if (form.checkValidity()) {
+		let form = forms[i];
+        if (form.checkValidity()) {
 
-				const formData = new FormData(form);
-				fetch('/form', {
-					method: 'POST',
-					credentials: 'include',
-					body: formData
-				})
-				.then(response => {
-                    checkResponse(response);
-                    if(response.ok){
-                        const warning = addNotification("Успешно",NOTIFICATION_TYPES.SUCCESS, 'Данные сохранены');
-                        setTimeout(() => {
-                            removeNotification(warning);
-                        }, 4000);
-                    }
-                })
-				.then(()=>{
-                    getData();
-                    temp-=1;
-                    if(temp===0){
-                        if(!isConnectionLoss){
-                            num.countForm=2;
-                            document.getElementById("forms").textContent = '';
-                            createForm();
-                        }
-                    }
-                })
-				.catch(() => {
-                    isConnectionLoss = true;
-                    const warning = addNotification("Ошибка",NOTIFICATION_TYPES.ERROR, 'Попробуйте позже');
+            const formData = new FormData(form);
+            promise.push(fetch('/form', {
+                method: 'POST',
+                credentials: 'include',
+                body: formData
+            })
+            .then(response => {
+                checkResponse(response);
+                if(response.ok){
+                    const warning = addNotification("Успешно",NOTIFICATION_TYPES.SUCCESS, 'Данные сохранены');
                     setTimeout(() => {
                         removeNotification(warning);
                     }, 4000);
-                });
-			}
+                }
+            })
+            .catch(() => {
+                isConnectionLoss = true;
+                const warning = addNotification("Ошибка",NOTIFICATION_TYPES.ERROR, 'Попробуйте позже');
+                setTimeout(() => {
+                    removeNotification(warning);
+                }, 4000);
+            }));
+        }
 	}
-
+    Promise.all(promise)
+    .then(()=>{
+        if(!isConnectionLoss){
+            getData();
+            num.countForm=2;
+            document.getElementById("forms").textContent = '';
+            createForm();
+        }
+    })
 })
 
 function newValidityForm(form){

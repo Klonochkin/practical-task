@@ -146,19 +146,16 @@ body{
 .table__head-button{
   width: 45px;
 }
-button{
+.main__button{
   background-color: rgb(255, 255, 255);
   color: black;
   border: 1px rgb(198, 198, 198) solid;
   border-radius: 0.35rem;
 }
-button:not(:disabled){
+.main__button:not(:disabled){
   cursor: pointer;
 }
-button:hover:not(:disabled) {
-    /* background: rgb(255, 255, 255);
-    color: #000000;
-    border-color: rgb(210, 210, 210); */
+.main__button:hover:not(:disabled) {
     animation: button_hover forwards;
   }
   @keyframes button_hover {
@@ -166,17 +163,6 @@ button:hover:not(:disabled) {
           transform: scale(1.1);
       }
   }
-button:disabled {
-  color: rgba(0, 0, 0, 0.5);
-  border: 1px rgba(210, 210, 210, 0.5) solid;
-  background: rgb(255, 255, 255);
-}
-.form__legend{
-  margin-left: 2rem;
-  margin-top: 2rem;
-  font-size: 1.5rem;
-  font-weight: bold;
-}
 
 th,
 td{
@@ -229,19 +215,30 @@ tbody > tr td{
 	margin-top: 0.5rem;
 	font-size: 0.8rem;
 }
-.form__delete-button{
-    padding: 0.5rem;
-	display: flex;
-	align-items: center;
-}
-.dialog__delete-button{
-	padding: 0.5rem;
-}
+
 .dialog__cross-button{
-	padding: 0.3rem;
+    padding: 0.3rem;
+    background: none;
+    border: none
+  }
+  .dialog__cross-button:not(:disabled){
+    cursor: pointer;
+  }
+  .dialog__cross-button:hover:not(:disabled) {
+      animation: button_hover_dialog forwards;
+    }
+    @keyframes button_hover_dialog {
+        to {
+            transform: scale(1.4);
+        }
+    }
+
+.form__cross-svg{
+    display: block;
 }
 .dialog__cross-svg{
     display: block;
+    color: white
 }
 .dialog__submit-button{
 	padding: 0.5rem;
@@ -255,22 +252,21 @@ tbody > tr td{
     position: relative;
     overflow: hidden;
 }
-dialog::backdrop {
-    background-color: rgba(0, 0, 0, 0.5);
+.dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.7);
 }
 .dialog__cross{
     position: absolute;
-    top: 3px;
-    right: 3px;
-
+    top: 25px;
+    right: -5px;
 }
-  .dialog__wrapper {
+.form__cross{
+    position: absolute;
+    top: 9px;
+    right: 9px;
+}
+.dialog__wrapper {
     padding: 1em;
-  }
-.dialog__button{
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
 }
 .dialog__content{
     display: flex;
@@ -315,10 +311,6 @@ input:user-invalid{
 .is-invalid {
     border: 1px rgb(255, 0, 0) solid;
 	background: rgba(255, 0, 0, 0.1);
-}
-.table__input{
-    vertical-align:top;
-    padding-block-start: 2rem;
 }
 .table__img{
     vertical-align:top;

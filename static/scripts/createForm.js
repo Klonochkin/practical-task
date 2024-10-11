@@ -9,6 +9,7 @@ export function createForm(isDialog = false){
 	let input1 = templateText.content.cloneNode(true);
     if(!isDialog){
         templateForms = document.getElementById("forms");
+        input1.querySelector("#cross").classList.add("form__cross")
         number = num.countForm;
         num.countForm+=1;
     }
@@ -19,6 +20,7 @@ export function createForm(isDialog = false){
         input1.querySelector("#photo_device_select").removeAttribute('required')
         input1.querySelector("#photo_serial_number_device_select").removeAttribute('required')
         input1.querySelector("#photo_ITAM_device_select").removeAttribute('required')
+        input1.querySelector("#cross").classList.add("dialog__cross")
     }
     if(number===1){
         input1 = document.getElementById("form1");
@@ -31,6 +33,7 @@ export function createForm(isDialog = false){
     }
     else if(number===152){
         input1.querySelector('form').classList.add("form__dialog");
+        input1.getElementById('dialog_cross').remove();
         input1.getElementById('submit_dialog').classList.remove("visually-hidden");
         input1.querySelector('form').id= `form_dialog` ;
     }
@@ -47,12 +50,12 @@ export function createForm(isDialog = false){
     let p = Array.from(parentForm.parentNode.querySelectorAll("p"))
     let elements = field.parentNode.parentNode.parentNode.elements
     let count = elements.length
-    if(number!==1 && number!==2){
+    if(number!==1 && number!==2 && number!==152){
         count--;
     }
     for (let i = 0; i < count; i++) {
         let element = elements[i];
-        if(number!==1 && number!==2){
+        if(number!==1 && number!==2 && number!==152){
             element = elements[i+1];
         }
         else{
