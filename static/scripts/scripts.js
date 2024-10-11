@@ -23,7 +23,12 @@ document.getElementById('exit').addEventListener('click',() => {
 	.then(()=>{
 		window.location.href = '/';
 	})
-	.catch(error => console.error(error));
+	.catch(() => {
+        const warning = addNotification("Ошибка",NOTIFICATION_TYPES.ERROR, 'Попробуйте позже');
+        setTimeout(() => {
+            removeNotification(warning);
+        }, 4000);
+    });
 });
 
 
@@ -110,13 +115,19 @@ document.getElementById("export").addEventListener('click',()=>{
         method: 'POST',
         credentials: 'include',
         })
-      .then(response => response.blob())
-      .then(blob => {
+    .then(response => response.blob())
+    .then(blob => {
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
         a.download = 'Table Device.zip';
         a.click();
-      });
+    })
+    .catch(()=>{
+        const warning = addNotification("Ошибка",NOTIFICATION_TYPES.ERROR, 'Попробуйте позже');
+        setTimeout(() => {
+            removeNotification(warning);
+        }, 4000);
+    });
 })
 
