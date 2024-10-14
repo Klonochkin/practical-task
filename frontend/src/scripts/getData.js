@@ -2,7 +2,7 @@ import {globalData as num} from './globalData.js';
 import { updateTableData } from './updateTableData.js';
 
 export function getData(){
-	fetch('/data',{
+	fetch('/api/data',{
 		method: 'GET',
 		credentials: 'include',
 		})

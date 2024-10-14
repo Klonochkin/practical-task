@@ -9,7 +9,7 @@ const NOTIFICATION_TYPES = {
 }
 
 export function deleteTableData(numId) {
-	fetch(`/data/${numId}`, {
+	fetch(`/api/data/${numId}`, {
 		method: 'DELETE',
 		credentials: 'include',
 		headers: {

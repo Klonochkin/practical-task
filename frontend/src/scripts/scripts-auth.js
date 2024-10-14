@@ -5,7 +5,7 @@ document.getElementById('form-auth').addEventListener('submit', (event)=>{
 	let valueEmail = document.getElementById('email-auth').value;
 	let valuePassword = document.getElementById('password-auth').value;
 
-	fetch('/signIn', {
+	fetch('/api/signIn', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',

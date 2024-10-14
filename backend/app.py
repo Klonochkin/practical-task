@@ -45,7 +45,12 @@ class CacheControlledStaticFiles(StaticFiles):
         response.headers["Cache-Control"] = "public, max-age=31536000"
         return response
 
-app.mount("/assets", CacheControlledStaticFiles(directory="dist/assets"), name="static")
+try:
+    app.mount("/assets", CacheControlledStaticFiles(directory="dist/assets"), name="static")
+except Exception:
+    print('error')
+
+
 
 @app.get('/')
 async def welcome(request:Request):
@@ -86,7 +91,7 @@ async def new_delete_file(name: str):
     return {"message": "Файл успешно удалён"}
 
 
-@app.put('/data')
+@app.put('/api/data')
 async def upload(request: Request):
     cookies = request.cookies
     session_value = cookies.get("session")
@@ -125,7 +130,7 @@ async def upload(request: Request):
 
     return {"message": "Запись успешно изменена"}
 
-@app.get("/data")
+@app.get("/api/data")
 async def read_data(request: Request):
     cookies = request.cookies
     session_value = cookies.get("session")
@@ -140,7 +145,7 @@ async def read_data(request: Request):
         posts_list.append(post_dict)
     return posts_list
 
-@app.delete('/data/{numDelete}')
+@app.delete('/api/data/{numDelete}')
 async def delete(request: Request,numDelete: str):
     cookies = request.cookies
     session_value = cookies.get("session")
@@ -186,7 +191,7 @@ async def newUpload(file: UploadFile):
 
     return newName
 
-@app.post('/form')
+@app.post('/api/form')
 async def sendForm(request: Request):
     cookies = request.cookies
     session_value = cookies.get("session")
@@ -218,7 +223,7 @@ async def sendForm(request: Request):
         res = posts.insert_one(post).inserted_id
     return {"message": "Запись успешно добавлена"}
 
-@app.delete("/file/{name}")
+@app.delete("/api/file/{name}")
 async def delete_file(request: Request,name: str):
     cookies = request.cookies
     session_value = cookies.get("session")
@@ -234,7 +239,7 @@ async def delete_file(request: Request,name: str):
         pass
     return {"message": "Файл успешно удалён"}
 
-@app.post("/signIn")
+@app.post("/api/signIn")
 async def signIn(request: Request):
     data = await request.json()
     email = data["email"]
@@ -268,7 +273,7 @@ async def signIn(request: Request):
 
     return response
 
-@app.post("/signUp")
+@app.post("/api/signUp")
 async def signUp(request: Request):
     data = await request.json()
     email = data["email"]
@@ -292,7 +297,7 @@ async def signUp(request: Request):
         postsPassword.insert_one(post).inserted_id
     return {"message": "Регистрация успешна"}
 
-@app.post("/exit")
+@app.post("/api/exit")
 async def auth(request:Request):
     cookies = request.cookies
     session_value = cookies.get("session")
@@ -313,7 +318,7 @@ async def auth(request:Request):
     response.delete_cookie(key="session")
     return response
 
-@app.post("/export")
+@app.post("/api/export")
 async def export(request:Request):
     cookies = request.cookies
     session_value = cookies.get("session")
@@ -408,7 +413,7 @@ async def export(request:Request):
         }
     )
 
-@app.get('/{name}/{size}')
+@app.get('/api/{name}/{size}')
 async def test(request:Request,name: str,size: int):
 
     cookies = request.cookies

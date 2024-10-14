@@ -5,7 +5,7 @@ document.getElementById('form-register').addEventListener('submit', (event)=>{
 	let valueEmail = document.getElementById('email-register').value;
 	let valuePassword = document.getElementById('password-register').value;
 
-	fetch('/signUp', {
+	fetch('/api/signUp', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',

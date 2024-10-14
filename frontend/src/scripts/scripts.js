@@ -1,9 +1,9 @@
-import { globalData as num } from './scripts/globalData.js';
-import { createForm } from './scripts/createForm.js';
-import { validityInputUpdate,validityFileUpdate } from './scripts/validation.js';
-import {addNotification,removeNotification} from './scripts/notifications.js';
-import {checkResponse} from './scripts/response.js';
-import {getData} from './scripts/getData.js';
+import { globalData as num } from './globalData.js';
+import { createForm } from './createForm.js';
+import { validityInputUpdate,validityFileUpdate } from './validation.js';
+import {addNotification,removeNotification} from './notifications.js';
+import {checkResponse} from './response.js';
+import {getData} from './getData.js';
 const NOTIFICATION_TYPES = {
 	WARNING: 'warning',
 	SUCCESS: 'success',
@@ -15,7 +15,7 @@ createForm();
 getData();
 
 document.getElementById('exit').addEventListener('click',() => {
-	fetch('/exit', {
+	fetch('/api/exit', {
 		method: 'POST',
 		credentials: 'include'
 	})
@@ -55,7 +55,7 @@ document.getElementById("submit").addEventListener('click',()=>{
         if (form.checkValidity()) {
 
             const formData = new FormData(form);
-            promise.push(fetch('/form', {
+            promise.push(fetch('/api/form', {
                 method: 'POST',
                 credentials: 'include',
                 body: formData
@@ -111,7 +111,7 @@ function newValidityForm(form){
 }
 
 document.getElementById("export").addEventListener('click',()=>{
-    fetch('/export',{
+    fetch('/api/export',{
         method: 'POST',
         credentials: 'include',
         })

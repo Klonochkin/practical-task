@@ -40,21 +40,21 @@ export function updateTableData(
 	const templateText = document.querySelector('#template-img');
 	ceil6.textContent = '';
 	const input1 = templateText.content.cloneNode(true);
-	input1.querySelector('img').src = `/${photo_device}/150`;
+	input1.querySelector('img').src = `api/${photo_device}/150`;
     input1.querySelector('img').cache = "max-age=31536000";
     input1.querySelector('img').alt = "";
 	ceil6.append(input1);
 
 	ceil7.textContent = '';
 	const input2 = templateText.content.cloneNode(true);
-	input2.querySelector('img').src = `/${photo_serial_number_device}/150`;
+	input2.querySelector('img').src = `api/${photo_serial_number_device}/150`;
     input2.querySelector('img').cache = "max-age=31536000";
     input2.querySelector('img').alt = "";
 	ceil7.append(input2);
 
 	ceil8.textContent = '';
 	const input3 = templateText.content.cloneNode(true);
-	input3.querySelector('img').src = `/${photo_ITAM_device}/150`;
+	input3.querySelector('img').src = `api/${photo_ITAM_device}/150`;
     input3.querySelector('img').cache = "max-age=31536000";
     input3.querySelector('img').alt = "";
 	ceil8.append(input3);

@@ -24,7 +24,7 @@ export function saveTableData(numId) {
         newValidityForm(forms);
         return;
     }
-	fetch('/data', {
+	fetch('/api/data', {
 		method: 'PUT',
 		credentials: 'include',
 		body: formData
