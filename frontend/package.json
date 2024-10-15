@@ -6,9 +6,22 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "check-format": "prettier --check .",
+    "format": "prettier --write .",
+    "lint:es": "eslint",
+    "lint:es:fix": "npm run lint:es -- --fix",
+    "lint:css": "stylelint .",
+    "lint:css:fix": "npm run lint:css -- --fix",
+    "lint": "npm run lint:es && npm run check-types && npm run lint:css && npm run check-format",
+    "check-types": "tsc --project ./jsconfig.json"
   },
   "devDependencies": {
+    "eslint-config-prettier": "^9.1.0",
+    "globals": "^15.11.0",
+    "prettier": "3.3.3",
+    "stylelint-config-clean-order": "^6.1.0",
+    "stylelint-config-standard": "^36.0.1",
     "vite": "^5.4.8"
   }
 }
