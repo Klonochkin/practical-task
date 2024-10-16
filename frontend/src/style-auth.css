@@ -1,0 +1,100 @@
+@font-face {
+    font-family: Roboto;
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+    src: url('/assets/Roboto.woff2') format('woff2');
+}
+
+.body {
+    font-family: Roboto, sans-serif;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.form {
+    transform: translateY(-50%);
+
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    width: 20rem;
+    margin-block-start: 50vh;
+    margin-inline: auto;
+    padding: 1.5rem;
+
+    border: 2px rgb(210 210 210) solid;
+    border-radius: 0.35rem;
+}
+
+.form__label-text {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+    width: 100%;
+
+    font-size: 1.1rem;
+}
+
+.form__title {
+    padding: 0;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.visually-hidden {
+    position: absolute;
+
+    overflow: hidden;
+
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+
+    white-space: nowrap;
+
+    clip: rect(0 0 0 0);
+    clip-path: inset(100%);
+    border: 0;
+}
+
+.form__error {
+    font-size: 1rem;
+    color: red;
+}
+
+.button {
+    cursor: pointer;
+
+    padding: 0.5rem;
+
+    color: black;
+
+    background-color: rgb(255 255 255);
+    border: 1px rgb(198 198 198) solid;
+    border-radius: 0.35rem;
+}
+
+.form__input {
+    padding: 8px;
+    background: rgb(255 255 255);
+    border: 1px rgb(210 210 210) solid;
+    border-radius: 0.35rem;
+}
+
+.form__link {
+    padding: 2px 1px 0;
+    color: rgb(0 0 0);
+}
+
+.form__link:hover {
+    padding: 2px 1px 0;
+    color: rgb(0 0 0);
+}

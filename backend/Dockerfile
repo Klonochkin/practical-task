@@ -10,6 +10,6 @@ COPY . .
 
 EXPOSE 8000
 
-RUN mkdir static/images
+RUN mkdir -p static/images
 
 CMD uvicorn app:app --reload --host 0.0.0.0 --port 8000
