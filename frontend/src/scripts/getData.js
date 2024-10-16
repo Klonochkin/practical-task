@@ -1,4 +1,4 @@
-import {globalData as num} from './globalData.js';
+import { globaldata as num } from './globalData.js';
 import { updateTableData } from './updateTableData.js';
 
 export function getData(){
@@ -9,11 +9,13 @@ export function getData(){
 	.then((response) => response.json())
 	.then((data) => {
 		num.fetchData = data;
-		const table = document.getElementById('table_device');
-		const n = table.rows.length;
-
+            /** @type {HTMLTableElement | null} */
+            const table = document.querySelector('#table_device');
+            /** @type {number | null | undefined} */
+            const n = table?.rows.length;
+            if (n) {
 		for (let i = 1; i < n; i++) {
-			table.deleteRow(1);
+                    table?.deleteRow(1);
 		}
 
 		let n2 = data.length;
