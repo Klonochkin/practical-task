@@ -1,5 +1,4 @@
-
-import {editTableData} from './editTableData.js';
+import { editTableData } from './editTableData.js';
 
 import { deleteTableData } from './deleteTableData.js';
 /**
@@ -13,17 +12,17 @@ import { deleteTableData } from './deleteTableData.js';
  * @param {File} photo_ITAM_device
  */
 export function updateTableData(
-	number,
-	type_device,
-	model_device,
-	serial_number_device,
-	ITAM_device,
-	photo_device,
-	photo_serial_number_device,
-	photo_ITAM_device
+    number,
+    type_device,
+    model_device,
+    serial_number_device,
+    ITAM_device,
+    photo_device,
+    photo_serial_number_device,
+    photo_ITAM_device,
 ) {
-	const table = document
-	.getElementById('table_device')
+    const table = document
+        .getElementById('table_device')
         ?.getElementsByTagName('tbody')[0];
     const newRow = table?.insertRow();
     const ceil1 = newRow?.insertCell(0);
@@ -42,7 +41,7 @@ export function updateTableData(
     if (ceil4) ceil4.textContent = serial_number_device;
     if (ceil5) ceil5.textContent = ITAM_device;
     /** @type {HTMLTemplateElement | null} */
-	const templateText = document.querySelector('#template-img');
+    const templateText = document.querySelector('#template-img');
 
     if (ceil6) ceil6.textContent = '';
     let input1 = /** @type {HTMLImageElement | null | undefined} */ (
@@ -99,12 +98,13 @@ export function updateTableData(
     }
     if (ceil8 && input3) ceil8.append(input3);
 
+    //
 
     /** @type {HTMLTemplateElement | null} */
-	const template = document.querySelector('#template__table-button');
+    const template = document.querySelector('#template__table-button');
 
     if (ceil9) {
-	ceil9.textContent = '';
+        ceil9.textContent = '';
     }
     let buttonDelete = /** @type {Element | null | undefined} */ (
         template?.content.cloneNode(true)
@@ -121,8 +121,8 @@ export function updateTableData(
     }
 
     buttonDelete?.querySelector('button')?.addEventListener('click', () => {
-		deleteTableData(number);
-	});
+        deleteTableData(number);
+    });
 
     if (ceil9 && buttonDelete) ceil9.append(buttonDelete);
 
@@ -137,7 +137,7 @@ export function updateTableData(
         addCloneNode.textContent = 'Изменить';
         addCloneNode.addEventListener('click', () => {
             editTableData(number);
-        let dialog = document.getElementById('edit_dialog');
+            let dialog = document.getElementById('edit_dialog');
 
             dialog?.addEventListener('close', () => {
                 let f;
@@ -151,7 +151,7 @@ export function updateTableData(
                 document
                     ?.querySelector('body')
                     ?.classList.remove('body__open-dialog');
-        });
+            });
 
             dialog?.addEventListener('click', closeOnBackDropClick);
         });
@@ -164,10 +164,10 @@ export function updateTableData(
 /**
  * @param {Event} currentTarget
  */
-        function closeOnBackDropClick({ currentTarget, target }) {
+function closeOnBackDropClick({ currentTarget, target }) {
     const dialogElement = currentTarget;
     const isClickedOnBackDrop = target === dialogElement;
     if (isClickedOnBackDrop && dialogElement instanceof HTMLDialogElement) {
         dialogElement?.close();
-        }
+    }
 }

@@ -16,29 +16,29 @@ createForm();
 getData();
 
 document.getElementById('exit')?.addEventListener('click', () => {
-	fetch('/api/exit', {
-		method: 'POST',
-		credentials: 'include'
-	})
+    fetch('/api/exit', {
+        method: 'POST',
+        credentials: 'include',
+    })
         .then((response) => response.json())
         .then(() => {
             window.location.href = '/auth';
-	})
-	.catch(() => {
+        })
+        .catch(() => {
             const warning = addNotification(
                 'Ошибка',
                 notification_types.ERROR,
                 'Попробуйте позже',
             );
-        setTimeout(() => {
-            removeNotification(warning);
-        }, 4000);
-    });
+            setTimeout(() => {
+                removeNotification(warning);
+            }, 4000);
+        });
 });
 
 document.getElementById('form-add')?.addEventListener('click', () => {
-	createForm();
-})
+    createForm();
+});
 
 document.getElementById('submit')?.addEventListener('click', () => {
     let forms = document.querySelectorAll('form');
@@ -51,49 +51,49 @@ document.getElementById('submit')?.addEventListener('click', () => {
             firstInvalidInputEl?.focus();
             return;
         }
-	}
+    }
 
     let isConnectionLoss = false;
-    let promise = []
-	for(let i=0;i<forms.length;i++){
-		let form = forms[i];
+    let promise = [];
+    for (let i = 0; i < forms.length; i++) {
+        let form = forms[i];
         if (form.checkValidity()) {
-
             const formData = new FormData(form);
-            promise.push(fetch('/api/form', {
-                method: 'POST',
-                credentials: 'include',
-                body: formData
-            })
-            .then(response => {
-                checkResponse(response);
+            promise.push(
+                fetch('/api/form', {
+                    method: 'POST',
+                    credentials: 'include',
+                    body: formData,
+                })
+                    .then((response) => {
+                        checkResponse(response);
                         if (response.ok) {
                             const warning = addNotification(
                                 'Успешно',
                                 notification_types.SUCCESS,
                                 'Данные сохранены',
                             );
-                    setTimeout(() => {
-                        removeNotification(warning);
-                    }, 4000);
-                }
-            })
-            .catch(() => {
-                isConnectionLoss = true;
+                            setTimeout(() => {
+                                removeNotification(warning);
+                            }, 4000);
+                        }
+                    })
+                    .catch(() => {
+                        isConnectionLoss = true;
                         const warning = addNotification(
                             'Ошибка',
                             notification_types.ERROR,
                             'Попробуйте позже',
                         );
-                setTimeout(() => {
-                    removeNotification(warning);
-                }, 4000);
-            }));
+                        setTimeout(() => {
+                            removeNotification(warning);
+                        }, 4000);
+                    }),
+            );
         }
-	}
-    Promise.all(promise)
-    .then(()=>{
-        if(!isConnectionLoss){
+    }
+    Promise.all(promise).then(() => {
+        if (!isConnectionLoss) {
             getData();
             num.countForm = 2;
             let qew = document.getElementById('forms');
@@ -136,32 +136,30 @@ function newValidityForm(form) {
                 validityFileUpdate(element);
             });
         }
-
-      }
+    }
 }
 
 document.getElementById('export')?.addEventListener('click', () => {
     fetch('/api/export', {
         method: 'POST',
         credentials: 'include',
-        })
-    .then(response => response.blob())
-    .then(blob => {
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'Table Device.zip';
-        a.click();
     })
+        .then((response) => response.blob())
+        .then((blob) => {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Table Device.zip';
+            a.click();
+        })
         .catch(() => {
             const warning = addNotification(
                 'Ошибка',
                 notification_types.ERROR,
                 'Попробуйте позже',
             );
-        setTimeout(() => {
-            removeNotification(warning);
-        }, 4000);
-    });
-})
-
+            setTimeout(() => {
+                removeNotification(warning);
+            }, 4000);
+        });
+});

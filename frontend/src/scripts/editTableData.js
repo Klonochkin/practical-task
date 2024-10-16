@@ -5,7 +5,6 @@ import { saveTableData } from './saveTableData.js';
  * @param {number} numId
  */
 export function editTableData(numId) {
-
     let dialog = document.getElementById('dialog_content');
     createForm(true);
     /** @type {HTMLTableElement | null} */
@@ -28,8 +27,8 @@ export function editTableData(numId) {
     elements?.forEach((element) => {
         if (element.value === num.defaultValue2) {
             element.selected = true;
-		}
-	});
+        }
+    });
     /** @type {HTMLInputElement | null | undefined} */
     let asd = dialog?.querySelector('#model_device_select');
     if (asd && defaultValue3) asd.value = defaultValue3;

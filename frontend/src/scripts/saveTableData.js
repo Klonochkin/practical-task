@@ -1,7 +1,7 @@
 import { newValidityForm } from './validation.js';
-import {addNotification,removeNotification} from './notifications.js';
-import {checkResponse} from './response.js';
-import {getData} from './getData.js';
+import { addNotification, removeNotification } from './notifications.js';
+import { checkResponse } from './response.js';
+import { getData } from './getData.js';
 
 const notification_types = {
     ERROR: 'error',
@@ -25,35 +25,35 @@ export function saveTableData(numId) {
         if (forms) newValidityForm(forms);
         return;
     }
-	fetch('/api/data', {
-		method: 'PUT',
-		credentials: 'include',
-		body: formData
-	})
-    .then((response) => {
-        checkResponse(response);
-        if(response.ok){
-            setTimeout(() => {
+    fetch('/api/data', {
+        method: 'PUT',
+        credentials: 'include',
+        body: formData,
+    })
+        .then((response) => {
+            checkResponse(response);
+            if (response.ok) {
+                setTimeout(() => {
                     const warning = addNotification(
                         'Успешно',
                         notification_types.SUCCESS,
                         'Данные обновлены',
                     );
-                setTimeout(() => {
-                    removeNotification(warning);
-                }, 4000);
-            }, 1);
-        }
-    })
-    .then(() => {
+                    setTimeout(() => {
+                        removeNotification(warning);
+                    }, 4000);
+                }, 1);
+            }
+        })
+        .then(() => {
             /** @type {HTMLFormElement | null} */
             let edit_dialog123 = document.querySelector('#edit_dialog');
             edit_dialog123?.close();
             let apfjaf = document.getElementById('dialog_content');
             if (apfjaf) apfjaf.textContent = '';
-        getData();
-    })
-    .catch(() => {
+            getData();
+        })
+        .catch(() => {
             /** @type {HTMLFormElement | null} */
             let edit_dialog123 = document.querySelector('#edit_dialog');
             edit_dialog123?.close();
@@ -62,8 +62,8 @@ export function saveTableData(numId) {
                 notification_types.ERROR,
                 'Попробуйте позже',
             );
-        setTimeout(() => {
-            removeNotification(warning);
-        }, 4000);
-    });
+            setTimeout(() => {
+                removeNotification(warning);
+            }, 4000);
+        });
 }

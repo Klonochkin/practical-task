@@ -32,9 +32,9 @@ export function addNotification(title, type, text) {
 }
 /** @param {HTMLDivElement} notification */
 export function removeNotification(notification) {
-	notification.classList.add('notification--hide');
+    notification.classList.add('notification--hide');
 
-	setTimeout(() => {
+    setTimeout(() => {
         notificationContainer?.removeChild(notification);
-	}, 500);
+    }, 500);
 }

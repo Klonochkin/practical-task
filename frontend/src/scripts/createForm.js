@@ -61,7 +61,7 @@ export function createForm(isDialog = false) {
         const formElement = templateCloneNode?.querySelector('form');
         if (formElement) {
             formElement.id = 'form_dialog';
-    }
+        }
     } else {
         const formElement = templateCloneNode?.querySelector('form');
         if (formElement) {
@@ -106,7 +106,7 @@ export function createForm(isDialog = false) {
         count--;
     }
     if (count) {
-    for (let i = 0; i < count; i++) {
+        for (let i = 0; i < count; i++) {
             /** @type {HTMLElement | undefined} */
             let element;
             if (element123) {
@@ -122,18 +122,18 @@ export function createForm(isDialog = false) {
                 element = /** @type {HTMLInputElement | undefined} */ (
                     element123[i]
                 );
-        }
+            }
             let type = element?.getAttribute('type');
             if (element && (type === 'text' || element.tagName === 'SELECT')) {
                 element.addEventListener('blur', () => {
                     validityInputUpdate(element, paragraph[i]);
-            });
+                });
             } else if (element && type === 'file') {
                 element.addEventListener('input', () => {
                     validityFileUpdate(element);
-            });
+                });
+            }
         }
-    }
     }
     /** @type {HTMLImageElement[]} */
     let img;
@@ -151,15 +151,15 @@ export function createForm(isDialog = false) {
             ) {
                 input?.nextElementSibling?.classList.add('visually-hidden');
                 img[0].classList.add('visually-hidden');
-			return;
-		}
+                return;
+            }
             /** @type {File | null | undefined} */
             const file = input?.files && input.files[0];
             const fileSize = file?.size;
             const maxSize = 10 * 1024 * 1024;
             if (fileSize && fileSize > maxSize) {
                 if (input) {
-			input.type = 'text';
+                    input.type = 'text';
                 }
                 if (input) {
                     input.type = 'file';
@@ -175,8 +175,8 @@ export function createForm(isDialog = false) {
                 if (file) {
                     img[0].src = URL.createObjectURL(file);
                 }
-		}
-	});
+            }
+        });
     templateCloneNode
         ?.querySelector('#photo_serial_number_device_select')
         ?.addEventListener('input', (event) => {
@@ -187,15 +187,15 @@ export function createForm(isDialog = false) {
             ) {
                 input?.nextElementSibling?.classList.add('visually-hidden');
                 img[1].classList.add('visually-hidden');
-			return;
-		}
+                return;
+            }
             /** @type {File | null | undefined} */
             const file = input?.files && input.files[0];
             const fileSize = file?.size;
             const maxSize = 10 * 1024 * 1024;
             if (fileSize && fileSize > maxSize) {
                 if (input) {
-			input.type = 'text';
+                    input.type = 'text';
                 }
                 if (input) {
                     input.type = 'file';
@@ -211,8 +211,8 @@ export function createForm(isDialog = false) {
                 if (file) {
                     img[1].src = URL.createObjectURL(file);
                 }
-		}
-	});
+            }
+        });
     templateCloneNode
         ?.querySelector('#photo_ITAM_device_select')
         ?.addEventListener('input', (event) => {
@@ -223,15 +223,15 @@ export function createForm(isDialog = false) {
             ) {
                 input?.nextElementSibling?.classList.add('visually-hidden');
                 img[2].classList.add('visually-hidden');
-			return;
-		}
+                return;
+            }
             /** @type {File | null | undefined} */
             const file = input?.files && input.files[0];
             const fileSize = file?.size;
             const maxSize = 10 * 1024 * 1024;
             if (fileSize && fileSize > maxSize) {
                 if (input) {
-			input.type = 'text';
+                    input.type = 'text';
                 }
                 if (input) {
                     input.type = 'file';
@@ -247,8 +247,8 @@ export function createForm(isDialog = false) {
                 if (file) {
                     img[2].src = URL.createObjectURL(file);
                 }
-		}
-	});
+            }
+        });
     if (templateCloneNode) {
         divWithForms?.append(templateCloneNode);
     }

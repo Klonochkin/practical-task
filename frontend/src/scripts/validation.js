@@ -49,30 +49,24 @@ export function newValidityForm(form) {
                 validityFileUpdate(element);
             });
         }
-
-      }
+    }
 }
 /**
  * @param {HTMLFormElement} el
  */
 function getValidationMessageForInput(el) {
     if (el.validity.valid) return '';
-
-    if (el.validity.valueMissing) {
+    else if (el.validity.valueMissing) {
         return `Пожалуйста, введите значение (Это поле обязательно для заполнения)`;
-    }
-    if (el.validity.typeMismatch) {
+    } else if (el.validity.typeMismatch) {
         return 'Пожалуйста, введите действительный адрес электронной почты';
-    }
-    if(el.validity.patternMismatch){
-        return `Пожалуйста, введите значение по соответственному шаблону`
-    }
-    if(el.validity.tooLong){
-        return `Введенное значение слишком длинное. Максимальная длина: ${el.maxLength}`
-    }
-    if(el.validity.tooShort){
-        return `Введенное значение слишком короткое. Минимальная длина: ${el.minLength}`
+    } else if (el.validity.patternMismatch) {
+        return `Пожалуйста, введите значение по соответственному шаблону`;
+    } else if (el.validity.tooLong) {
+        return `Введенное значение слишком длинное. Максимальная длина: ${el.maxLength}`;
+    } else if (el.validity.tooShort) {
+        return `Введенное значение слишком короткое. Минимальная длина: ${el.minLength}`;
+    } else {
+        return 'Ошибка при вводе';
     }
 }
-
-

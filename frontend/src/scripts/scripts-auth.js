@@ -1,5 +1,5 @@
 document.getElementById('form-auth')?.addEventListener('submit', (event) => {
-	event.preventDefault();
+    event.preventDefault();
     /** @type {HTMLInputElement | null | undefined} */
     let qwefa = document
         .getElementById('email-auth')
@@ -16,21 +16,21 @@ document.getElementById('form-auth')?.addEventListener('submit', (event) => {
     if (qwefa2) {
         valuePassword = qwefa2.value;
     }
-	fetch('/api/signIn', {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-		},
-		body: JSON.stringify({
-			email: valueEmail,
-			password: valuePassword
-		}),
-	})
-	.then((response) => {
-		if (response.ok) {
-			window.location.href = '/'
-			return response.json();
-		  } else if (response.status === 401) {
+    fetch('/api/signIn', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            email: valueEmail,
+            password: valuePassword,
+        }),
+    })
+        .then((response) => {
+            if (response.ok) {
+                window.location.href = '/';
+                return response.json();
+            } else if (response.status === 401) {
                 document
                     ?.getElementById('error-auth')
                     ?.classList.remove('visually-hidden');
@@ -45,10 +45,11 @@ document.getElementById('form-auth')?.addEventListener('submit', (event) => {
                 let lolcheck = document.getElementById('error-auth');
                 if (lolcheck) {
                     lolcheck.innerHTML = 'Введён не правильный пароль';
-			}
-			else{
-				window.location.href = '/auth';
-			}
-	})
-	.catch((error) => console.log(error));
-})
+                }
+            } else {
+                window.location.href = '/auth';
+            }
+            return;
+        })
+        .catch((error) => console.log(error));
+});

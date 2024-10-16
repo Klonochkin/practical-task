@@ -1,7 +1,7 @@
 document
     .getElementById('form-register')
     ?.addEventListener('submit', (event) => {
-	event.preventDefault();
+        event.preventDefault();
         /** @type {HTMLInputElement | null | undefined} */
         let qwefa = document
             .getElementById('email-register')
@@ -19,21 +19,21 @@ document
             valuePassword = qwefa2.value;
         }
 
-	fetch('/api/signUp', {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-		},
-		body: JSON.stringify({
-			email: valueEmail,
-			password: valuePassword
-		}),
-	})
-	.then((response) => {
-		if (response.ok) {
-			window.location.href = '/auth';
-			return response.json();
-		  } else if (response.status === 401) {
+        fetch('/api/signUp', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: valueEmail,
+                password: valuePassword,
+            }),
+        })
+            .then((response) => {
+                if (response.ok) {
+                    window.location.href = '/auth';
+                    return response.json();
+                } else if (response.status === 401) {
                     document
                         ?.getElementById('error-register')
                         ?.classList.remove('visually-hidden');
@@ -50,10 +50,11 @@ document
                     if (lolcheck) {
                         lolcheck.innerHTML =
                             'Пароль должен быть не менее 8 символов';
-			}
-			else{
-				window.location.href = '/auth';
-			}
-	})
-	.catch((error) => console.log(error));
-})
+                    }
+                } else {
+                    window.location.href = '/auth';
+                }
+                return;
+            })
+            .catch((error) => console.log(error));
+    });

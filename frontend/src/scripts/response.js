@@ -2,7 +2,7 @@ import { addNotification, removeNotification } from './notifications.js';
 
 const notification_types = {
     SUCCESS: 'success',
-	WARNING: 'warning',
+    WARNING: 'warning',
 };
 /**
  * @param {Response} response
@@ -10,12 +10,10 @@ const notification_types = {
 export function checkResponse(response) {
     if (response.ok) {
         return;
-    }
-    else if (response.status === 401) {
+    } else if (response.status === 401) {
         console.error('Вы не вошли');
         window.location.href = '/auth';
-    }
-    else if(response.status === 404){
+    } else if (response.status === 404) {
         console.error('Запись не найдена');
         const warning = addNotification(
             'Ошибка',
@@ -25,8 +23,7 @@ export function checkResponse(response) {
         setTimeout(() => {
             removeNotification(warning);
         }, 4000);
-    }
-    else if(response.status === 405){
+    } else if (response.status === 405) {
         console.error('Неправильный метод запроса');
         const warning = addNotification(
             'Ошибка',
@@ -36,8 +33,7 @@ export function checkResponse(response) {
         setTimeout(() => {
             removeNotification(warning);
         }, 4000);
-    }
-    else if(response.status === 408){
+    } else if (response.status === 408) {
         console.error('Превышено время ожидания ответа');
         const warning = addNotification(
             'Ошибка',
@@ -47,8 +43,7 @@ export function checkResponse(response) {
         setTimeout(() => {
             removeNotification(warning);
         }, 4000);
-    }
-    else if(response.status === 409){
+    } else if (response.status === 409) {
         console.error('Аккаунт с таким email уже существует');
         const warning = addNotification(
             'Ошибка',
@@ -58,8 +53,7 @@ export function checkResponse(response) {
         setTimeout(() => {
             removeNotification(warning);
         }, 4000);
-    }
-    else if(response.status === 422){
+    } else if (response.status === 422) {
         console.error('Запрос имеет не обработанный элемент');
         const warning = addNotification(
             'Ошибка',
@@ -69,8 +63,7 @@ export function checkResponse(response) {
         setTimeout(() => {
             removeNotification(warning);
         }, 4000);
-    }
-    else if(response.status === 429){
+    } else if (response.status === 429) {
         console.error('Превышено количество запросов');
         const warning = addNotification(
             'Ошибка',
@@ -80,8 +73,7 @@ export function checkResponse(response) {
         setTimeout(() => {
             removeNotification(warning);
         }, 4000);
-    }
-    else if(response.status === 500){
+    } else if (response.status === 500) {
         console.error('Сервер не отвечает');
         const warning = addNotification(
             'Ошибка',
@@ -91,8 +83,7 @@ export function checkResponse(response) {
         setTimeout(() => {
             removeNotification(warning);
         }, 4000);
-    }
-    else {
+    } else {
         console.error('Error:', response.status);
-      }
+    }
 }
