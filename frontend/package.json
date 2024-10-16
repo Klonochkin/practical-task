@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "npm run lint && vite build",
     "preview": "vite preview",
     "check-format": "prettier --check .",
     "format": "prettier --write .",
@@ -17,11 +17,16 @@
     "check-types": "tsc --project ./jsconfig.json"
   },
   "devDependencies": {
+    "eslint": "^9.12.0",
     "eslint-config-prettier": "^9.1.0",
     "globals": "^15.11.0",
     "prettier": "3.3.3",
+    "stylelint": "^16.10.0",
     "stylelint-config-clean-order": "^6.1.0",
+    "stylelint-config-recommended": "^14.0.1",
     "stylelint-config-standard": "^36.0.1",
+    "stylelint-order": "^6.0.4",
+    "typescript": "^5.6.3",
     "vite": "^5.4.8"
   }
 }
