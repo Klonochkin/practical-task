@@ -32,23 +32,23 @@ export function addNotification(title, type, text) {
     );
 
     if (templateClone) newNotification.append(templateClone);
-    newNotification?.addEventListener('touchstart', (event)=>{
+    newNotification?.addEventListener('touchstart', (event) => {
         touchStart(event);
     });
-    newNotification?.addEventListener('touchmove', (event)=>{
-        touchMove(event,newNotification);
+    newNotification?.addEventListener('touchmove', (event) => {
+        touchMove(event, newNotification);
     });
-    newNotification?.addEventListener('touchend', ()=>{
+    newNotification?.addEventListener('touchend', () => {
         touchEnd(newNotification);
     });
     notificationContainer?.appendChild(newNotification);
 
     setTimeout(() => {
         newNotification?.removeEventListener('touchstart', touchStart);
-        newNotification?.removeEventListener('touchmove', (event)=>{
-            touchMove(event,newNotification);
+        newNotification?.removeEventListener('touchmove', (event) => {
+            touchMove(event, newNotification);
         });
-        newNotification?.removeEventListener('touchend', ()=>{
+        newNotification?.removeEventListener('touchend', () => {
             touchEnd(newNotification);
         });
     }, 2000);
@@ -60,10 +60,9 @@ export function removeNotification(notification) {
     notification.classList.add('notification--hide');
     /** @type {string | undefined} */
     let notId = notification?.querySelector('strong')?.id;
-    if(notId && document.getElementById(notId)){
+    if (notId && document.getElementById(notId)) {
         setTimeout(() => {
-            if(notification)
-                notificationContainer?.removeChild(notification);
+            if (notification) notificationContainer?.removeChild(notification);
         }, 500);
     }
 }
@@ -74,7 +73,7 @@ let touchStartX;
 let touchMoveX;
 /**
  * @param { TouchEvent } event
-*/
+ */
 function touchStart(event) {
     touchStartX = event.touches[0].clientX;
     document.querySelector('body')?.classList.add('body__scroll-lock');
@@ -83,16 +82,15 @@ function touchStart(event) {
 /**
  * @param { TouchEvent } event
  * @param { HTMLElement } el
-*/
-function touchMove(event,el) {
+ */
+function touchMove(event, el) {
     touchMoveX = event.touches[0].clientX;
     const deltaX = touchMoveX - touchStartX;
-    if(el)
-        el.style.transform = `translate(${deltaX}px)`;
+    if (el) el.style.transform = `translate(${deltaX}px)`;
 }
 /**
  * @param { HTMLElement } el
-*/
+ */
 function touchEnd(el) {
     document.querySelector('body')?.classList.remove('body__scroll-lock');
     const deltaX = touchMoveX - touchStartX;

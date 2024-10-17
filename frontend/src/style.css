@@ -137,7 +137,7 @@ body {
 }
 
 .table {
-    overflow-x:scroll;
+    overflow-x: scroll;
     border-collapse: collapse;
 
     max-width: 1250px;
@@ -149,7 +149,7 @@ body {
     letter-spacing: 1px;
 }
 
-.table__scroll-container{
+.table__scroll-container {
     overflow-x: auto;
     max-width: 1250px;
 }
@@ -202,10 +202,10 @@ body {
 @media (width >=600px) {
     .main__button:hover:not(:disabled) {
         animation: button-hover forwards;
-   }
+    }
 
-   .form__upload-button:hover {
-    animation: button_hover forwards;
+    .form__upload-button:hover {
+        animation: button_hover forwards;
     }
 }
 
@@ -241,8 +241,6 @@ tbody > tr td {
     border: 1px rgb(210 210 210) solid;
     border-radius: 0.35rem;
 }
-
-
 
 .form__field-file {
     display: inline-flex;
