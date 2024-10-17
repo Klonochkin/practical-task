@@ -446,6 +446,6 @@ input:user-invalid {
     padding: 0;
 }
 
-.body__open-dialog {
+.body__scroll-lock {
     overflow: hidden;
 }

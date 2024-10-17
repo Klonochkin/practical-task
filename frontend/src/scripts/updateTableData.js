@@ -150,7 +150,7 @@ export function updateTableData(
                 }
                 document
                     ?.querySelector('body')
-                    ?.classList.remove('body__open-dialog');
+                    ?.classList.remove('body__scroll-lock');
             });
 
             dialog?.addEventListener('click', closeOnBackDropClick);
