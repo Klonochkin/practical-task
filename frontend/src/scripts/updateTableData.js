@@ -145,8 +145,6 @@ export function updateTableData(
                     f = document.getElementById('dialog_content');
                 if (f) {
                     f.textContent = '';
-                    f.textContent = 'Изменить';
-                    // buttonEdit.querySelector('button').value = 'Изменить';
                 }
                 document
                     ?.querySelector('body')
