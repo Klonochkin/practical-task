@@ -27,7 +27,7 @@ export function createForm(isDialog = false) {
     } else {
         divWithForms = document.getElementById('dialog_content');
         number = 152;
-        document.querySelector('body')?.classList.add('body__open-dialog');
+        document.querySelector('body')?.classList.add('body__scroll-lock');
         templateCloneNode
             ?.querySelector('#photo_device_select')
             ?.removeAttribute('required');

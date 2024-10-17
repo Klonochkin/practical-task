@@ -15,7 +15,7 @@
         <div class="notification__container" id="notification-container"></div>
         <header class="container header">
             <h1>Форма заполнения</h1>
-            <span>
+            <span class="header__button">
                 <button id="export" class="main__button exit">
                     Скачать таблицу
                 </button>
@@ -305,33 +305,39 @@
             </div>
             <div class="container__table">
                 <h2 class="heading-text">Ваше оборудование:</h2>
-                <table id="table_device" class="table">
-                    <thead>
-                        <tr>
-                            <th
-                                scope="col"
-                                class="table__head table__head--first">
-                                №
-                            </th>
-                            <th scope="col" class="table__head">Вид техники</th>
-                            <th scope="col" class="table__head">Модель</th>
-                            <th scope="col" class="table__head">
-                                Серийный номер
-                            </th>
-                            <th scope="col" class="table__head">ITAM</th>
-                            <th scope="col" class="table__head">Устройство</th>
-                            <th scope="col" class="table__head">
-                                Серийный номер
-                            </th>
-                            <th scope="col" class="table__head">
-                                Инвентарный номер
-                            </th>
-                            <th scope="col" class="table__head-button"></th>
-                            <th scope="col" class="table__head-button"></th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
+                <div class="table__scroll-container">
+                    <table id="table_device" class="table">
+                        <thead>
+                            <tr>
+                                <th
+                                    scope="col"
+                                    class="table__head table__head--first">
+                                    №
+                                </th>
+                                <th scope="col" class="table__head">
+                                    Вид техники
+                                </th>
+                                <th scope="col" class="table__head">Модель</th>
+                                <th scope="col" class="table__head">
+                                    Серийный номер
+                                </th>
+                                <th scope="col" class="table__head">ITAM</th>
+                                <th scope="col" class="table__head">
+                                    Устройство
+                                </th>
+                                <th scope="col" class="table__head">
+                                    Серийный номер
+                                </th>
+                                <th scope="col" class="table__head">
+                                    Инвентарный номер
+                                </th>
+                                <th scope="col" class="table__head-button"></th>
+                                <th scope="col" class="table__head-button"></th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
             </div>
         </main>
 
