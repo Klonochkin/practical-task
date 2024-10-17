@@ -136,9 +136,9 @@ body {
 }
 
 .table {
+    overflow-x:scroll;
     border-collapse: collapse;
 
-    min-width: 1250px;
     max-width: 1250px;
     margin: 0 auto;
 
@@ -146,6 +146,11 @@ body {
     font-size: 0.8rem;
     text-align: center;
     letter-spacing: 1px;
+}
+
+.table__scroll-container{
+    overflow-x: auto;
+    max-width: 1250px;
 }
 
 .table__head {
